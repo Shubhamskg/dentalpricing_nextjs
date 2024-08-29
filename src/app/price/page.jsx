@@ -69,7 +69,7 @@ export default function Dashboard() {
                     <li><Link href="/subscription"><FaBoxOpen /> Subscription</Link></li>
                     <li><Link href="/billing"><FaFileInvoiceDollar /> Billing</Link></li>
                     <li><Link href="/settings"><FaCog /> Settings</Link></li>
-                    <li><LogoutLink href="/logout"><FaSignOutAlt /> Logout</LogoutLink></li>
+                    <li><LogoutLink><FaSignOutAlt /> Logout</LogoutLink></li>
                   </ul>
                 </div>
               )}
