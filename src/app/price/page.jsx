@@ -5,6 +5,7 @@ import styles from './page.module.scss';
 import Link from 'next/link';
 import { FaUser, FaBoxOpen, FaFileInvoiceDollar, FaCog, FaSignOutAlt } from 'react-icons/fa';
 import { categoryNames } from '../lib/data';
+import {LogoutLink} from "@kinde-oss/kinde-auth-nextjs/components";
 
 export default function Dashboard() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -68,7 +69,7 @@ export default function Dashboard() {
                     <li><Link href="/subscription"><FaBoxOpen /> Subscription</Link></li>
                     <li><Link href="/billing"><FaFileInvoiceDollar /> Billing</Link></li>
                     <li><Link href="/settings"><FaCog /> Settings</Link></li>
-                    <li><Link href="/logout"><FaSignOutAlt /> Logout</Link></li>
+                    <li><LogoutLink href="/logout"><FaSignOutAlt /> Logout</LogoutLink></li>
                   </ul>
                 </div>
               )}
