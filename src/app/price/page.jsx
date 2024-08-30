@@ -576,7 +576,7 @@ export default function Dashboard() {
             )}
             <input 
               type="text"
-              placeholder="Enter postcode"
+              placeholder="Enter full Postcode (eg nx 2xx)"
               className={styles.searchInput}
               value={postcode}
               onChange={(e) => setPostcode(e.target.value)}
@@ -656,7 +656,7 @@ export default function Dashboard() {
                   </div>
                 </>
               ) : hasSearched ? (
-                <p className={styles.noResults}>No results found for your search criteria. Please try adjusting your search parameters.</p>
+                <p className={styles.noResults}>No results found for your search criteria. Please try adjusting your search parameters. Try by increasing distance/radius.</p>
               ) : (
                 <p className={styles.resultsPlaceholder}>Your search results will appear here.</p>
               )}
