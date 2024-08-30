@@ -1,57 +1,82 @@
 import { NextResponse } from 'next/server';
 import { MongoClient } from 'mongodb';
 
+function toRadians(degrees) {
+  return degrees * Math.PI / 180;
+}
+
+function calculateDistance(lat1, lon1, lat2, lon2) {
+  const R = 3958.8; // Earth's radius in miles
+  const dLat = toRadians(lat2 - lat1);
+  const dLon = toRadians(lon2 - lon1);
+  const a = 
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) * 
+    Math.sin(dLon/2) * Math.sin(dLon/2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  return R * c;
+}
+
+function formatPostcode(postcode) {
+  return postcode.replace(/\s+/g, '').toUpperCase();
+}
+
 export async function POST(request) {
-  const { searchTerm, category, location } = await request.json();
+  const { searchMethod, category, treatment, postcode, radius } = await request.json();
 
   const client = await MongoClient.connect(process.env.MONGODB_URI);
   const db = client.db('dentalpricing');
-  const collection = db.collection('pricedata');
+  const priceCollection = db.collection('pricedata');
+  const postcodeCollection = client.db('webscrapping').collection('postalcode');
 
-  const query = {};
+  try {
+    const formattedUserPostcode = formatPostcode(postcode);
 
-  // First, filter by category if provided
-  if (category) {
-    query.Category = { $regex: category, $options: 'i' };
-  }
-
-  // Then, apply the searchTerm to all fields
-  if (searchTerm) {
-    query.$and = [
-      {
-        $or: [
-          { Name: { $regex: searchTerm, $options: 'i' } },
-          { treatment: { $regex: searchTerm, $options: 'i' } },
-          { Category: { $regex: searchTerm, $options: 'i' } },
-          { Address_1: { $regex: searchTerm, $options: 'i' } },
-          { Postcode: { $regex: searchTerm, $options: 'i' } },
-          { Price: { $regex: searchTerm, $options: 'i' } },
-          { Website: { $regex: searchTerm, $options: 'i' } },
-          { Feepage: { $regex: searchTerm, $options: 'i' } }
-        ]
-      }
-    ];
-  }
-
-  // Finally, apply the location filter
-  if (location) {
-    const locationQuery = {
-      $or: [
-        { Address_1: { $regex: location, $options: 'i' } },
-        { Postcode: { $regex: location, $options: 'i' } }
-      ]
-    };
-    
-    if (query.$and) {
-      query.$and.push(locationQuery);
-    } else {
-      query.$and = [locationQuery];
+    // Get user's postcode coordinates
+    const userPostcode = await postcodeCollection.findOne({ postcode: formattedUserPostcode });
+    if (!userPostcode) {
+      throw new Error('Invalid postcode');
     }
+
+    const query = {};
+
+    // Apply search based on the selected method
+    if (searchMethod === 'category' && category) {
+      query.Category = { $regex: category, $options: 'i' };
+    } else if (searchMethod === 'treatment' && treatment) {
+      query.$or = [
+        { treatment: { $regex: treatment, $options: 'i' } },
+        { Category: { $regex: treatment, $options: 'i' } }
+      ];
+    }
+
+    const results = await priceCollection.find(query).toArray();
+
+    // Calculate distances and filter based on radius
+    const filteredResults = await Promise.all(results.map(async (result) => {
+      const formattedClinicPostcode = formatPostcode(result.Postcode);
+      const clinicPostcode = await postcodeCollection.findOne({ postcode: formattedClinicPostcode });
+      if (clinicPostcode) {
+        const distance = calculateDistance(
+          userPostcode.latitude,
+          userPostcode.longitude,
+          clinicPostcode.latitude,
+          clinicPostcode.longitude
+        );
+        if (distance <= radius) {
+          return { ...result, distance };
+        }
+      }
+      return null;
+    }));
+
+    const finalResults = filteredResults.filter(result => result !== null);
+
+    await client.close();
+    return NextResponse.json(finalResults);
+  } catch (error) {
+    console.error("Database query error:", error);
+    await client.close();
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
-
-  const results = await collection.find(query).toArray();
-
-  await client.close();
-
-  return NextResponse.json(results);
 }
