@@ -25,6 +25,12 @@ export default function Dashboard() {
   const [hasSearched, setHasSearched] = useState(false);
 
   const { user } = useKindeBrowserClient();
+  useEffect(()=>{
+    if(!user){
+      console.log("user",user)
+      redirect('/')
+    }
+  })
 
   const trackClick = async (url) => {
     try {
