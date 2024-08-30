@@ -1,10 +1,11 @@
 "use client"
+
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import styles from './page.module.scss';
 import Link from 'next/link';
-import {RegisterLink, LoginLink} from "@kinde-oss/kinde-auth-nextjs/components";
+import { RegisterLink, LoginLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 
 export default function Home() {
   const { user, isLoading } = useKindeBrowserClient();
@@ -14,11 +15,12 @@ export default function Home() {
     if (!isLoading && user) {
       router.push('/price');
     }
-  }, [user, isLoading, router]);
+  }, [isLoading, user, router]);
 
   if (isLoading) {
     return <div>Loading...</div>;
   }
+
   return (
     <div className={styles.container}>
       <header className={styles.header}>
@@ -26,8 +28,6 @@ export default function Home() {
           <h1 className={styles.title}>Dental Pricing</h1>
           <p className={styles.subtitle}>Compare Private Dental Treatment Prices Across the UK</p>
           <div className={styles.authButtons}>
-            {/* <Link href="/signup" className={styles.authButton}>Sign Up</Link>
-            <Link href="/login" className={styles.authButton}>Login</Link> */}
             <LoginLink className={styles.authButton}>Sign in</LoginLink>
             <RegisterLink className={styles.authButton}>Sign up</RegisterLink>
           </div>
@@ -35,6 +35,7 @@ export default function Home() {
       </header>
 
       <main className={styles.main}>
+
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>Welcome to DentalPricing.co.uk</h2>
           <p className={styles.paragraph}>We've collected pricing data from 95% of private dental clinics in the UK, allowing both dentists and patients to compare treatment prices across the country as of 2024.</p>
@@ -59,7 +60,7 @@ export default function Home() {
             <li>And many more...</li>
           </ul>
           <p className={styles.paragraph}>Find the best value and make informed decisions about your oral health care.</p>
-          <Link href="/signup" className={styles.ctaButton}>Compare Prices Now</Link>
+          <RegisterLink className={styles.ctaButton}>Compare Prices Now</RegisterLink>
         </section>
 
         <section className={styles.section}>
@@ -73,36 +74,13 @@ export default function Home() {
             <li>Attract new patients with informed, market-competitive pricing</li>
           </ul>
           <p className={styles.paragraph}>Stay ahead in the dental market with comprehensive, nationwide pricing intelligence.</p>
-          <Link href="#signup" className={styles.ctaButton}>Subscribe Now</Link>
+          <RegisterLink className={styles.ctaButton}>Subscribe Now</RegisterLink>
         </section>
+        </main>
 
-        {/* <section id="signup" className={styles.section}>
-          <h2 className={styles.sectionTitle}>Sign Up</h2>
-          <form className={styles.form}>
-            <div className={styles.formGroup}>
-              <label htmlFor="name">Name</label>
-              <input type="text" id="name" name="name" required />
-            </div>
-            <div className={styles.formGroup}>
-              <label htmlFor="email">Email</label>
-              <input type="email" id="email" name="email" required />
-            </div>
-            <div className={styles.formGroup}>
-              <label htmlFor="user-type">I am a:</label>
-              <select id="user-type" name="user-type" required>
-                <option value="">Select one</option>
-                <option value="patient">Patient</option>
-                <option value="dentist">Dentist</option>
-              </select>
-            </div>
-            <button type="submit" className={styles.submitButton}>Sign Up</button>
-          </form>
-        </section> */}
-      </main>
-
-      <footer className={styles.footer}>
-        <p>&copy; 2024 DentalPricing.co.uk. All rights reserved.</p>
-      </footer>
-    </div>
-  );
+<footer className={styles.footer}>
+  <p>&copy; 2024 DentalPricing.co.uk. All rights reserved.</p>
+</footer>
+</div>
+);
 }

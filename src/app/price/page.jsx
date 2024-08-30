@@ -1,14 +1,13 @@
 "use client"
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import styles from './page.module.scss';
 import Link from 'next/link';
 import { FaUser, FaBoxOpen, FaFileInvoiceDollar, FaCog, FaSignOutAlt, FaSort, FaSortNumericDown, FaSortNumericUp } from 'react-icons/fa';
 import { categoryNames } from '../lib/data';
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
-import { useRouter } from 'next/navigation';
-
 
 export default function Dashboard() {
   const [searchMethod, setSearchMethod] = useState('treatment');
@@ -19,51 +18,40 @@ export default function Dashboard() {
   const [searchResults, setSearchResults] = useState([]);
   const [showSubmenu, setShowSubmenu] = useState(false);
   const [filteredCategories, setFilteredCategories] = useState(categoryNames);
-  const [isLoadingsearch, setIsLoadingsearch] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [sortOrder, setSortOrder] = useState('distance-asc');
   const [warningMessage, setWarningMessage] = useState('');
-  const submenuRef = useRef(null);
   const [hasSearched, setHasSearched] = useState(false);
+  const submenuRef = useRef(null);
 
-  const { user, isLoading } = useKindeBrowserClient();
+  const { user, isLoading: isUserLoading } = useKindeBrowserClient();
   const router = useRouter();
 
   useEffect(() => {
-    if (!isLoading && !user) {
+    if (!isUserLoading && !user) {
       router.push('/');
     }
-  }, [user, isLoading, router]);
+  }, [isUserLoading, user, router]);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (submenuRef.current && !submenuRef.current.contains(event.target)) {
+        setShowSubmenu(false);
+      }
+    };
 
-  if (!user) {
-    return null; // or a loading spinner if you prefer
-  }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
-  const trackClick = async (url) => {
-    try {
-      await fetch('/api/track-click', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ 
-          url,
-          userEmail: user?.email || 'anonymous'
-        }),
-      });
-    } catch (error) {
-      console.error("Error tracking click:", error);
-    }
-  };
-  const handleSearch = async () => {
+  const handleSearch = useCallback(async () => {
     if (!validateInputs()) {
       return;
     }
 
-    setIsLoadingsearch(true);
+    setIsLoading(true);
     setWarningMessage('');
     setHasSearched(true);
 
@@ -92,11 +80,11 @@ export default function Dashboard() {
       setSearchResults([]);
       setWarningMessage('An error occurred while fetching results. Please try again.');
     } finally {
-      setIsLoadingsearch(false);
+      setIsLoading(false);
     }
-  };
+  }, [searchMethod, category, treatment, postcode, radius, sortOrder]);
 
-  const validateInputs = () => {
+  const validateInputs = useCallback(() => {
     if (searchMethod === 'category' && !category) {
       setWarningMessage('Please select a category.');
       return false;
@@ -114,29 +102,29 @@ export default function Dashboard() {
       return false;
     }
     return true;
-  };
+  }, [searchMethod, category, treatment, postcode, radius]);
 
-  const sortResults = (results, order) => {
+  const sortResults = useCallback((results, order) => {
     const [field, direction] = order.split('-');
-    return results?.sort((a, b) => {
+    return results.sort((a, b) => {
       if (field === 'price') {
         return direction === 'asc' ? a.Price - b.Price : b.Price - a.Price;
       } else {
         return direction === 'asc' ? a.distance - b.distance : b.distance - a.distance;
       }
     });
-  };
+  }, []);
 
-  const handleSortChange = (newOrder) => {
+  const handleSortChange = useCallback((newOrder) => {
     setSortOrder(newOrder);
-    setSearchResults(sortResults([...searchResults], newOrder));
-  };
+    setSearchResults(prevResults => sortResults([...prevResults], newOrder));
+  }, [sortResults]);
 
-  const toggleSubmenu = () => {
-    setShowSubmenu(!showSubmenu);
-  };
+  const toggleSubmenu = useCallback(() => {
+    setShowSubmenu(prev => !prev);
+  }, []);
 
-  const handleCategoryInputChange = (e) => {
+  const handleCategoryInputChange = useCallback((e) => {
     const value = e.target.value;
     setCategory(value);
     setFilteredCategories(
@@ -144,27 +132,38 @@ export default function Dashboard() {
         cat.toLowerCase().includes(value.toLowerCase())
       ).sort((a, b) => a.localeCompare(b))
     );
-  };
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (submenuRef.current && !submenuRef.current.contains(event.target)) {
-        setShowSubmenu(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
   }, []);
 
-  const isSearchButtonDisabled = () => {
+  const isSearchButtonDisabled = useCallback(() => {
     if (searchMethod === 'category' && (!category || !postcode || !radius)) return true;
     if (searchMethod === 'treatment' && (!treatment || !postcode || !radius)) return true;
     return false;
-  };
+  }, [searchMethod, category, treatment, postcode, radius]);
 
+  const trackClick = useCallback(async (url) => {
+    try {
+      await fetch('/api/track-click', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          url,
+          userEmail: user?.email || 'anonymous'
+        }),
+      });
+    } catch (error) {
+      console.error("Error tracking click:", error);
+    }
+  }, [user]);
+
+  if (isUserLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!user) {
+    return null;
+  }
   return (
     <div className={styles.container}>
       <header className={styles.header}>
@@ -193,7 +192,6 @@ export default function Dashboard() {
           <h2 className={styles.searchTitle}>Search Dental Treatment Prices</h2>
           
           <div className={styles.searchMethodToggle}>
-            
             <button 
               className={`${styles.methodButton} ${searchMethod === 'treatment' ? styles.active : ''}`}
               onClick={() => setSearchMethod('treatment')}
@@ -273,7 +271,7 @@ export default function Dashboard() {
         </section>
 
         <section id="search-results" className={styles.resultsSection}>
-          {isLoadingsearch ? (
+          {isLoading ? (
             <div className={styles.loadingSpinner}>Loading...</div>
           ) : (
             <>
@@ -288,11 +286,10 @@ export default function Dashboard() {
                        <FaSortNumericDown />
                     </button>
                     <span>&nbsp;</span>
-                    <span>Pricess</span>
+                    <span>Price</span>
                     <button onClick={() => handleSortChange('price-asc')} className={sortOrder === 'price-asc' ? styles.active : ''}>
                        <FaSortNumericUp />
                     </button>
-                   
                     <button onClick={() => handleSortChange('price-desc')} className={sortOrder === 'price-desc' ? styles.active : ''}>
                        <FaSortNumericDown />
                     </button>
@@ -310,16 +307,13 @@ export default function Dashboard() {
                       <p>Address: {result["Address 1"]}, {result.Postcode}</p>
                       <p>Distance: {result.distance.toFixed(2)} miles</p>
                       <p>Website: <a href={result.Website} target="_blank" rel="noopener noreferrer" onClick={() => trackClick(result.Website)}>{result.Website}</a></p>
-        <p>Fee Page: <a href={result.Feepage} target="_blank" rel="noopener noreferrer" onClick={() => trackClick(result.Feepage)}>Fee Guide</a></p>
-                      {/* <p>Website: <a href={result.Website} target="_blank" rel="noopener noreferrer">{result.Website}</a></p>
-                      <p>Fee Page: <a href={result.Feepage} target="_blank" rel="noopener noreferrer">Fee Guide</a></p> */}
+                      <p>Fee Page: <a href={result.Feepage} target="_blank" rel="noopener noreferrer" onClick={() => trackClick(result.Feepage)}>Fee Guide</a></p>
                     </li>
                   ))}
                 </ul>
-              ) :  hasSearched ? (
-              <p className={styles.noResults}>No results found for your search criteria. Please try adjusting your search parameters.</p>
-            ) :
-              (
+              ) : hasSearched ? (
+                <p className={styles.noResults}>No results found for your search criteria. Please try adjusting your search parameters.</p>
+              ) : (
                 <p className={styles.resultsPlaceholder}>Your search results will appear here.</p>
               )}
             </>
