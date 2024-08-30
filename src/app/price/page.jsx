@@ -69,7 +69,8 @@
 //           postcode,
 //           radius: parseFloat(radius),
 //           page,
-//           limit: 10
+//           limit: 20,
+//           sort: sortOrder
 //         }),
 //       });
 
@@ -77,6 +78,7 @@
 //         throw new Error(`HTTP error! status: ${response.status}`);
 //       }
 //       const data = await response.json();
+//       console.log("data",data)
 //       setSearchResults(data.results);
 //       setCurrentPage(data.pagination.currentPage);
 //       setTotalPages(data.pagination.totalPages);
@@ -87,7 +89,7 @@
 //     } finally {
 //       setIsLoading(false);
 //     }
-//   }, [searchMethod, category, treatment, postcode, radius]);
+//   }, [searchMethod, category, treatment, postcode, radius, sortOrder]);
 
 //   const validateInputs = useCallback(() => {
 //     if (searchMethod === 'category' && !category) {
@@ -111,17 +113,8 @@
 
 //   const handleSortChange = useCallback((newOrder) => {
 //     setSortOrder(newOrder);
-//     setSearchResults(prevResults => {
-//       const [field, direction] = newOrder.split('-');
-//       return [...prevResults].sort((a, b) => {
-//         if (field === 'price') {
-//           return direction === 'asc' ? a.Price - b.Price : b.Price - a.Price;
-//         } else {
-//           return direction === 'asc' ? a.distance - b.distance : b.distance - a.distance;
-//         }
-//       });
-//     });
-//   }, []);
+//     handleSearch(1);
+//   }, [handleSearch]);
 
 //   const toggleSubmenu = useCallback(() => {
 //     setShowSubmenu(prev => !prev);
@@ -247,7 +240,7 @@
 //             )}
 //             <input 
 //               type="text"
-//               placeholder="Enter full Postcode (eg nx 2xx)"
+//               placeholder="Enter postcode"
 //               className={styles.searchInput}
 //               value={postcode}
 //               onChange={(e) => setPostcode(e.target.value)}
@@ -281,7 +274,7 @@
 //             <>
 //               {searchResults.length > 0 && (
 //                 <div className={styles.resultsSummary}>
-//                   <h3 className={styles.resultsTitle}>Search Results ({totalPages})</h3>
+//                   <h3 className={styles.resultsTitle}>Search Results ({searchResults.length})</h3>
 //                   <div className={styles.sortControls}>
 //                     <span>Sort by:</span>
 //                     <span>Distance</span>
@@ -327,7 +320,7 @@
 //                   </div>
 //                 </>
 //               ) : hasSearched ? (
-//                 <p className={styles.noResults}>No results found for your search criteria. Please try adjusting your search parameters. Try by increasing distance/radius.</p>
+//                 <p className={styles.noResults}>No results found for your search criteria. Please try adjusting your search parameters.</p>
 //               ) : (
 //                 <p className={styles.resultsPlaceholder}>Your search results will appear here.</p>
 //               )}
@@ -346,6 +339,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { FaUser, FaBoxOpen, FaFileInvoiceDollar, FaCog, FaSignOutAlt, FaSort, FaSortNumericDown, FaSortNumericUp } from 'react-icons/fa';
+import { HiSortAscending, HiSortDescending } from 'react-icons/hi';
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { categoryNames } from '../lib/data';
@@ -366,6 +360,7 @@ export default function Dashboard() {
   const [hasSearched, setHasSearched] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [totalResults, setTotalResults] = useState(0);
   const submenuRef = useRef(null);
 
   const { user, isLoading: isUserLoading } = useKindeBrowserClient();
@@ -390,7 +385,7 @@ export default function Dashboard() {
     };
   }, []);
 
-  const handleSearch = useCallback(async (page = 1) => {
+  const handleSearch = useCallback(async (page = 1,newSortOrder = sortOrder) => {
     if (!validateInputs()) {
       return;
     }
@@ -413,7 +408,7 @@ export default function Dashboard() {
           radius: parseFloat(radius),
           page,
           limit: 20,
-          sort: sortOrder
+          sort: newSortOrder
         }),
       });
 
@@ -424,6 +419,7 @@ export default function Dashboard() {
       setSearchResults(data.results);
       setCurrentPage(data.pagination.currentPage);
       setTotalPages(data.pagination.totalPages);
+      setTotalResults(data.pagination.totalResults);
     } catch (error) {
       console.error("Search error:", error);
       setSearchResults([]);
@@ -455,7 +451,7 @@ export default function Dashboard() {
 
   const handleSortChange = useCallback((newOrder) => {
     setSortOrder(newOrder);
-    handleSearch(1);
+    handleSearch(1,newOrder);
   }, [handleSearch]);
 
   const toggleSubmenu = useCallback(() => {
@@ -614,21 +610,48 @@ export default function Dashboard() {
             <div className={styles.loadingSpinner}>Loading...</div>
           ) : (
             <>
-              {searchResults.length > 0 && (
-                <div className={styles.resultsSummary}>
-                  <h3 className={styles.resultsTitle}>Search Results ({searchResults.length})</h3>
-                  <div className={styles.sortControls}>
-                    <span>Sort by:</span>
+            {searchResults.length > 0 && (
+              <div className={styles.resultsSummary}>
+                <h3 className={styles.resultsTitle}>Search Results (Showing {searchResults.length} of {totalResults})</h3>
+                <div className={styles.sortControls}>
+                  <span>Sort by:</span>
+                  <div className={styles.sortOption}>
                     <span>Distance</span>
-                    <button onClick={() => handleSortChange('distance-asc')} className={sortOrder === 'distance-asc' ? styles.active : ''}><FaSortNumericUp /></button>
-                    <button onClick={() => handleSortChange('distance-desc')} className={sortOrder === 'distance-desc' ? styles.active : ''}><FaSortNumericDown /></button>
-                    <span>&nbsp;</span>
+                    <button 
+                      onClick={() => handleSortChange('distance-asc')} 
+                      className={sortOrder === 'distance-asc' ? styles.active : ''}
+                      aria-label="Sort distance ascending"
+                    >
+                      <HiSortAscending />
+                    </button>
+                    <button 
+                      onClick={() => handleSortChange('distance-desc')} 
+                      className={sortOrder === 'distance-desc' ? styles.active : ''}
+                      aria-label="Sort distance descending"
+                    >
+                      <HiSortDescending />
+                    </button>
+                  </div>
+                  <div className={styles.sortOption}>
                     <span>Price</span>
-                    <button onClick={() => handleSortChange('price-asc')} className={sortOrder === 'price-asc' ? styles.active : ''}><FaSortNumericUp /></button>
-                    <button onClick={() => handleSortChange('price-desc')} className={sortOrder === 'price-desc' ? styles.active : ''}><FaSortNumericDown /></button>
+                    <button 
+                      onClick={() => handleSortChange('price-asc')} 
+                      className={sortOrder === 'price-asc' ? styles.active : ''}
+                      aria-label="Sort price ascending"
+                    >
+                      <HiSortAscending />
+                    </button>
+                    <button 
+                      onClick={() => handleSortChange('price-desc')} 
+                      className={sortOrder === 'price-desc' ? styles.active : ''}
+                      aria-label="Sort price descending"
+                    >
+                      <HiSortDescending />
+                    </button>
                   </div>
                 </div>
-              )}
+              </div>
+            )}
               {searchResults.length > 0 ? (
                 <>
                   <ul className={styles.resultsList}>
@@ -652,7 +675,7 @@ export default function Dashboard() {
                     >
                       Previous
                     </button>
-                    <span>{currentPage} of {totalPages}</span>
+                    <span>Page {currentPage} of {totalPages}</span>
                     <button 
                       onClick={() => handleSearch(currentPage + 1)} 
                       disabled={currentPage === totalPages}
