@@ -7,7 +7,7 @@ import { FaUser, FaBoxOpen, FaFileInvoiceDollar, FaCog, FaSignOutAlt, FaSort, Fa
 import { categoryNames } from '../lib/data';
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation';
 
 
 export default function Dashboard() {
