@@ -578,7 +578,7 @@ export default function Dashboard() {
             )}
             <input 
               type="text"
-              placeholder="Enter postcode"
+              placeholder="Enter full Postcode (eg nx 2xx)"
               className={styles.searchInput}
               value={postcode}
               onChange={(e) => setPostcode(e.target.value)}
