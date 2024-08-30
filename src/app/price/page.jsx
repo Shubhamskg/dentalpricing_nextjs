@@ -610,7 +610,7 @@ export default function Dashboard() {
             <>
               {searchResults.length > 0 && (
                 <div className={styles.resultsSummary}>
-                  <h3 className={styles.resultsTitle}>Search Results ({searchResults.length})</h3>
+                  <h3 className={styles.resultsTitle}>Search Results ({totalPages})</h3>
                   <div className={styles.sortControls}>
                     <span>Sort by:</span>
                     <span>Distance</span>
