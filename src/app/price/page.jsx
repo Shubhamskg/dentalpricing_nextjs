@@ -504,22 +504,30 @@ export default function Dashboard() {
       <header className={styles.header}>
         <div className={styles.headerContent}>
           <h1 className={styles.title}>Dental Pricing</h1>
-          <nav>
-            <div ref={submenuRef} className={styles.accountWrapper}>
-              <button onClick={toggleSubmenu} className={styles.accountButton}>My Account</button>
-              {showSubmenu && (
-                <div className={styles.accountSubmenu}>
-                  <ul>
-                    <li><Link href="/profile"><FaUser /> Profile</Link></li>
-                    <li><Link href="/subscriptions"><FaBoxOpen /> Subscription</Link></li>
-                    <li><Link href="/billing"><FaFileInvoiceDollar /> Billing</Link></li>
-                    <li><Link href="/settings"><FaCog /> Settings</Link></li>
-                    <li><LogoutLink><FaSignOutAlt /> Logout</LogoutLink></li>
-                  </ul>
-                </div>
-              )}
-            </div>
-          </nav>
+          
+           <nav>
+              <div ref={submenuRef} className={styles.accountWrapper}>
+                <button onClick={toggleSubmenu} className={styles.accountButton}>
+                  {user.picture ? (
+                    <img src={user.picture} alt={user.given_name} className={styles.profilePic} />
+                  ) : (
+                    <div className={styles.profileInitials}>{getInitials(user.given_name)}</div>
+                  )}
+                  {user.given_name}
+                </button>
+                {showSubmenu && (
+                  <div className={styles.accountSubmenu}>
+                    <ul>
+                      <li><Link href="/profile"><FaUser /> Profile</Link></li>
+                      <li><Link href="/subscriptions"><FaBoxOpen /> Subscription</Link></li>
+                      <li><Link href="/billing"><FaFileInvoiceDollar /> Billing</Link></li>
+                      <li><Link href="/settings"><FaCog /> Settings</Link></li>
+                      <li><LogoutLink><FaSignOutAlt /> Logout</LogoutLink></li>
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </nav>
         </div>
       </header>
       <main className={styles.main}>

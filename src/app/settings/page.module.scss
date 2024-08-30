@@ -1,0 +1,42 @@
+// settings.module.scss
+
+.settingsContainer {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  
+  .settingItem {
+    margin-bottom: 1.5rem;
+  
+    label {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+  
+    input[type="checkbox"] {
+      margin-right: 0.5rem;
+    }
+  
+    select {
+      margin-left: 0.5rem;
+      padding: 0.25rem;
+      border-radius: 4px;
+      border: 1px solid #ced4da;
+    }
+  }
+  
+  .saveButton {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  
+    &:hover {
+      background-color: #0056b3;
+    }
+  }

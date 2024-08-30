@@ -377,3 +377,97 @@ $border-color: #e5e7eb;
     justify-content: center;
   }
 }
+// nav.module.scss
+
+.accountWrapper {
+  position: relative;
+}
+
+.accountButton {
+  display: flex;
+  align-items: center;
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #e0e0e0;
+  }
+}
+
+.profilePic {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.profileInitials {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #007bff;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.accountSubmenu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  min-width: 200px;
+  z-index: 1000;
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    padding: 0;
+
+    a, button {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      text-decoration: none;
+      color: #333;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #f5f5f5;
+      }
+
+      svg {
+        margin-right: 10px;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .accountButton {
+    padding: 6px 12px;
+  }
+
+  .profilePic,
+  .profileInitials {
+    width: 24px;
+    height: 24px;
+  }
+
+  .accountSubmenu {
+    min-width: 180px;
+  }
+}
