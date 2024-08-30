@@ -347,7 +347,7 @@ export default function Dashboard() {
   const [showSubmenu, setShowSubmenu] = useState(false);
   const [filteredCategories, setFilteredCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [sortOrder, setSortOrder] = useState('distance-asc');
+  const [sortOrder, setSortOrder] = useState('price-desc');
   const [warningMessage, setWarningMessage] = useState('');
   const [hasSearched, setHasSearched] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
