@@ -4,20 +4,20 @@ import Link from 'next/link';
 import {RegisterLink, LoginLink} from "@kinde-oss/kinde-auth-nextjs/components";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { useEffect, useState } from 'react';
-import { redirect } from 'next/navigation'
-
-
-
-
 
 export default function Home() {
-  const { user } = useKindeBrowserClient();
-  useEffect(()=>{
-    if(user){
-      console.log("user",user)
-      redirect('/price')
+  const { user, isLoading } = useKindeBrowserClient();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isLoading && user) {
+      router.push('/price');
     }
-  },[user])
+  }, [user, isLoading, router]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
   return (
     <div className={styles.container}>
       <header className={styles.header}>

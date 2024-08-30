@@ -19,19 +19,28 @@ export default function Dashboard() {
   const [searchResults, setSearchResults] = useState([]);
   const [showSubmenu, setShowSubmenu] = useState(false);
   const [filteredCategories, setFilteredCategories] = useState(categoryNames);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingsearch, setIsLoadingsearch] = useState(false);
   const [sortOrder, setSortOrder] = useState('distance-asc');
   const [warningMessage, setWarningMessage] = useState('');
   const submenuRef = useRef(null);
   const [hasSearched, setHasSearched] = useState(false);
 
-  const { user } = useKindeBrowserClient();
-  useEffect(()=>{
-    if(user===null){
-      console.log("user1",user)
-      redirect('/')
+  const { user, isLoading } = useKindeBrowserClient();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isLoading && !user) {
+      router.push('/');
     }
-  },[user])
+  }, [user, isLoading, router]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!user) {
+    return null; // or a loading spinner if you prefer
+  }
 
   const trackClick = async (url) => {
     try {
@@ -54,7 +63,7 @@ export default function Dashboard() {
       return;
     }
 
-    setIsLoading(true);
+    setIsLoadingsearch(true);
     setWarningMessage('');
     setHasSearched(true);
 
@@ -83,7 +92,7 @@ export default function Dashboard() {
       setSearchResults([]);
       setWarningMessage('An error occurred while fetching results. Please try again.');
     } finally {
-      setIsLoading(false);
+      setIsLoadingsearch(false);
     }
   };
 
@@ -264,7 +273,7 @@ export default function Dashboard() {
         </section>
 
         <section id="search-results" className={styles.resultsSection}>
-          {isLoading ? (
+          {isLoadingsearch ? (
             <div className={styles.loadingSpinner}>Loading...</div>
           ) : (
             <>
