@@ -1,10 +1,23 @@
+"use client"
 import styles from './page.module.scss';
 import Link from 'next/link';
 import {RegisterLink, LoginLink} from "@kinde-oss/kinde-auth-nextjs/components";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+import { useEffect, useState } from 'react';
+import { redirect } from 'next/navigation'
+
+
 
 
 
 export default function Home() {
+  const { user } = useKindeBrowserClient();
+  useEffect(()=>{
+    if(user){
+      console.log("user",user)
+      redirect('/price')
+    }
+  })
   return (
     <div className={styles.container}>
       <header className={styles.header}>
