@@ -141,7 +141,7 @@ export async function POST(request) {
     } else if (searchMethod === 'treatment' && treatment) {
       query.$or = [
         { treatment: { $regex: new RegExp(treatment, 'i') } },
-        { Category: { $regex: new RegExp(category, 'i') } }
+        // { Category: { $regex: new RegExp(category, 'i') } }
       ];
     }
 
