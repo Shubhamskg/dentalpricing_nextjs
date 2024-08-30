@@ -1,13 +1,12 @@
-// "use client"
-
-// import { useState, useRef, useEffect, useCallback } from 'react';
+"use client"
+// import React, { useState, useRef, useEffect, useCallback } from 'react';
 // import { useRouter } from 'next/navigation';
-// import styles from './page.module.scss';
 // import Link from 'next/link';
 // import { FaUser, FaBoxOpen, FaFileInvoiceDollar, FaCog, FaSignOutAlt, FaSort, FaSortNumericDown, FaSortNumericUp } from 'react-icons/fa';
-// import { categoryNames } from '../lib/data';
 // import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 // import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+// import { categoryNames } from '../lib/data';
+// import styles from './page.module.scss';
 
 // export default function Dashboard() {
 //   const [searchMethod, setSearchMethod] = useState('treatment');
@@ -17,11 +16,13 @@
 //   const [radius, setRadius] = useState('');
 //   const [searchResults, setSearchResults] = useState([]);
 //   const [showSubmenu, setShowSubmenu] = useState(false);
-//   const [filteredCategories, setFilteredCategories] = useState(categoryNames);
+//   const [filteredCategories, setFilteredCategories] = useState([]);
 //   const [isLoading, setIsLoading] = useState(false);
-//   const [sortOrder, setSortOrder] = useState('distance-asc');
+//   const [sortOrder, setSortOrder] = useState('price-desc');
 //   const [warningMessage, setWarningMessage] = useState('');
 //   const [hasSearched, setHasSearched] = useState(false);
+//   const [currentPage, setCurrentPage] = useState(1);
+//   const [totalPages, setTotalPages] = useState(1);
 //   const submenuRef = useRef(null);
 
 //   const { user, isLoading: isUserLoading } = useKindeBrowserClient();
@@ -46,7 +47,7 @@
 //     };
 //   }, []);
 
-//   const handleSearch = useCallback(async () => {
+//   const handleSearch = useCallback(async (page = 1) => {
 //     if (!validateInputs()) {
 //       return;
 //     }
@@ -66,7 +67,9 @@
 //           category: searchMethod === 'category' ? category : '',
 //           treatment: searchMethod === 'treatment' ? treatment : '',
 //           postcode,
-//           radius: parseFloat(radius)
+//           radius: parseFloat(radius),
+//           page,
+//           limit: 10
 //         }),
 //       });
 
@@ -74,7 +77,9 @@
 //         throw new Error(`HTTP error! status: ${response.status}`);
 //       }
 //       const data = await response.json();
-//       setSearchResults(sortResults(data, sortOrder));
+//       setSearchResults(data.results);
+//       setCurrentPage(data.pagination.currentPage);
+//       setTotalPages(data.pagination.totalPages);
 //     } catch (error) {
 //       console.error("Search error:", error);
 //       setSearchResults([]);
@@ -82,7 +87,7 @@
 //     } finally {
 //       setIsLoading(false);
 //     }
-//   }, [searchMethod, category, treatment, postcode, radius, sortOrder]);
+//   }, [searchMethod, category, treatment, postcode, radius]);
 
 //   const validateInputs = useCallback(() => {
 //     if (searchMethod === 'category' && !category) {
@@ -104,21 +109,19 @@
 //     return true;
 //   }, [searchMethod, category, treatment, postcode, radius]);
 
-//   const sortResults = useCallback((results, order) => {
-//     const [field, direction] = order.split('-');
-//     return results.sort((a, b) => {
-//       if (field === 'price') {
-//         return direction === 'asc' ? a.Price - b.Price : b.Price - a.Price;
-//       } else {
-//         return direction === 'asc' ? a.distance - b.distance : b.distance - a.distance;
-//       }
-//     });
-//   }, []);
-
 //   const handleSortChange = useCallback((newOrder) => {
 //     setSortOrder(newOrder);
-//     setSearchResults(prevResults => sortResults([...prevResults], newOrder));
-//   }, [sortResults]);
+//     setSearchResults(prevResults => {
+//       const [field, direction] = newOrder.split('-');
+//       return [...prevResults].sort((a, b) => {
+//         if (field === 'price') {
+//           return direction === 'asc' ? a.Price - b.Price : b.Price - a.Price;
+//         } else {
+//           return direction === 'asc' ? a.distance - b.distance : b.distance - a.distance;
+//         }
+//       });
+//     });
+//   }, []);
 
 //   const toggleSubmenu = useCallback(() => {
 //     setShowSubmenu(prev => !prev);
@@ -137,8 +140,8 @@
 //   const isSearchButtonDisabled = useCallback(() => {
 //     if (searchMethod === 'category' && (!category || !postcode || !radius)) return true;
 //     if (searchMethod === 'treatment' && (!treatment || !postcode || !radius)) return true;
-//     return false;
-//   }, [searchMethod, category, treatment, postcode, radius]);
+//     return isLoading;
+//   }, [searchMethod, category, treatment, postcode, radius, isLoading]);
 
 //   const trackClick = useCallback(async (url) => {
 //     try {
@@ -164,6 +167,7 @@
 //   if (!user) {
 //     return null;
 //   }
+
 //   return (
 //     <div className={styles.container}>
 //       <header className={styles.header}>
@@ -243,7 +247,7 @@
 //             )}
 //             <input 
 //               type="text"
-//               placeholder="Enter postcode"
+//               placeholder="Enter full Postcode (eg nx 2xx)"
 //               className={styles.searchInput}
 //               value={postcode}
 //               onChange={(e) => setPostcode(e.target.value)}
@@ -263,7 +267,7 @@
           
 //           <button 
 //             className={styles.searchButton} 
-//             onClick={handleSearch}
+//             onClick={() => handleSearch(1)}
 //             disabled={isSearchButtonDisabled()}
 //           >
 //             Search Prices
@@ -277,42 +281,53 @@
 //             <>
 //               {searchResults.length > 0 && (
 //                 <div className={styles.resultsSummary}>
-//                   <h3 className={styles.resultsTitle}>Search Results ({searchResults.length})</h3>
+//                   <h3 className={styles.resultsTitle}>Search Results ({totalPages})</h3>
 //                   <div className={styles.sortControls}>
 //                     <span>Sort by:</span>
 //                     <span>Distance</span>
 //                     <button onClick={() => handleSortChange('distance-asc')} className={sortOrder === 'distance-asc' ? styles.active : ''}><FaSortNumericUp /></button>
-//                     <button onClick={() => handleSortChange('distance-desc')} className={sortOrder === 'distance-desc' ? styles.active : ''}>
-//                        <FaSortNumericDown />
-//                     </button>
+//                     <button onClick={() => handleSortChange('distance-desc')} className={sortOrder === 'distance-desc' ? styles.active : ''}><FaSortNumericDown /></button>
 //                     <span>&nbsp;</span>
 //                     <span>Price</span>
-//                     <button onClick={() => handleSortChange('price-asc')} className={sortOrder === 'price-asc' ? styles.active : ''}>
-//                        <FaSortNumericUp />
-//                     </button>
-//                     <button onClick={() => handleSortChange('price-desc')} className={sortOrder === 'price-desc' ? styles.active : ''}>
-//                        <FaSortNumericDown />
-//                     </button>
+//                     <button onClick={() => handleSortChange('price-asc')} className={sortOrder === 'price-asc' ? styles.active : ''}><FaSortNumericUp /></button>
+//                     <button onClick={() => handleSortChange('price-desc')} className={sortOrder === 'price-desc' ? styles.active : ''}><FaSortNumericDown /></button>
 //                   </div>
 //                 </div>
 //               )}
 //               {searchResults.length > 0 ? (
-//                 <ul className={styles.resultsList}>
-//                   {searchResults.map((result) => (
-//                     <li key={result._id} className={styles.resultItem}>
-//                       <h4>{result.Name}</h4>
-//                       <p>Treatment: {result.treatment}</p>
-//                       <p>Price: £{result.Price}</p>
-//                       <p>Category: {result.Category}</p>
-//                       <p>Address: {result["Address 1"]}, {result.Postcode}</p>
-//                       <p>Distance: {result.distance.toFixed(2)} miles</p>
-//                       <p>Website: <a href={result.Website} target="_blank" rel="noopener noreferrer" onClick={() => trackClick(result.Website)}>{result.Website}</a></p>
-//                       <p>Fee Page: <a href={result.Feepage} target="_blank" rel="noopener noreferrer" onClick={() => trackClick(result.Feepage)}>Fee Guide</a></p>
-//                     </li>
-//                   ))}
-//                 </ul>
+//                 <>
+//                   <ul className={styles.resultsList}>
+//                     {searchResults.map((result) => (
+//                       <li key={result._id} className={styles.resultItem}>
+//                         <h4>{result.Name}</h4>
+//                         <p>Treatment: {result.treatment}</p>
+//                         <p>Price: £{result.Price}</p>
+//                         <p>Category: {result.Category}</p>
+//                         <p>Address: {result["Address 1"]}, {result.Postcode}</p>
+//                         <p>Distance: {result.distance.toFixed(2)} miles</p>
+//                         <p>Website: <a href={result.Website} target="_blank" rel="noopener noreferrer" onClick={() => trackClick(result.Website)}>{result.Website}</a></p>
+//                         <p>Fee Page: <a href={result.Feepage} target="_blank" rel="noopener noreferrer" onClick={() => trackClick(result.Feepage)}>Fee Guide</a></p>
+//                       </li>
+//                     ))}
+//                   </ul>
+//                   <div className={styles.pagination}>
+//                     <button 
+//                       onClick={() => handleSearch(currentPage - 1)} 
+//                       disabled={currentPage === 1}
+//                     >
+//                       Previous
+//                     </button>
+//                     <span>{currentPage} of {totalPages}</span>
+//                     <button 
+//                       onClick={() => handleSearch(currentPage + 1)} 
+//                       disabled={currentPage === totalPages}
+//                     >
+//                       Next
+//                     </button>
+//                   </div>
+//                 </>
 //               ) : hasSearched ? (
-//                 <p className={styles.noResults}>No results found for your search criteria. Please try adjusting your search parameters.</p>
+//                 <p className={styles.noResults}>No results found for your search criteria. Please try adjusting your search parameters. Try by increasing distance/radius.</p>
 //               ) : (
 //                 <p className={styles.resultsPlaceholder}>Your search results will appear here.</p>
 //               )}
@@ -327,7 +342,6 @@
 //     </div>
 //   );
 // }
-"use client"
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -398,7 +412,8 @@ export default function Dashboard() {
           postcode,
           radius: parseFloat(radius),
           page,
-          limit: 10
+          limit: 20,
+          sort: sortOrder
         }),
       });
 
@@ -416,7 +431,7 @@ export default function Dashboard() {
     } finally {
       setIsLoading(false);
     }
-  }, [searchMethod, category, treatment, postcode, radius]);
+  }, [searchMethod, category, treatment, postcode, radius, sortOrder]);
 
   const validateInputs = useCallback(() => {
     if (searchMethod === 'category' && !category) {
@@ -440,17 +455,8 @@ export default function Dashboard() {
 
   const handleSortChange = useCallback((newOrder) => {
     setSortOrder(newOrder);
-    setSearchResults(prevResults => {
-      const [field, direction] = newOrder.split('-');
-      return [...prevResults].sort((a, b) => {
-        if (field === 'price') {
-          return direction === 'asc' ? a.Price - b.Price : b.Price - a.Price;
-        } else {
-          return direction === 'asc' ? a.distance - b.distance : b.distance - a.distance;
-        }
-      });
-    });
-  }, []);
+    handleSearch(1);
+  }, [handleSearch]);
 
   const toggleSubmenu = useCallback(() => {
     setShowSubmenu(prev => !prev);
@@ -576,7 +582,7 @@ export default function Dashboard() {
             )}
             <input 
               type="text"
-              placeholder="Enter full Postcode (eg nx 2xx)"
+              placeholder="Enter postcode"
               className={styles.searchInput}
               value={postcode}
               onChange={(e) => setPostcode(e.target.value)}
@@ -610,7 +616,7 @@ export default function Dashboard() {
             <>
               {searchResults.length > 0 && (
                 <div className={styles.resultsSummary}>
-                  <h3 className={styles.resultsTitle}>Search Results ({totalPages})</h3>
+                  <h3 className={styles.resultsTitle}>Search Results ({searchResults.length})</h3>
                   <div className={styles.sortControls}>
                     <span>Sort by:</span>
                     <span>Distance</span>
@@ -656,7 +662,7 @@ export default function Dashboard() {
                   </div>
                 </>
               ) : hasSearched ? (
-                <p className={styles.noResults}>No results found for your search criteria. Please try adjusting your search parameters. Try by increasing distance/radius.</p>
+                <p className={styles.noResults}>No results found for your search criteria. Please try adjusting your search parameters.</p>
               ) : (
                 <p className={styles.resultsPlaceholder}>Your search results will appear here.</p>
               )}
