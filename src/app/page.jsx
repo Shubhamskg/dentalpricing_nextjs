@@ -17,7 +17,7 @@ export default function Home() {
       console.log("user",user)
       redirect('/price')
     }
-  })
+  },[user])
   return (
     <div className={styles.container}>
       <header className={styles.header}>

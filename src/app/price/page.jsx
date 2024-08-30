@@ -28,10 +28,10 @@ export default function Dashboard() {
   const { user } = useKindeBrowserClient();
   useEffect(()=>{
     if(user===null){
-      console.log("user",user)
+      console.log("user1",user)
       redirect('/')
     }
-  })
+  },[user])
 
   const trackClick = async (url) => {
     try {
