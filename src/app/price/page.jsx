@@ -342,7 +342,7 @@ import { FaUser, FaBoxOpen, FaFileInvoiceDollar, FaCog, FaSignOutAlt, FaSort, Fa
 import { HiSortAscending, HiSortDescending } from 'react-icons/hi';
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
-import { mergedCategoryNames } from '../lib/data';
+import { categoryNames } from '../lib/data';
 import styles from './page.module.scss';
 
 export default function Dashboard() {
@@ -462,7 +462,7 @@ export default function Dashboard() {
     const value = e.target.value;
     setCategory(value);
     setFilteredCategories(
-      mergedCategoryNames.filter(cat => 
+      categoryNames.filter(cat => 
         cat.toLowerCase().includes(value.toLowerCase())
       ).sort((a, b) => a.localeCompare(b))
     );
