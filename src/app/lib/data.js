@@ -712,4 +712,13 @@ export  const categoryNames = [
         "bite plates and splints",
         "oral hygiene instruction"
       ];
+      const combinedCategories = [...categoryName, ...categoryNames];
+
+      // Remove duplicates and sort
+      const uniqueCategories = [...new Set(combinedCategories)].sort((a, b) => 
+        a.toLowerCase().localeCompare(b.toLowerCase())
+      );
+      
+      // Define the new merged and deduplicated array
+      export const mergedCategoryNames = uniqueCategories;
       
