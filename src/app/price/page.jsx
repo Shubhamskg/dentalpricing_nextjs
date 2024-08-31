@@ -346,7 +346,7 @@ import { categoryNames } from '../lib/data';
 import styles from './page.module.scss';
 
 export default function Dashboard() {
-  const [searchMethod, setSearchMethod] = useState('treatment');
+  const [searchMethod, setSearchMethod] = useState('category');
   const [category, setCategory] = useState('');
   const [treatment, setTreatment] = useState('');
   const [postcode, setPostcode] = useState('');
@@ -535,18 +535,19 @@ export default function Dashboard() {
           <h2 className={styles.searchTitle}>Search Dental Treatment Prices</h2>
           
           <div className={styles.searchMethodToggle}>
-            <button 
-              className={`${styles.methodButton} ${searchMethod === 'treatment' ? styles.active : ''}`}
-              onClick={() => setSearchMethod('treatment')}
-            >
-              Search by Treatment
-            </button>
-            <button 
+          <button 
               className={`${styles.methodButton} ${searchMethod === 'category' ? styles.active : ''}`}
               onClick={() => setSearchMethod('category')}
             >
               Search by Category
             </button>
+            {/* <button 
+              className={`${styles.methodButton} ${searchMethod === 'treatment' ? styles.active : ''}`}
+              onClick={() => setSearchMethod('treatment')}
+            >
+              Search by Treatment
+            </button> */}
+            
           </div>
           
           <div className={styles.searchInputs}>
@@ -554,7 +555,7 @@ export default function Dashboard() {
               <div className={styles.categoryInputWrapper}>
                 <input 
                   type="text"
-                  placeholder="Select or type a category..."
+                  placeholder="Search for a dental treatment..."
                   value={category}
                   onChange={handleCategoryInputChange}
                   className={styles.searchInput}
@@ -593,7 +594,7 @@ export default function Dashboard() {
             />
             <input 
               type="number"
-              placeholder="Search radius (miles)"
+              placeholder="Radius (miles)"
               className={styles.searchInput}
               value={radius}
               onChange={(e) => setRadius(e.target.value)}

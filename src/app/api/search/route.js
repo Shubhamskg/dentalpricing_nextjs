@@ -1,9 +1,7 @@
-
 // import { NextResponse } from 'next/server';
 // import { MongoClient } from 'mongodb';
 // import NodeCache from 'node-cache';
 
-// // Initialize cache with a 10-minute TTL
 // const cache = new NodeCache({ stdTTL: 600 });
 
 // function toRadians(degrees) {
@@ -67,19 +65,18 @@
 //       sortOrder = { Price: -1 };
 //     }
 
-//     // Apply sort and pagination
-//     const results = await priceCollection.find(query)
-//       .sort(sortOrder)
-//       .skip((page - 1) * limit)
-//       .limit(limit)
-//       .toArray();
+//     // First, get all results that match the query
+//     const allResults = await priceCollection.find(query).sort(sortOrder).toArray();
 
-//     const uniquePostcodes = [...new Set(results.map(result => formatPostcode(result.Postcode)))];
+//     // Fetch all unique postcodes from the results
+//     const uniquePostcodes = [...new Set(allResults.map(result => formatPostcode(result.Postcode)))];
 
+//     // Fetch latitude and longitude for all unique postcodes in one query
 //     const postcodeInfo = await postcodeCollection.find({ postcode: { $in: uniquePostcodes } }).toArray();
 //     const postcodeMap = new Map(postcodeInfo.map(info => [info.postcode, info]));
 
-//     const filteredResults = results.map(result => {
+//     // Calculate distances and filter results
+//     const filteredResults = allResults.map(result => {
 //       const formattedClinicPostcode = formatPostcode(result.Postcode);
 //       const clinicPostcode = postcodeMap.get(formattedClinicPostcode);
 //       if (clinicPostcode) {
@@ -103,14 +100,15 @@
 //       filteredResults.sort((a, b) => b.distance - a.distance);
 //     }
 
-//     const totalCount = await priceCollection.countDocuments(query);
+//     // Apply pagination after filtering
+//     const paginatedResults = filteredResults.slice((page - 1) * limit, page * limit);
 
 //     const response = {
-//       results: filteredResults,
+//       results: paginatedResults,
 //       pagination: {
 //         currentPage: page,
-//         totalPages: Math.ceil(totalCount / limit),
-//         totalResults: totalCount
+//         totalPages: Math.ceil(filteredResults.length / limit),
+//         totalResults: filteredResults.length
 //       }
 //     };
 
@@ -130,6 +128,7 @@ import { NextResponse } from 'next/server';
 import { MongoClient } from 'mongodb';
 import NodeCache from 'node-cache';
 
+// Initialize cache with a 10-minute TTL
 const cache = new NodeCache({ stdTTL: 600 });
 
 function toRadians(degrees) {
@@ -150,6 +149,10 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
 
 function formatPostcode(postcode) {
   return postcode.replace(/\s+/g, '').toUpperCase();
+}
+
+function isValidPrice(price) {
+  return typeof price === 'number' && price > 0 && isFinite(price);
 }
 
 export async function POST(request) {
@@ -185,26 +188,41 @@ export async function POST(request) {
       ];
     }
 
-    // Determine sort order
-    let sortOrder = {};
-    if (sort === 'price-asc') {
-      sortOrder = { Price: 1 };
-    } else if (sort === 'price-desc') {
-      sortOrder = { Price: -1 };
-    }
+    // Get all results that match the query
+    const allResults = await priceCollection.find(query).toArray();
 
-    // First, get all results that match the query
-    const allResults = await priceCollection.find(query).sort(sortOrder).toArray();
+    // Filter out results with invalid prices
+    const validResults = allResults.filter(result => isValidPrice(result.Price));
 
-    // Fetch all unique postcodes from the results
-    const uniquePostcodes = [...new Set(allResults.map(result => formatPostcode(result.Postcode)))];
+    // Group results by category
+    const groupedResults = validResults.reduce((acc, result) => {
+      const category = result.Category;
+      if (!acc[category]) {
+        acc[category] = [];
+      }
+      acc[category].push(result);
+      return acc;
+    }, {});
+
+    // Filter out categories with fewer than 25 entries and remove cheapest 10%
+    const filteredResults = Object.entries(groupedResults).flatMap(([category, results]) => {
+      if (results.length < 25) {
+        return [];
+      }
+      results.sort((a, b) => a.Price - b.Price);
+      const cutoff = Math.ceil(results.length * 0.1);
+      return results.slice(cutoff);
+    });
+
+    // Fetch all unique postcodes from the filtered results
+    const uniquePostcodes = [...new Set(filteredResults.map(result => formatPostcode(result.Postcode)))];
 
     // Fetch latitude and longitude for all unique postcodes in one query
     const postcodeInfo = await postcodeCollection.find({ postcode: { $in: uniquePostcodes } }).toArray();
     const postcodeMap = new Map(postcodeInfo.map(info => [info.postcode, info]));
 
     // Calculate distances and filter results
-    const filteredResults = allResults.map(result => {
+    const resultsWithDistance = filteredResults.map(result => {
       const formattedClinicPostcode = formatPostcode(result.Postcode);
       const clinicPostcode = postcodeMap.get(formattedClinicPostcode);
       if (clinicPostcode) {
@@ -221,22 +239,27 @@ export async function POST(request) {
       return null;
     }).filter(result => result !== null);
 
-    // Apply distance sorting if needed
+    // Apply sorting
     if (sort === 'distance-asc') {
-      filteredResults.sort((a, b) => a.distance - b.distance);
+      resultsWithDistance.sort((a, b) => a.distance - b.distance);
     } else if (sort === 'distance-desc') {
-      filteredResults.sort((a, b) => b.distance - a.distance);
+      resultsWithDistance.sort((a, b) => b.distance - a.distance);
+    } else if (sort === 'price-asc') {
+      resultsWithDistance.sort((a, b) => a.Price - b.Price);
+    } else if (sort === 'price-desc') {
+      resultsWithDistance.sort((a, b) => b.Price - a.Price);
     }
 
-    // Apply pagination after filtering
-    const paginatedResults = filteredResults.slice((page - 1) * limit, page * limit);
+    // Apply pagination
+    const startIndex = (page - 1) * limit;
+    const paginatedResults = resultsWithDistance.slice(startIndex, startIndex + limit);
 
     const response = {
       results: paginatedResults,
       pagination: {
         currentPage: page,
-        totalPages: Math.ceil(filteredResults.length / limit),
-        totalResults: filteredResults.length
+        totalPages: Math.ceil(resultsWithDistance.length / limit),
+        totalResults: resultsWithDistance.length
       }
     };
 
