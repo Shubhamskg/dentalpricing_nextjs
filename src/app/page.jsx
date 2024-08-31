@@ -12,14 +12,16 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    if (!isLoading && user) {
+    // if (!isLoading && user) {
+    if(true){
       router.push('/price');
     }
-  }, [isLoading, user, router]);
+  // }, [isLoading, user, router]);
+  },[]);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  // if (isLoading) {
+  //   return <div>Loading...</div>;
+  // }
 
   return (
     <div className={styles.container}>

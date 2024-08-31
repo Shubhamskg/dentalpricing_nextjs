@@ -363,14 +363,14 @@ export default function Dashboard() {
   const [totalResults, setTotalResults] = useState(0);
   const submenuRef = useRef(null);
 
-  const { user, isLoading: isUserLoading } = useKindeBrowserClient();
-  const router = useRouter();
+  // const { user, isLoading: isUserLoading } = useKindeBrowserClient();
+  // const router = useRouter();
 
-  useEffect(() => {
-    if (!isUserLoading && !user) {
-      router.push('/');
-    }
-  }, [isUserLoading, user, router]);
+  // useEffect(() => {
+  //   if (!isUserLoading && !user) {
+  //     router.push('/');
+  //   }
+  // }, [isUserLoading, user, router]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -489,15 +489,16 @@ export default function Dashboard() {
     } catch (error) {
       console.error("Error tracking click:", error);
     }
-  }, [user]);
+  // }, [user]);
+  },[])
 
-  if (isUserLoading) {
-    return <div>Loading...</div>;
-  }
+  // if (isUserLoading) {
+  //   return <div>Loading...</div>;
+  // }
 
-  if (!user) {
-    return null;
-  }
+  // if (!user) {
+  //   return null;
+  // }
 
   return (
     <div className={styles.container}>
@@ -505,7 +506,7 @@ export default function Dashboard() {
         <div className={styles.headerContent}>
           <h1 className={styles.title}>Dental Pricing</h1>
           
-           <nav>
+           {/* <nav>
               <div ref={submenuRef} className={styles.accountWrapper}>
                 <button onClick={toggleSubmenu} className={styles.accountButton}>
                   {user.picture ? (
@@ -527,7 +528,7 @@ export default function Dashboard() {
                   </div>
                 )}
               </div>
-            </nav>
+            </nav> */}
         </div>
       </header>
       <main className={styles.main}>
