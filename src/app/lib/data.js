@@ -723,7 +723,6 @@
 //       export const mergedCategoryNames = uniqueCategories;
 export const categoryNames=[
   "Airflow",
-  "Airflow ",
   "All-ceramic Crowns",
   "All-on-4",
   "All-on-6",
