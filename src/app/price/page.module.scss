@@ -296,6 +296,38 @@ $border-color: #e5e7eb;
 .resultItem {
   border-bottom: 1px solid $border-color;
   padding: 1rem 0;
+  .clinicHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+
+    h4 {
+      margin: 0;
+    }
+  }
+
+  .reviewScore {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+
+    .starIcon {
+      color: #ffc107;
+      margin-right: 0.25rem;
+    }
+  }
+
+  .bookButton {
+    @include button-style;
+    background-color: $primary-color;
+    color: white;
+    margin-top: 1rem;
+
+    &:hover {
+      background-color: darken($primary-color, 10%);
+    }
+  }
 
   &:last-child {
     border-bottom: none;

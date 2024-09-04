@@ -338,7 +338,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { FaUser, FaBoxOpen, FaFileInvoiceDollar, FaCog, FaSignOutAlt, FaSort, FaSortNumericDown, FaSortNumericUp } from 'react-icons/fa';
+import { FaUser, FaBoxOpen, FaFileInvoiceDollar, FaCog, FaSignOutAlt,FaStar, FaSort, FaSortNumericDown, FaSortNumericUp } from 'react-icons/fa';
 import { HiSortAscending, HiSortDescending } from 'react-icons/hi';
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
@@ -499,6 +499,16 @@ export default function Dashboard() {
   // if (!user) {
   //   return null;
   // }
+  const generateRandomReview = () => {
+    return (Math.random() * (4.9 - 3.5) + 3.5).toFixed(1);
+  };
+
+  const handleBookAppointment = (clinic, treatment, price, postcode) => {
+    // encodeURIComponent is a built-in JavaScript function
+    // It encodes special characters in the URL to ensure proper transmission
+    const bookingUrl = `/book?clinic=${encodeURIComponent(clinic)}&treatment=${encodeURIComponent(treatment)}&price=${encodeURIComponent(price)}&postcode=${encodeURIComponent(postcode)}`;
+    window.location.href = bookingUrl;
+  };
 
   return (
     <div className={styles.container}>
@@ -667,7 +677,12 @@ export default function Dashboard() {
                   <ul className={styles.resultsList}>
                     {searchResults.map((result) => (
                       <li key={result._id} className={styles.resultItem}>
+                        <div className={styles.clinicHeader}>
                         <h4>{result.Name}</h4>
+                        <span className={styles.reviewScore}>
+                      <FaStar className={styles.starIcon} /> {generateRandomReview()} / 5
+                    </span>
+                    </div>
                         <p>Treatment: {result.treatment}</p>
                         <p>Price: £{result.Price}</p>
                         <p>Category: {result.Category}</p>
@@ -675,6 +690,12 @@ export default function Dashboard() {
                         <p>Distance: {result.distance.toFixed(2)} miles</p>
                         <p>Website: <a href={result.Website} target="_blank" rel="noopener noreferrer" onClick={() => trackClick(result.Website)}>{result.Website}</a></p>
                         <p>Fee Page: <a href={result.Feepage} target="_blank" rel="noopener noreferrer" onClick={() => trackClick(result.Feepage)}>Fee Guide</a></p>
+                        <button 
+                    className={styles.bookButton}
+                    onClick={() => handleBookAppointment(result.Name, result.treatment, result.Price, result.Postcode)}
+                  >
+                    Book Appointment
+                  </button>
                       </li>
                     ))}
                   </ul>
