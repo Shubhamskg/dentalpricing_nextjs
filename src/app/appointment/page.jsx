@@ -1,20 +1,18 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { format } from 'date-fns';
 import { enGB } from 'date-fns/locale';
 import styles from './page.module.scss';
 
-export default function AppointmentConfirmation() {
-  const searchParams = useSearchParams();
+function AppointmentDetails({ bookingId }) {
   const [appointmentDetails, setAppointmentDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchAppointmentDetails = async () => {
-      const bookingId = searchParams.get('bookingId');
       if (bookingId) {
         try {
           const response = await fetch(`/api/booking?id=${bookingId}`);
@@ -32,7 +30,7 @@ export default function AppointmentConfirmation() {
     };
 
     fetchAppointmentDetails();
-  }, [searchParams]);
+  }, [bookingId]);
 
   if (loading) {
     return <div>Loading appointment details...</div>;
@@ -70,4 +68,23 @@ export default function AppointmentConfirmation() {
       </p>
     </div>
   );
+}
+
+export default function AppointmentPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <AppointmentContent />
+    </Suspense>
+  );
+}
+
+function AppointmentContent() {
+  const searchParams = useSearchParams();
+  const bookingId = searchParams.get('bookingId');
+
+  if (!bookingId) {
+    return <div className={styles.error}>No booking ID provided.</div>;
+  }
+
+  return <AppointmentDetails bookingId={bookingId} />;
 }

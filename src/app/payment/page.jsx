@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
@@ -83,7 +83,7 @@ function PaymentForm({ clientSecret, bookingId }) {
   );
 }
 
-export default function Payment() {
+function PaymentContent() {
   const searchParams = useSearchParams();
   const [bookingDetails, setBookingDetails] = useState(null);
   const [clientSecret, setClientSecret] = useState(null);
@@ -133,5 +133,13 @@ export default function Payment() {
         <PaymentForm clientSecret={clientSecret} bookingId={searchParams.get('bookingId')} />
       </Elements>
     </div>
+  );
+}
+
+export default function PaymentPage() {
+  return (
+    <Suspense fallback={<div>Loading payment details...</div>}>
+      <PaymentContent />
+    </Suspense>
   );
 }
