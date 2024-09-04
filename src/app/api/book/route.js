@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 
 const MONGODB_URI = process.env.MONGODB_URI;
 let client;
@@ -20,12 +20,17 @@ export async function POST(request) {
     const db = client.db('dentalpricing');
     const appointmentsCollection = db.collection('appointments');
 
-    const result = await appointmentsCollection.insertOne({
+    const newAppointment = {
       ...appointmentData,
-      createdAt: new Date()
-    });
+      createdAt: new Date(),
+      paymentStatus: 'pending',
+      paymentIntentId: null,
+      depositAmount: null,
+    };
 
-    return NextResponse.json({ success: true, appointmentId: result.insertedId });
+    const result = await appointmentsCollection.insertOne(newAppointment);
+
+    return NextResponse.json({ success: true, bookingId: result.insertedId.toString() });
   } catch (error) {
     console.error("Appointment booking error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
