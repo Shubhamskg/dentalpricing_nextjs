@@ -3,9 +3,7 @@ import { NextResponse } from 'next/server';
 
 const client = new Client({});
 
-export const config = {
-  runtime: 'edge',
-};
+export const runtime = 'edge';
 
 export async function GET(request) {
   try {
