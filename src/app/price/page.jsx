@@ -1,4 +1,7 @@
 "use client"
+import { Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
+import styles from './page.module.scss';
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
@@ -351,5 +354,12 @@ export default function Dashboard() {
         <p>&copy; 2024 DentalPricing.co.uk. All rights reserved.</p>
       </footer>
     </div>
+  );
+}
+export default function PricePage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <PricePageContent />
+    </Suspense>
   );
 }

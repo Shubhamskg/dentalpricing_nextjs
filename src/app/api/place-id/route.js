@@ -1,8 +1,11 @@
-// src/app/api/place-id/route.js
 import { Client } from '@googlemaps/google-maps-services-js';
 import { NextResponse } from 'next/server';
 
 const client = new Client({});
+
+export const config = {
+  runtime: 'edge',
+};
 
 export async function GET(request) {
   try {
