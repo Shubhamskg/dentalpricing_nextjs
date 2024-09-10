@@ -1,7 +1,4 @@
-import { Client } from '@googlemaps/google-maps-services-js';
 import { NextResponse } from 'next/server';
-
-const client = new Client({});
 
 export const runtime = 'edge';
 
@@ -22,24 +19,21 @@ export async function GET(request) {
     console.log('Calling Google Places API');
     console.log('API Key:', process.env.GOOGLE_MAPS_API_KEY ? 'Set' : 'Not Set');
 
-    const response = await client.findPlaceFromText({
-      params: {
-        input: `${name}, ${address}, ${postcode}, UK`,
-        inputtype: 'textquery',
-        fields: ['place_id'],
-        key: process.env.GOOGLE_MAPS_API_KEY,
-      },
-    });
+    const input = encodeURIComponent(`${name}, ${address}, ${postcode}, UK`);
+    const url = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${input}&inputtype=textquery&fields=place_id&key=${process.env.GOOGLE_MAPS_API_KEY}`;
 
-    console.log('Google Places API Response:', JSON.stringify(response.data, null, 2));
+    const response = await fetch(url);
+    const data = await response.json();
 
-    if (response.data.status === 'REQUEST_DENIED') {
-      console.error('Google API Error:', response.data.error_message);
-      return NextResponse.json({ error: 'API key is not authorized', details: response.data.error_message }, { status: 403 });
+    console.log('Google Places API Response:', JSON.stringify(data, null, 2));
+
+    if (data.status === 'REQUEST_DENIED') {
+      console.error('Google API Error:', data.error_message);
+      return NextResponse.json({ error: 'API key is not authorized', details: data.error_message }, { status: 403 });
     }
 
-    if (response.data.candidates && response.data.candidates.length > 0) {
-      const placeId = response.data.candidates[0].place_id;
+    if (data.candidates && data.candidates.length > 0) {
+      const placeId = data.candidates[0].place_id;
       console.log('Place ID found:', placeId);
       return NextResponse.json({ placeId });
     } else {
