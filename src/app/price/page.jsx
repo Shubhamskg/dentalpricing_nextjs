@@ -14,7 +14,7 @@ import styles from './page.module.scss';
 import Image from 'next/image';
 import GoogleReviews from '../components/GoogleReviews';
 
-export default function Dashboard() {
+function Dashboard() {
   const router = useRouter();
   const searchParams = useSearchParams();
   
@@ -359,7 +359,7 @@ export default function Dashboard() {
 export default function PricePage() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <PricePageContent />
+      <Dashboard />
     </Suspense>
   );
 }
