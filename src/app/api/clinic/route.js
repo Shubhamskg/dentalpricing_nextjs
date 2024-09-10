@@ -15,8 +15,8 @@ async function connectToDatabase() {
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const clinicName = searchParams.get('name');
-  const page = parseInt(searchParams.get('page') || '1', 10);
-  const limit = parseInt(searchParams.get('limit') || '10', 10);
+  const currentCategory = searchParams.get('category');
+  const currentTreatment = searchParams.get('treatment');
 
   if (!clinicName) {
     return NextResponse.json({ error: 'Clinic name is required' }, { status: 400 });
@@ -26,34 +26,24 @@ export async function GET(request) {
     const client = await connectToDatabase();
     const db = client.db('dentalpricing');
 
-    console.log('Searching for clinic:', clinicName);
-
     // Fetch basic clinic info
-    const clinicInfo = await db.collection('pricedata')
-      .findOne({ Name: clinicName });
+    const clinicInfo = await db.collection('pricedata').findOne({ Name: clinicName });
 
     if (!clinicInfo) {
-      console.log('Clinic not found');
       return NextResponse.json({ error: 'Clinic not found' }, { status: 404 });
     }
 
-    // Fetch paginated treatments
-    const skip = (page - 1) * limit;
-    const treatments = await db.collection('pricedata')
+    // Fetch all treatments for the clinic
+    const allTreatments = await db.collection('pricedata')
       .find({ Name: clinicName })
-      .skip(skip)
-      .limit(limit)
       .toArray();
 
-    // Get total count of treatments
-    const totalTreatments = await db.collection('pricedata')
-      .countDocuments({ Name: clinicName });
+    // Separate current category treatments and other treatments
+    const currentCategoryTreatments = allTreatments.filter(t => t.Category === currentCategory);
+    const otherTreatments = allTreatments.filter(t => t.Category !== currentCategory);
 
-    // Fetch Google reviews (assuming you have a separate collection for reviews)
-    const reviews = await db.collection('reviews')
-      .find({ clinicName: clinicName })
-      .limit(5)  // Limit to 5 most recent reviews
-      .toArray();
+    // Fetch Google rating information (assuming it's stored in a separate collection)
+    const googleRatingInfo = await db.collection('googleRatings').findOne({ clinicName: clinicName });
 
     // Construct the response object
     const formattedClinicData = {
@@ -62,17 +52,22 @@ export async function GET(request) {
       Postcode: clinicInfo.Postcode,
       Website: clinicInfo.Website,
       Feepage: clinicInfo.Feepage,
-      treatments: treatments.map(t => ({
+      googleRating: googleRatingInfo ? googleRatingInfo.rating : null,
+      totalReviews: googleRatingInfo ? googleRatingInfo.totalReviews : 0,
+      currentCategory: {
+        name: currentCategory,
+        treatments: currentCategoryTreatments.map(t => ({
+          name: t.treatment,
+          price: t.Price,
+          category: t.Category
+        }))
+      },
+      otherTreatments: otherTreatments.map(t => ({
         name: t.treatment,
         price: t.Price,
         category: t.Category
       })),
-      pagination: {
-        currentPage: page,
-        totalPages: Math.ceil(totalTreatments / limit),
-        totalTreatments: totalTreatments
-      },
-      reviews: reviews
+      totalTreatments: allTreatments.length
     };
 
     return NextResponse.json(formattedClinicData);

@@ -1,391 +1,49 @@
 "use client"
-// import React, { useState, useRef, useEffect, useCallback } from 'react';
-// import { useRouter } from 'next/navigation';
-// import Link from 'next/link';
-// import { FaUser, FaBoxOpen, FaFileInvoiceDollar, FaCog, FaSignOutAlt, FaSort, FaSortNumericDown, FaSortNumericUp } from 'react-icons/fa';
-// import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
-// import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
-// import { categoryNames } from '../lib/data';
-// import styles from './page.module.scss';
-
-// export default function Dashboard() {
-//   const [searchMethod, setSearchMethod] = useState('treatment');
-//   const [category, setCategory] = useState('');
-//   const [treatment, setTreatment] = useState('');
-//   const [postcode, setPostcode] = useState('');
-//   const [radius, setRadius] = useState('');
-//   const [searchResults, setSearchResults] = useState([]);
-//   const [showSubmenu, setShowSubmenu] = useState(false);
-//   const [filteredCategories, setFilteredCategories] = useState([]);
-//   const [isLoading, setIsLoading] = useState(false);
-//   const [sortOrder, setSortOrder] = useState('price-desc');
-//   const [warningMessage, setWarningMessage] = useState('');
-//   const [hasSearched, setHasSearched] = useState(false);
-//   const [currentPage, setCurrentPage] = useState(1);
-//   const [totalPages, setTotalPages] = useState(1);
-//   const submenuRef = useRef(null);
-
-//   const { user, isLoading: isUserLoading } = useKindeBrowserClient();
-//   const router = useRouter();
-
-//   useEffect(() => {
-//     if (!isUserLoading && !user) {
-//       router.push('/');
-//     }
-//   }, [isUserLoading, user, router]);
-
-//   useEffect(() => {
-//     const handleClickOutside = (event) => {
-//       if (submenuRef.current && !submenuRef.current.contains(event.target)) {
-//         setShowSubmenu(false);
-//       }
-//     };
-
-//     document.addEventListener('mousedown', handleClickOutside);
-//     return () => {
-//       document.removeEventListener('mousedown', handleClickOutside);
-//     };
-//   }, []);
-
-//   const handleSearch = useCallback(async (page = 1) => {
-//     if (!validateInputs()) {
-//       return;
-//     }
-
-//     setIsLoading(true);
-//     setWarningMessage('');
-//     setHasSearched(true);
-
-//     try {
-//       const response = await fetch('/api/search', {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify({ 
-//           searchMethod,
-//           category: searchMethod === 'category' ? category : '',
-//           treatment: searchMethod === 'treatment' ? treatment : '',
-//           postcode,
-//           radius: parseFloat(radius),
-//           page,
-//           limit: 20,
-//           sort: sortOrder
-//         }),
-//       });
-
-//       if (!response.ok) {
-//         throw new Error(`HTTP error! status: ${response.status}`);
-//       }
-//       const data = await response.json();
-//       console.log("data",data)
-//       setSearchResults(data.results);
-//       setCurrentPage(data.pagination.currentPage);
-//       setTotalPages(data.pagination.totalPages);
-//     } catch (error) {
-//       console.error("Search error:", error);
-//       setSearchResults([]);
-//       setWarningMessage('An error occurred while fetching results. Please try again.');
-//     } finally {
-//       setIsLoading(false);
-//     }
-//   }, [searchMethod, category, treatment, postcode, radius, sortOrder]);
-
-//   const validateInputs = useCallback(() => {
-//     if (searchMethod === 'category' && !category) {
-//       setWarningMessage('Please select a category.');
-//       return false;
-//     }
-//     if (searchMethod === 'treatment' && !treatment) {
-//       setWarningMessage('Please enter a treatment.');
-//       return false;
-//     }
-//     if (!postcode) {
-//       setWarningMessage('Please enter a postcode.');
-//       return false;
-//     }
-//     if (!radius) {
-//       setWarningMessage('Please enter a search radius.');
-//       return false;
-//     }
-//     return true;
-//   }, [searchMethod, category, treatment, postcode, radius]);
-
-//   const handleSortChange = useCallback((newOrder) => {
-//     setSortOrder(newOrder);
-//     handleSearch(1);
-//   }, [handleSearch]);
-
-//   const toggleSubmenu = useCallback(() => {
-//     setShowSubmenu(prev => !prev);
-//   }, []);
-
-//   const handleCategoryInputChange = useCallback((e) => {
-//     const value = e.target.value;
-//     setCategory(value);
-//     setFilteredCategories(
-//       categoryNames.filter(cat => 
-//         cat.toLowerCase().includes(value.toLowerCase())
-//       ).sort((a, b) => a.localeCompare(b))
-//     );
-//   }, []);
-
-//   const isSearchButtonDisabled = useCallback(() => {
-//     if (searchMethod === 'category' && (!category || !postcode || !radius)) return true;
-//     if (searchMethod === 'treatment' && (!treatment || !postcode || !radius)) return true;
-//     return isLoading;
-//   }, [searchMethod, category, treatment, postcode, radius, isLoading]);
-
-//   const trackClick = useCallback(async (url) => {
-//     try {
-//       await fetch('/api/track-click', {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify({ 
-//           url,
-//           userEmail: user?.email || 'anonymous'
-//         }),
-//       });
-//     } catch (error) {
-//       console.error("Error tracking click:", error);
-//     }
-//   }, [user]);
-
-//   if (isUserLoading) {
-//     return <div>Loading...</div>;
-//   }
-
-//   if (!user) {
-//     return null;
-//   }
-
-//   return (
-//     <div className={styles.container}>
-//       <header className={styles.header}>
-//         <div className={styles.headerContent}>
-//           <h1 className={styles.title}>Dental Pricing</h1>
-//           <nav>
-//             <div ref={submenuRef} className={styles.accountWrapper}>
-//               <button onClick={toggleSubmenu} className={styles.accountButton}>My Account</button>
-//               {showSubmenu && (
-//                 <div className={styles.accountSubmenu}>
-//                   <ul>
-//                     <li><Link href="/profile"><FaUser /> Profile</Link></li>
-//                     <li><Link href="/subscriptions"><FaBoxOpen /> Subscription</Link></li>
-//                     <li><Link href="/billing"><FaFileInvoiceDollar /> Billing</Link></li>
-//                     <li><Link href="/settings"><FaCog /> Settings</Link></li>
-//                     <li><LogoutLink><FaSignOutAlt /> Logout</LogoutLink></li>
-//                   </ul>
-//                 </div>
-//               )}
-//             </div>
-//           </nav>
-//         </div>
-//       </header>
-//       <main className={styles.main}>
-//         <section className={styles.searchSection}>
-//           <h2 className={styles.searchTitle}>Search Dental Treatment Prices</h2>
-          
-//           <div className={styles.searchMethodToggle}>
-//             <button 
-//               className={`${styles.methodButton} ${searchMethod === 'treatment' ? styles.active : ''}`}
-//               onClick={() => setSearchMethod('treatment')}
-//             >
-//               Search by Treatment
-//             </button>
-//             <button 
-//               className={`${styles.methodButton} ${searchMethod === 'category' ? styles.active : ''}`}
-//               onClick={() => setSearchMethod('category')}
-//             >
-//               Search by Category
-//             </button>
-//           </div>
-          
-//           <div className={styles.searchInputs}>
-//             {searchMethod === 'category' ? (
-//               <div className={styles.categoryInputWrapper}>
-//                 <input 
-//                   type="text"
-//                   placeholder="Select or type a category..."
-//                   value={category}
-//                   onChange={handleCategoryInputChange}
-//                   className={styles.searchInput}
-//                 />
-//                 {filteredCategories.length > 0 && category && (
-//                   <ul className={styles.categoryDropdown}>
-//                     {filteredCategories.map((cat) => (
-//                       <li 
-//                         key={cat} 
-//                         onClick={() => {
-//                           setCategory(cat);
-//                           setFilteredCategories([]);
-//                         }}
-//                       >
-//                         {cat}
-//                       </li>
-//                     ))}
-//                   </ul>
-//                 )}
-//               </div>
-//             ) : (
-//               <input 
-//                 type="text"
-//                 placeholder="Enter treatment name..."
-//                 value={treatment}
-//                 onChange={(e) => setTreatment(e.target.value)}
-//                 className={styles.searchInput}
-//               />
-//             )}
-//             <input 
-//               type="text"
-//               placeholder="Enter postcode"
-//               className={styles.searchInput}
-//               value={postcode}
-//               onChange={(e) => setPostcode(e.target.value)}
-//             />
-//             <input 
-//               type="number"
-//               placeholder="Search radius (miles)"
-//               className={styles.searchInput}
-//               value={radius}
-//               onChange={(e) => setRadius(e.target.value)}
-//               min="0"
-//               step="0.1"
-//             />
-//           </div>
-          
-//           {warningMessage && <p className={styles.warningMessage}>{warningMessage}</p>}
-          
-//           <button 
-//             className={styles.searchButton} 
-//             onClick={() => handleSearch(1)}
-//             disabled={isSearchButtonDisabled()}
-//           >
-//             Search Prices
-//           </button>
-//         </section>
-
-//         <section id="search-results" className={styles.resultsSection}>
-//           {isLoading ? (
-//             <div className={styles.loadingSpinner}>Loading...</div>
-//           ) : (
-//             <>
-//               {searchResults.length > 0 && (
-//                 <div className={styles.resultsSummary}>
-//                   <h3 className={styles.resultsTitle}>Search Results ({searchResults.length})</h3>
-//                   <div className={styles.sortControls}>
-//                     <span>Sort by:</span>
-//                     <span>Distance</span>
-//                     <button onClick={() => handleSortChange('distance-asc')} className={sortOrder === 'distance-asc' ? styles.active : ''}><FaSortNumericUp /></button>
-//                     <button onClick={() => handleSortChange('distance-desc')} className={sortOrder === 'distance-desc' ? styles.active : ''}><FaSortNumericDown /></button>
-//                     <span>&nbsp;</span>
-//                     <span>Price</span>
-//                     <button onClick={() => handleSortChange('price-asc')} className={sortOrder === 'price-asc' ? styles.active : ''}><FaSortNumericUp /></button>
-//                     <button onClick={() => handleSortChange('price-desc')} className={sortOrder === 'price-desc' ? styles.active : ''}><FaSortNumericDown /></button>
-//                   </div>
-//                 </div>
-//               )}
-//               {searchResults.length > 0 ? (
-//                 <>
-//                   <ul className={styles.resultsList}>
-//                     {searchResults.map((result) => (
-//                       <li key={result._id} className={styles.resultItem}>
-//                         <h4>{result.Name}</h4>
-//                         <p>Treatment: {result.treatment}</p>
-//                         <p>Price: £{result.Price}</p>
-//                         <p>Category: {result.Category}</p>
-//                         <p>Address: {result["Address 1"]}, {result.Postcode}</p>
-//                         <p>Distance: {result.distance.toFixed(2)} miles</p>
-//                         <p>Website: <a href={result.Website} target="_blank" rel="noopener noreferrer" onClick={() => trackClick(result.Website)}>{result.Website}</a></p>
-//                         <p>Fee Page: <a href={result.Feepage} target="_blank" rel="noopener noreferrer" onClick={() => trackClick(result.Feepage)}>Fee Guide</a></p>
-//                       </li>
-//                     ))}
-//                   </ul>
-//                   <div className={styles.pagination}>
-//                     <button 
-//                       onClick={() => handleSearch(currentPage - 1)} 
-//                       disabled={currentPage === 1}
-//                     >
-//                       Previous
-//                     </button>
-//                     <span>{currentPage} of {totalPages}</span>
-//                     <button 
-//                       onClick={() => handleSearch(currentPage + 1)} 
-//                       disabled={currentPage === totalPages}
-//                     >
-//                       Next
-//                     </button>
-//                   </div>
-//                 </>
-//               ) : hasSearched ? (
-//                 <p className={styles.noResults}>No results found for your search criteria. Please try adjusting your search parameters.</p>
-//               ) : (
-//                 <p className={styles.resultsPlaceholder}>Your search results will appear here.</p>
-//               )}
-//             </>
-//           )}
-//         </section>
-//       </main>
-
-//       <footer className={styles.footer}>
-//         <p>&copy; 2024 DentalPricing.co.uk. All rights reserved.</p>
-//       </footer>
-//     </div>
-//   );
-// }
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { FaUser, FaBoxOpen, FaFileInvoiceDollar, FaCog, FaSignOutAlt,FaStar, FaSort, FaSortNumericDown, FaSortNumericUp } from 'react-icons/fa';
+import { FaUser, FaBoxOpen, FaFileInvoiceDollar, FaCog, FaSignOutAlt, FaStar, FaSort, FaSortNumericDown, FaSortNumericUp } from 'react-icons/fa';
 import { HiSortAscending, HiSortDescending } from 'react-icons/hi';
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { categoryNames } from '../lib/data';
 import styles from './page.module.scss';
+import Image from 'next/image';
+import GoogleReviews from '../components/GoogleReviews';
 
 export default function Dashboard() {
-  const [searchMethod, setSearchMethod] = useState('category');
-  const [category, setCategory] = useState('');
-  const [treatment, setTreatment] = useState('');
-  const [postcode, setPostcode] = useState('');
-  const [radius, setRadius] = useState('');
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  
+  const [searchMethod, setSearchMethod] = useState(searchParams.get('searchMethod') || 'category');
+  const [category, setCategory] = useState(searchParams.get('category') || '');
+  const [treatment, setTreatment] = useState(searchParams.get('treatment') || '');
+  const [postcode, setPostcode] = useState(searchParams.get('postcode') || '');
+  const [radius, setRadius] = useState(searchParams.get('radius') || '');
+  const [sortOrder, setSortOrder] = useState(searchParams.get('sort') || 'price-desc');
+  const [currentPage, setCurrentPage] = useState(parseInt(searchParams.get('page') || '1', 10));
+  
   const [searchResults, setSearchResults] = useState([]);
-  const [showSubmenu, setShowSubmenu] = useState(false);
-  const [filteredCategories, setFilteredCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [sortOrder, setSortOrder] = useState('price-desc');
   const [warningMessage, setWarningMessage] = useState('');
   const [hasSearched, setHasSearched] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalResults, setTotalResults] = useState(0);
+  const [filteredCategories, setFilteredCategories] = useState([]);
+
   const submenuRef = useRef(null);
 
-  // const { user, isLoading: isUserLoading } = useKindeBrowserClient();
-  // const router = useRouter();
-
-  // useEffect(() => {
-  //   if (!isUserLoading && !user) {
-  //     router.push('/');
-  //   }
-  // }, [isUserLoading, user, router]);
-
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (submenuRef.current && !submenuRef.current.contains(event.target)) {
-        setShowSubmenu(false);
-      }
-    };
+    const shouldSearch = searchParams.get('searchMethod') && 
+                         (searchParams.get('category') || searchParams.get('treatment')) && 
+                         searchParams.get('postcode') && 
+                         searchParams.get('radius');
+    if (shouldSearch) {
+      handleSearch();
+    }
+  }, [searchParams]);
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-
-  const handleSearch = useCallback(async (page = 1,newSortOrder = sortOrder) => {
+  const handleSearch = useCallback(async (page = currentPage, newSortOrder = sortOrder) => {
     if (!validateInputs()) {
       return;
     }
@@ -394,22 +52,21 @@ export default function Dashboard() {
     setWarningMessage('');
     setHasSearched(true);
 
+    const queryParams = new URLSearchParams({
+      searchMethod,
+      ...(searchMethod === 'category' ? { category } : { treatment }),
+      postcode,
+      radius,
+      page: page.toString(),
+      sort: newSortOrder,
+    });
+
     try {
-      const response = await fetch('/api/search', {
-        method: 'POST',
+      const response = await fetch(`/api/search?${queryParams.toString()}`, {
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
-          searchMethod,
-          category: searchMethod === 'category' ? category : '',
-          treatment: searchMethod === 'treatment' ? treatment : '',
-          postcode,
-          radius: parseFloat(radius),
-          page,
-          limit: 20,
-          sort: newSortOrder
-        }),
       });
 
       if (!response.ok) {
@@ -420,6 +77,9 @@ export default function Dashboard() {
       setCurrentPage(data.pagination.currentPage);
       setTotalPages(data.pagination.totalPages);
       setTotalResults(data.pagination.totalResults);
+
+      // Update URL without triggering a page reload
+      router.push(`/price?${queryParams.toString()}`, undefined, { shallow: true });
     } catch (error) {
       console.error("Search error:", error);
       setSearchResults([]);
@@ -427,7 +87,12 @@ export default function Dashboard() {
     } finally {
       setIsLoading(false);
     }
-  }, [searchMethod, category, treatment, postcode, radius, sortOrder]);
+  }, [searchMethod, category, treatment, postcode, radius, sortOrder, currentPage, router]);
+
+  const handleSortChange = useCallback((newOrder) => {
+    setSortOrder(newOrder);
+    handleSearch(1, newOrder);
+  }, [handleSearch]);
 
   const validateInputs = useCallback(() => {
     if (searchMethod === 'category' && !category) {
@@ -448,15 +113,6 @@ export default function Dashboard() {
     }
     return true;
   }, [searchMethod, category, treatment, postcode, radius]);
-
-  const handleSortChange = useCallback((newOrder) => {
-    setSortOrder(newOrder);
-    handleSearch(1,newOrder);
-  }, [handleSearch]);
-
-  const toggleSubmenu = useCallback(() => {
-    setShowSubmenu(prev => !prev);
-  }, []);
 
   const handleCategoryInputChange = useCallback((e) => {
     const value = e.target.value;
@@ -483,29 +139,21 @@ export default function Dashboard() {
         },
         body: JSON.stringify({ 
           url,
-          userEmail: user?.email || 'anonymous'
+          userEmail: 'anonymous' // Replace with actual user email if available
         }),
       });
     } catch (error) {
       console.error("Error tracking click:", error);
     }
-  // }, [user]);
-  },[])
-
-  // if (isUserLoading) {
-  //   return <div>Loading...</div>;
-  // }
-
-  // if (!user) {
-  //   return null;
-  // }
-  const generateRandomReview = () => {
-    return (Math.random() * (4.9 - 3.5) + 3.5).toFixed(1);
+  }, []);
+  const handleClinicClick = (clinicName, category, treatment) => {
+    const encodedClinicName = encodeURIComponent(clinicName);
+    const encodedCategory = encodeURIComponent(category);
+    const encodedTreatment = encodeURIComponent(treatment);
+    router.push(`/clinic/${encodedClinicName}?category=${encodedCategory}&treatment=${encodedTreatment}`);
   };
 
   const handleBookAppointment = (clinic, treatment, price, postcode) => {
-    // encodeURIComponent is a built-in JavaScript function
-    // It encodes special characters in the URL to ensure proper transmission
     const bookingUrl = `/book?clinic=${encodeURIComponent(clinic)}&treatment=${encodeURIComponent(treatment)}&price=${encodeURIComponent(price)}&postcode=${encodeURIComponent(postcode)}`;
     window.location.href = bookingUrl;
   };
@@ -514,31 +162,7 @@ export default function Dashboard() {
     <div className={styles.container}>
       <header className={styles.header}>
         <div className={styles.headerContent}>
-          <h1 className={styles.title}>Dental Pricing</h1>
-          
-           {/* <nav>
-              <div ref={submenuRef} className={styles.accountWrapper}>
-                <button onClick={toggleSubmenu} className={styles.accountButton}>
-                  {user.picture ? (
-                    <img src={user.picture} alt={user.given_name} className={styles.profilePic} />
-                  ) : (
-                    <div className={styles.profileInitials}>{getInitials(user.given_name)}</div>
-                  )}
-                  {user.given_name}
-                </button>
-                {showSubmenu && (
-                  <div className={styles.accountSubmenu}>
-                    <ul>
-                      <li><Link href="/profile"><FaUser /> Profile</Link></li>
-                      <li><Link href="/subscriptions"><FaBoxOpen /> Subscription</Link></li>
-                      <li><Link href="/billing"><FaFileInvoiceDollar /> Billing</Link></li>
-                      <li><Link href="/settings"><FaCog /> Settings</Link></li>
-                      <li><LogoutLink><FaSignOutAlt /> Logout</LogoutLink></li>
-                    </ul>
-                  </div>
-                )}
-              </div>
-            </nav> */}
+          <Link href={"/price"} className={styles.title}>Dental Pricing</Link>
         </div>
       </header>
       <main className={styles.main}>
@@ -546,19 +170,12 @@ export default function Dashboard() {
           <h2 className={styles.searchTitle}>Search Dental Treatment Prices</h2>
           
           <div className={styles.searchMethodToggle}>
-          <button 
+            <button 
               className={`${styles.methodButton} ${searchMethod === 'category' ? styles.active : ''}`}
               onClick={() => setSearchMethod('category')}
             >
               Search by Category
             </button>
-            {/* <button 
-              className={`${styles.methodButton} ${searchMethod === 'treatment' ? styles.active : ''}`}
-              onClick={() => setSearchMethod('treatment')}
-            >
-              Search by Treatment
-            </button> */}
-            
           </div>
           
           <div className={styles.searchInputs}>
@@ -566,7 +183,7 @@ export default function Dashboard() {
               <div className={styles.categoryInputWrapper}>
                 <input 
                   type="text"
-                  placeholder="Search for a dental treatment..."
+                  placeholder="Search for a dental treatment..."
                   value={category}
                   onChange={handleCategoryInputChange}
                   className={styles.searchInput}
@@ -598,7 +215,7 @@ export default function Dashboard() {
             )}
             <input 
               type="text"
-              placeholder="Enter full Postcode (eg nx 2xx)"
+              placeholder="Enter full Postcode (eg nx 2xx)"
               className={styles.searchInput}
               value={postcode}
               onChange={(e) => setPostcode(e.target.value)}
@@ -630,72 +247,77 @@ export default function Dashboard() {
             <div className={styles.loadingSpinner}>Loading...</div>
           ) : (
             <>
-            {searchResults.length > 0 && (
-              <div className={styles.resultsSummary}>
-                <h3 className={styles.resultsTitle}>Search Results (Showing {searchResults.length} of {totalResults})</h3>
-                <div className={styles.sortControls}>
-                  <span>Sort by:</span>
-                  <div className={styles.sortOption}>
-                    <span>Distance</span>
-                    <button 
-                      onClick={() => handleSortChange('distance-asc')} 
-                      className={sortOrder === 'distance-asc' ? styles.active : ''}
-                      aria-label="Sort distance ascending"
-                    >
-                      <HiSortAscending />
-                    </button>
-                    <button 
-                      onClick={() => handleSortChange('distance-desc')} 
-                      className={sortOrder === 'distance-desc' ? styles.active : ''}
-                      aria-label="Sort distance descending"
-                    >
-                      <HiSortDescending />
-                    </button>
-                  </div>
-                  <div className={styles.sortOption}>
-                    <span>Price</span>
-                    <button 
-                      onClick={() => handleSortChange('price-asc')} 
-                      className={sortOrder === 'price-asc' ? styles.active : ''}
-                      aria-label="Sort price ascending"
-                    >
-                      <HiSortAscending />
-                    </button>
-                    <button 
-                      onClick={() => handleSortChange('price-desc')} 
-                      className={sortOrder === 'price-desc' ? styles.active : ''}
-                      aria-label="Sort price descending"
-                    >
-                      <HiSortDescending />
-                    </button>
+              {searchResults.length > 0 && (
+                <div className={styles.resultsSummary}>
+                  <h3 className={styles.resultsTitle}>Search Results (Showing {searchResults.length} of {totalResults})</h3>
+                  <div className={styles.sortControls}>
+                    <span>Sort by:</span>
+                    <div className={styles.sortOption}>
+                      <span>Distance</span>
+                      <button 
+                        onClick={() => handleSortChange('distance-asc')} 
+                        className={sortOrder === 'distance-asc' ? styles.active : ''}
+                        aria-label="Sort distance ascending"
+                      >
+                        <HiSortAscending />
+                      </button>
+                      <button 
+                        onClick={() => handleSortChange('distance-desc')} 
+                        className={sortOrder === 'distance-desc' ? styles.active : ''}
+                        aria-label="Sort distance descending"
+                      >
+                        <HiSortDescending />
+                      </button>
+                    </div>
+                    <div className={styles.sortOption}>
+                      <span>Price</span>
+                      <button 
+                        onClick={() => handleSortChange('price-asc')} 
+                        className={sortOrder === 'price-asc' ? styles.active : ''}
+                        aria-label="Sort price ascending"
+                      >
+                        <HiSortAscending />
+                      </button>
+                      <button 
+                        onClick={() => handleSortChange('price-desc')} 
+                        className={sortOrder === 'price-desc' ? styles.active : ''}
+                        aria-label="Sort price descending"
+                      >
+                        <HiSortDescending />
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
               {searchResults.length > 0 ? (
                 <>
                   <ul className={styles.resultsList}>
                     {searchResults.map((result) => (
                       <li key={result._id} className={styles.resultItem}>
                         <div className={styles.clinicHeader}>
+                        <button className={styles.headerButton} onClick={() => handleClinicClick(result.Name, result.Category, result.treatment)}>
                         <h4>{result.Name}</h4>
-                        <span className={styles.reviewScore}>
-                      <FaStar className={styles.starIcon} /> {generateRandomReview()} / 5
-                    </span>
-                    </div>
+                    </button>
+                        </div>
                         <p>Treatment: {result.treatment}</p>
                         <p>Price: £{result.Price}</p>
-                        <p>Category: {result.Category}</p>
+                        {/* <p>Category: {result.Category}</p> */}
                         <p>Address: {result["Address 1"]}, {result.Postcode}</p>
                         <p>Distance: {result.distance.toFixed(2)} miles</p>
                         <p>Website: <a href={result.Website} target="_blank" rel="noopener noreferrer" onClick={() => trackClick(result.Website)}>{result.Website}</a></p>
-                        <p>Fee Page: <a href={result.Feepage} target="_blank" rel="noopener noreferrer" onClick={() => trackClick(result.Feepage)}>Fee Guide</a></p>
+                        {/* <p>Fee Page: <a href={result.Feepage} target="_blank" rel="noopener noreferrer" onClick={() => trackClick(result.Feepage)}>Fee Guide</a></p> */}
                         <button 
-                    className={styles.bookButton}
-                    onClick={() => handleBookAppointment(result.Name, result.treatment, result.Price, result.Postcode)}
-                  >
-                    Book Appointment
-                  </button>
+                          className={styles.bookButton}
+                          onClick={() => handleBookAppointment(result.Name, result.treatment, result.Price, result.Postcode)}
+                        >
+                          Book Appointment
+                        </button>
+                        {/* <GoogleReviews 
+                          name={result.Name}
+                          address={result["Address 1"]}
+                          postcode={result.Postcode}
+                          placeId={result.placeId}
+                        /> */}
                       </li>
                     ))}
                   </ul>

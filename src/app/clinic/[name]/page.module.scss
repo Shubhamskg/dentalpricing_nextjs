@@ -1,0 +1,392 @@
+.clinicProfilePage {
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+.header {
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 1rem 0;
+}
+
+.headerContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #0070f3;
+  text-decoration: none;
+}
+
+.nav {
+  display: flex;
+  gap: 1rem;
+
+  a {
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: #0070f3;
+    }
+  }
+}
+
+.clinicProfile {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 2rem;
+}
+
+.heroSection {
+  display: flex;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.clinicLogo {
+  width: 100px;
+  height: 100px;
+  margin-right: 2rem;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .letterLogo {
+    width: 100%;
+    height: 100%;
+    background-color: #0070f3;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    font-weight: bold;
+    border-radius: 50%;
+  }
+}
+
+.clinicMainInfo {
+  flex: 1;
+
+  h1 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 1rem;
+  }
+
+  .clinicDescription {
+    margin-bottom: 1rem;
+    color: #555;
+  }
+}
+
+.clinicInfo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+
+  p {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    color: #555;
+
+    svg {
+      margin-right: 0.5rem;
+      color: #0070f3;
+    }
+
+    a {
+      color: #0070f3;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.googleRating {
+  display: flex;
+  align-items: center;
+  margin-top: 1rem;
+
+  .ratingNumber {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #0070f3;
+    margin-right: 0.5rem;
+  }
+
+  .stars {
+    display: flex;
+    margin-right: 0.5rem;
+  }
+
+  .starFilled, .starEmpty {
+    color: #FFD700;
+    font-size: 1.2rem;
+  }
+
+  .starEmpty {
+    opacity: 0.5;
+  }
+
+  .reviewCount {
+    color: #666;
+    font-size: 0.9rem;
+  }
+}
+
+.highlightedTreatment {
+  background-color: #e6f3ff;
+  border-radius: 10px;
+  padding: 2rem;
+  margin: 2rem 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.highlightedContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.treatmentIcon {
+  font-size: 3rem;
+  color: #0070f3;
+  margin-right: 1rem;
+}
+
+.treatmentInfo {
+  flex-grow: 1;
+
+  h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+
+  .price {
+    font-size: 1.8rem;
+    color: #0070f3;
+    font-weight: bold;
+  }
+}
+
+.bookButton {
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #0051a2;
+  }
+}
+
+.gallerySection {
+  margin-bottom: 2rem;
+}
+
+.treatmentsSection {
+  margin-bottom: 2rem;
+}
+
+.searchContainer {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #777;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 3rem;
+  font-size: 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  outline: none;
+  transition: border-color 0.3s ease;
+
+  &:focus {
+    border-color: #0070f3;
+  }
+}
+
+.allTreatments {
+  h2 {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #0070f3;
+    padding-bottom: 0.5rem;
+  }
+}
+
+.treatmentGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.treatmentCard {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: box-shadow 0.3s ease;
+  position: relative;
+
+  &:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  h3 {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+
+  .price {
+    font-size: 1.5rem;
+    color: #0070f3;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+
+  .category {
+    font-size: 0.9rem;
+    color: #777;
+    margin-bottom: 1rem;
+  }
+
+  .bookButtons {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    background-color: #0070f3;
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #0051a2;
+    }
+  }
+}
+
+.loadMoreButton {
+  background-color: #f0f0f0;
+  color: #333;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  display: block;
+  margin: 2rem auto 0;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #e0e0e0;
+  }
+}
+
+.reviewsSection {
+  margin-top: 3rem;
+}
+
+.error, .loading {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+@media (max-width: 1024px) {
+  .treatmentGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .heroSection {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .clinicLogo {
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
+
+  .clinicInfo {
+    justify-content: center;
+  }
+
+  .treatmentGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .treatmentGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .highlightedContent {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .treatmentIcon {
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
+
+  .treatmentInfo {
+    margin-bottom: 1rem;
+  }
+}
