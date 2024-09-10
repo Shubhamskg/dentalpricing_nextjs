@@ -1,6 +1,5 @@
 "use client"
 import { Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
 import styles from './page.module.scss';
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
