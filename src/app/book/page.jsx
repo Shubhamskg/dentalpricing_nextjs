@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { format, addWeeks, isWeekend, setHours, setMinutes, isAfter, isBefore } from 'date-fns';
 import { enGB } from 'date-fns/locale';
 import styles from './page.module.scss';
+import Loading from '../components/Loading';
 
 function BookingForm({ clinic, treatment, price }) {
   const router = useRouter();
