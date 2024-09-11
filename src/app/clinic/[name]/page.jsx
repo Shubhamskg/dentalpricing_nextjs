@@ -43,6 +43,7 @@ export default function ClinicProfile() {
   const [hasMoreTreatments, setHasMoreTreatments] = useState(false);
   const [googleRating, setGoogleRating] = useState(null);
   const [totalReviews, setTotalReviews] = useState(0);
+  
 
   const fetchWebsiteMetadata = async (url) => {
     try {
@@ -164,17 +165,7 @@ export default function ClinicProfile() {
 
   return (
     <div className={styles.clinicProfilePage}>
-      <header className={styles.header}>
-        <div className={styles.headerContent}>
-          <Link href="/" className={styles.logo}>
-            Dental Pricing
-          </Link>
-          <nav className={styles.nav}>
-            <Link href="/about">About</Link>
-            <Link href="/contact">Contact</Link>
-          </nav>
-        </div>
-      </header>
+      
 
       <div className={styles.clinicProfile}>
         <div className={styles.heroSection}>
