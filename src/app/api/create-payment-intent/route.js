@@ -18,6 +18,7 @@ async function connectToDatabase() {
 
 export async function POST(request) {
   const { bookingId, amount } = await request.json();
+  console.log("amount",amount)
 
   try {
     const client = await connectToDatabase();
@@ -36,25 +37,28 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
     }
 
+    // Ensure the amount is at least £0.30 (30 pence) to meet Stripe's minimum requirement
+    const stripeAmount = Math.max(Math.round(amount), 1);
+    console.log("stripeAmount",stripeAmount)
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: Math.round(amount * 100),
+      amount: stripeAmount*100,
       currency: 'gbp',
       automatic_payment_methods: {
         enabled: true,
       },
     });
-
+    console.log("paymentIntent",paymentIntent)
     await appointmentsCollection.updateOne(
       { _id: new ObjectId(bookingId) },
-      { 
-        $set: { 
+      {
+        $set: {
           paymentIntentId: paymentIntent.id,
-          depositAmount: amount,
+          depositAmount: stripeAmount , // Convert back to pounds for storage
         }
       }
     );
 
-    return NextResponse.json({ clientSecret: paymentIntent.client_secret });
+    return NextResponse.json({ clientSecret: paymentIntent.client_secret ,depositAmount:stripeAmount});
   } catch (error) {
     console.error("Payment intent creation error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });

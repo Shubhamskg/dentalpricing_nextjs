@@ -1,53 +1,161 @@
 .container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 2rem;
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #333;
+}
+
+.bookingDetails {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.detailItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  color: #555;
+
+  svg {
+    color: #3b82f6;
   }
-  
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    color: #333;
+
+    svg {
+      color: #3b82f6;
+    }
+  }
+
+  input, textarea, select {
+    padding: 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+
+    &:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+    }
+  }
+
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23333333'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1em;
+  }
+
+  textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+}
+
+.dateTimeSection {
+  margin-top: 1rem;
+
+  h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+}
+
+.dateTimeOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.dateTimeOption {
+  display: flex;
+  gap: 1rem;
+
+  .formGroup {
+    flex: 1;
+  }
+}
+
+.submitButton {
+  background-color: #3b82f6;
+  color: white;
+  padding: 1rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+
+  &:hover {
+    background-color: #2563eb;
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+}
+
+.errorMessage {
+  background-color: #fee2e2;
+  color: #ef4444;
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 1.5rem;
+  }
+
   .title {
     font-size: 2rem;
-    margin-bottom: 1.5rem;
-    text-align: center;
   }
-  
-  .form {
-    display: flex;
+
+  .bookingDetails {
     flex-direction: column;
     gap: 1rem;
   }
-  
-  .formGroup {
-    display: flex;
+
+  .dateTimeOption {
     flex-direction: column;
-  
-    label {
-      margin-bottom: 0.5rem;
-      font-weight: bold;
-    }
-  
-    input, textarea {
-      padding: 0.5rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 1rem;
-    }
-  
-    textarea {
-      min-height: 100px;
-    }
   }
-  
-  .submitButton {
-    background-color: #3b82f6;
-    color: white;
-    padding: 0.75rem;
-    border: none;
-    border-radius: 4px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  
-    &:hover {
-      background-color: #2563eb;
-    }
-  }
+}
