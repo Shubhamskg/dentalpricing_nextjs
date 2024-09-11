@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { FaStar, FaGoogle } from 'react-icons/fa';
 import styles from './GoogleReviews.module.scss';
+import Loading from './Loading';
 
 const MAX_REVIEW_LENGTH = 500;
 const CACHE_DURATION = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
@@ -122,7 +123,7 @@ const GoogleReviews = ({name, address, postcode, placeId: initialPlaceId, onRati
     setExpandedReviews(prev => ({ ...prev, [index]: !prev[index] }));
   };
 
-  if (loading) return <div className={styles.loading}>Loading reviews...</div>;
+  if (loading) return <Loading/>;
   if (error) return <div className={styles.error}>Error: {error}</div>;
   if (!placeId || reviews.length === 0) return null;
   const isValidUrl = urlString=> {

@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { format } from 'date-fns';
 import { enGB } from 'date-fns/locale';
 import styles from './page.module.scss';
+import Loading from '../components/Loading';
 
 function AppointmentDetails({ bookingId }) {
   const [appointmentDetails, setAppointmentDetails] = useState(null);
@@ -33,7 +34,7 @@ function AppointmentDetails({ bookingId }) {
   }, [bookingId]);
 
   if (loading) {
-    return <div>Loading appointment details...</div>;
+    return <Loading/>
   }
 
   if (error) {
@@ -72,7 +73,7 @@ function AppointmentDetails({ bookingId }) {
 
 export default function AppointmentPage() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Loading/>}>
       <AppointmentContent />
     </Suspense>
   );

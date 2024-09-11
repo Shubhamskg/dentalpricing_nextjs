@@ -1,0 +1,170 @@
+.navbar {
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1rem 0;
+
+  .navContainer {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+  }
+
+  .logoLink {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #3b82f6;
+    font-weight: bold;
+    font-size: 1.5rem;
+
+    .logo {
+      font-size: 2rem;
+      margin-right: 0.5rem;
+    }
+  }
+
+  .navLinks {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      margin-left: 1.5rem;
+    }
+  }
+
+  .navLink {
+    text-decoration: none;
+    color: #4b5563;
+    font-weight: 500;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: #3b82f6;
+    }
+  }
+
+  .authSection {
+    display: flex;
+    align-items: center;
+  }
+
+  .authButtons {
+    display: flex;
+    align-items: center;
+
+    .loginButton, .signupButton {
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.25rem;
+      font-weight: 500;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .loginButton {
+      color: #3b82f6;
+      margin-right: 1rem;
+
+      &:hover {
+        background-color: #ebf5ff;
+      }
+    }
+
+    .signupButton {
+      background-color: #3b82f6;
+      color: #ffffff;
+
+      &:hover {
+        background-color: #2563eb;
+      }
+    }
+  }
+
+  .userProfile {
+    position: relative;
+  }
+
+  .profileButton {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #f3f4f6;
+    }
+
+    .profilePicture {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      margin-right: 0.5rem;
+    }
+
+    .defaultProfileIcon {
+      font-size: 32px;
+      color: #3b82f6;
+      margin-right: 0.5rem;
+    }
+
+    span {
+      color: #4b5563;
+      font-weight: 500;
+    }
+  }
+
+  .profileMenu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 0.5rem 0;
+    z-index: 10;
+
+    a {
+      display: block;
+      padding: 0.5rem 1rem;
+      color: #4b5563;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #f3f4f6;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    .navContainer {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .navLinks {
+      margin-top: 1rem;
+      flex-direction: column;
+
+      li {
+        margin-left: 0;
+        margin-bottom: 0.5rem;
+      }
+    }
+
+    .authSection {
+      margin-top: 1rem;
+    }
+  }
+}

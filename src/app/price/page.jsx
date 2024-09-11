@@ -12,6 +12,7 @@ import styles from './page.module.scss';
 import Image from 'next/image';
 import GoogleReviews from '../components/GoogleReviews';
 import DentalPricingInfo from '../components/DentalPricingInfo';
+import Loading from '../components/Loading';
 
 
 function Dashboard() {
@@ -163,11 +164,6 @@ function Dashboard() {
 
   return (
     <div className={styles.container}>
-      <header className={styles.header}>
-        <div className={styles.headerContent}>
-          <Link href={"/price"} className={styles.title}>Dental Pricing</Link>
-        </div>
-      </header>
       <main className={styles.main}>
         <section className={styles.searchSection}>
           <h2 className={styles.searchTitle}>Search Dental Treatment Prices</h2>
@@ -247,7 +243,7 @@ function Dashboard() {
 
         <section id="search-results" className={styles.resultsSection}>
           {isLoading ? (
-            <div className={styles.loadingSpinner}>Loading...</div>
+            <Loading/>
           ) : (
             <>
               {searchResults.length > 0 && (
@@ -343,7 +339,6 @@ function Dashboard() {
               ) : hasSearched ? (
                 <p className={styles.noResults}>No results found for your search criteria. Please try adjusting your search parameters.</p>
               ) : (
-                // <p className={styles.resultsPlaceholder}>Your search results will appear here.</p>
                 <DentalPricingInfo />
 
               )}
@@ -351,16 +346,12 @@ function Dashboard() {
           )}
         </section>
       </main>
-
-      <footer className={styles.footer}>
-        <p>&copy; 2024 Dental Pricing. All rights reserved.</p>
-      </footer>
     </div>
   );
 }
 export default function PricePage() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Loading/>}>
       <Dashboard />
     </Suspense>
   );

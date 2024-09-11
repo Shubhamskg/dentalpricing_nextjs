@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import styles from './page.module.scss';
+import Loading from '../components/Loading';
 
 export default function Profile() {
   const { user, isLoading } = useKindeBrowserClient();
@@ -19,7 +20,7 @@ export default function Profile() {
     }
   }, [user]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loading/>;
 
   if (!profileData) return <div>No profile data available</div>;
 

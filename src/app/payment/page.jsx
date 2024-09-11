@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import styles from './page.module.scss';
+import Loading from '../components/Loading';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
@@ -115,7 +116,7 @@ function PaymentContent() {
   }, [searchParams]);
 
   if (!bookingDetails || !clientSecret) {
-    return <div>Loading...</div>;
+    return <Loading/>;
   }
 
   const options = {
@@ -138,7 +139,7 @@ function PaymentContent() {
 
 export default function PaymentPage() {
   return (
-    <Suspense fallback={<div>Loading payment details...</div>}>
+    <Suspense fallback={<Loading/>}>
       <PaymentContent />
     </Suspense>
   );

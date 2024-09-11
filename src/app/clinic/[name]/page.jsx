@@ -10,6 +10,7 @@ import ClinicImageGallery from '../../components/ClinicImageGallery';
 import { FaMapMarkerAlt, FaGlobe, FaFileInvoiceDollar, FaCalendarAlt, FaSearch, FaTooth, FaStar } from 'react-icons/fa';
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 import { initializeApp } from "firebase/app";
+import Loading from '@/app/components/Loading';
 
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
@@ -146,7 +147,7 @@ export default function ClinicProfile() {
   };
 
   if (isLoading && !clinicData) {
-    return <div className={styles.loading}>Loading...</div>;
+    return <Loading/>;
   }
 
   if (error) {
