@@ -1,0 +1,260 @@
+.dentalPricingInfo {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+    section {
+      margin-bottom: 3rem;
+    }
+  
+    h2 {
+      font-size: 2.5rem;
+      color: #3b82f6;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+  
+    h3 {
+      font-size: 1.8rem;
+      color: #4b5563;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+  
+      svg {
+        color: #3b82f6;
+      }
+    }
+  
+    p {
+      font-size: 1.1rem;
+      color: #6b7280;
+      line-height: 1.6;
+    }
+  
+    .hero {
+      text-align: center;
+      background-color: #f3f4f6;
+      padding: 3rem 2rem;
+      border-radius: 8px;
+      margin-bottom: 3rem;
+  
+      .logoContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 1rem;
+  
+        .logo {
+          font-size: 3rem;
+          color: #3b82f6;
+          margin-right: 0.5rem;
+        }
+  
+        h1 {
+          font-size: 2rem;
+          color: #4b5563;
+        }
+      }
+  
+      p {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+    }
+  
+    .reasonsGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+  
+      .reason {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+  
+        svg {
+          font-size: 2.5rem;
+          color: #3b82f6;
+          margin-bottom: 1rem;
+        }
+  
+        p {
+          font-size: 1rem;
+        }
+      }
+    }
+  
+    .popularTreatments {
+      .treatmentsList {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+  
+        span {
+          background-color: #f3f4f6;
+          padding: 0.5rem 1rem;
+          border-radius: 20px;
+          font-weight: 600;
+          color: #4b5563;
+          white-space: nowrap;
+        }
+      }
+    }
+  
+    .howItWorks {
+      ol {
+        list-style-type: none;
+        padding: 0;
+        counter-reset: step-counter;
+  
+        li {
+          counter-increment: step-counter;
+          display: flex;
+          align-items: center;
+          margin-bottom: 1rem;
+  
+          &::before {
+            content: counter(step-counter);
+            background-color: #3b82f6;
+            color: white;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            border-radius: 50%;
+            margin-right: 1rem;
+          }
+        }
+      }
+    }
+  
+    .topDentists {
+      background-color: #f3f4f6;
+      padding: 2rem;
+      border-radius: 8px;
+  
+      p {
+        margin-bottom: 1.5rem;
+      }
+  
+      .dentistFeatures {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        gap: 1rem;
+  
+        .feature {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          background-color: white;
+          padding: 0.75rem 1rem;
+          border-radius: 20px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  
+          svg {
+            color: #3b82f6;
+            font-size: 1.25rem;
+          }
+  
+          span {
+            font-weight: 600;
+            color: #4b5563;
+          }
+        }
+      }
+    }
+  
+    .faq {
+      .faqItem {
+        border-bottom: 1px solid #e5e7eb;
+        padding-bottom: 1rem;
+        margin-bottom: 1rem;
+  
+        &:last-child {
+          border-bottom: none;
+        }
+  
+        .faqQuestion {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          cursor: pointer;
+  
+          h4 {
+            font-size: 1.2rem;
+            color: #4b5563;
+            margin: 0;
+          }
+  
+          svg {
+            font-size: 1.5rem;
+            color: #3b82f6;
+          }
+        }
+  
+        .faqAnswer {
+          margin-top: 1rem;
+          padding-left: 1rem;
+          border-left: 3px solid #3b82f6;
+        }
+      }
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .dentalPricingInfo {
+      padding: 1rem;
+  
+      h2 {
+        font-size: 2rem;
+      }
+  
+      h3 {
+        font-size: 1.5rem;
+      }
+  
+      .hero {
+        padding: 2rem 1rem;
+  
+        .logoContainer {
+          .logo {
+            font-size: 2.5rem;
+          }
+  
+          h1 {
+            font-size: 1.5rem;
+          }
+        }
+      }
+  
+      .reasonsGrid {
+        grid-template-columns: 1fr;
+      }
+  
+      .popularTreatments {
+        .treatmentsList {
+          justify-content: center;
+        }
+      }
+  
+      .topDentists {
+        padding: 1.5rem;
+  
+        .dentistFeatures {
+          flex-direction: column;
+          align-items: center;
+  
+          .feature {
+            width: 100%;
+            justify-content: center;
+          }
+        }
+      }
+    }
+  }

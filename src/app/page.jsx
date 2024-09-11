@@ -39,7 +39,7 @@ export default function Home() {
       <main className={styles.main}>
 
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Welcome to DentalPricing.co.uk</h2>
+          <h2 className={styles.sectionTitle}>Welcome to Dental Pricing</h2>
           <p className={styles.paragraph}>We've collected pricing data from 95% of private dental clinics in the UK, allowing both dentists and patients to compare treatment prices across the country as of 2024.</p>
           <ul className={styles.list}>
             <li>Comprehensive pricing data from 95% of UK private dental clinics</li>
@@ -81,7 +81,7 @@ export default function Home() {
         </main>
 
 <footer className={styles.footer}>
-  <p>&copy; 2024 DentalPricing.co.uk. All rights reserved.</p>
+  <p>&copy; 2024 Dental Pricing. All rights reserved.</p>
 </footer>
 </div>
 );

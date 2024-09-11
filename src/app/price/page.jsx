@@ -11,6 +11,8 @@ import { categoryNames } from '../lib/data';
 import styles from './page.module.scss';
 import Image from 'next/image';
 import GoogleReviews from '../components/GoogleReviews';
+import DentalPricingInfo from '../components/DentalPricingInfo';
+
 
 function Dashboard() {
   const router = useRouter();
@@ -341,7 +343,9 @@ function Dashboard() {
               ) : hasSearched ? (
                 <p className={styles.noResults}>No results found for your search criteria. Please try adjusting your search parameters.</p>
               ) : (
-                <p className={styles.resultsPlaceholder}>Your search results will appear here.</p>
+                // <p className={styles.resultsPlaceholder}>Your search results will appear here.</p>
+                <DentalPricingInfo />
+
               )}
             </>
           )}
@@ -349,7 +353,7 @@ function Dashboard() {
       </main>
 
       <footer className={styles.footer}>
-        <p>&copy; 2024 DentalPricing.co.uk. All rights reserved.</p>
+        <p>&copy; 2024 Dental Pricing. All rights reserved.</p>
       </footer>
     </div>
   );
