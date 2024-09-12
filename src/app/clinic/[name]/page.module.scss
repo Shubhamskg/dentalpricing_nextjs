@@ -371,6 +371,13 @@
 }
 
 @media (max-width: 480px) {
+  .clinicProfile{
+    margin: 0;
+    padding: 0.5rem;
+  }
+  .heroSection{
+    margin: 0;
+  }
   .treatmentGrid {
     grid-template-columns: 1fr;
   }

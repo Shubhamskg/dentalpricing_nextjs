@@ -297,6 +297,7 @@ function Dashboard() {
                         <button className={styles.headerButton} onClick={() => handleClinicClick(result.Name, result.Category, result.treatment)}>
                         <h4>{result.Name}</h4>
                     </button>
+                    <div className={styles.GoogleReviews}>
                     <GoogleReviews 
                           name={result.Name}
                           address={result["Address 1"]}
@@ -305,6 +306,7 @@ function Dashboard() {
                           onRatingFetched={()=>{console.log("fe")}}
                           searchPage={true}
                         />
+                        </div>
                         </div>
                         <p>Treatment: {result.treatment}</p>
                         <p>Price: £{result.Price}</p>

@@ -62,9 +62,9 @@ const DentalPricingInfo = () => {
       <section className={styles.howItWorks}>
         <h3><FaBolt /> How It Works</h3>
         <ol>
-          <li><strong>Search:</strong> Enter your treatment type and location</li>
-          <li><strong>Compare:</strong> Review prices, services, and patient reviews</li>
-          <li><strong>Book:</strong> Choose the best dentist and book your appointment online!</li>
+          <li className={styles.list}><strong>Search: </strong> Enter your treatment type and location</li>
+          <li className={styles.list}><strong>Compare: </strong> Review prices, services, and patient reviews</li>
+          <li className={styles.list}><strong>Book: </strong> Choose the best dentist and book your appointment online!</li>
         </ol>
       </section>
 

@@ -140,7 +140,7 @@ return !!urlPattern.test(urlString);
       {searchPage?
       <div className={styles.googleReviewSummary}>
       <div className={styles.googleLogo}>
-        <FaGoogle />
+        {/* <FaGoogle /> */}
       </div>
       <div className={styles.ratingOverview}>
         <span className={styles.ratingNumber}>{rating?.toFixed(1) || 'N/A'}</span>
