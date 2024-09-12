@@ -6,7 +6,7 @@ import Loading from './Loading';
 const MAX_REVIEW_LENGTH = 500;
 const CACHE_DURATION = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
 
-const GoogleReviews = ({name, address, postcode, placeId: initialPlaceId, onRatingFetched }) => {
+const GoogleReviews = ({name, address, postcode, placeId: initialPlaceId, onRatingFetched, searchPage=false }) => {
   const [reviews, setReviews] = useState([]);
   const [rating, setRating] = useState(null);
   const [totalReviews, setTotalReviews] = useState(0);
@@ -136,8 +136,19 @@ const GoogleReviews = ({name, address, postcode, placeId: initialPlaceId, onRati
 return !!urlPattern.test(urlString);
 }
   return (
-    <div className={styles.reviewSection}>
-      {/* <h3>Customer Reviews</h3> */}
+    <div >
+      {searchPage?
+      <div className={styles.googleReviewSummary}>
+      <div className={styles.googleLogo}>
+        <FaGoogle />
+      </div>
+      <div className={styles.ratingOverview}>
+        <span className={styles.ratingNumber}>{rating?.toFixed(1) || 'N/A'}</span>
+        <div className={styles.stars}>{renderStars(rating)}</div>
+        <span className={styles.reviewCount}>({totalReviews})</span>
+      </div>
+    </div>:
+      <div className={styles.reviewSection}>
       <div className={styles.googleReviewSummary}>
         <div className={styles.googleLogo}>
           <FaGoogle />
@@ -180,6 +191,7 @@ return !!urlPattern.test(urlString);
           </div>
         )})}
       </div>
+      </div>}
     </div>
   );
 };

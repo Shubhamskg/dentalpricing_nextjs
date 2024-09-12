@@ -1,90 +1,116 @@
 "use client"
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import styles from './page.module.scss';
-import Link from 'next/link';
-import { RegisterLink, LoginLink } from "@kinde-oss/kinde-auth-nextjs/components";
-import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+import { Suspense, useEffect, useState } from 'react';
+import Head from 'next/head';
+import Script from 'next/script';
+import { usePathname, useSearchParams } from 'next/navigation';
 import Dashboard from './price/page';
+import Loading from './components/Loading';
+
+// SEO component
+function SEO({ title, description }) {
+  return (
+    <Head>
+      <title>{title}</title>
+      <meta name="description" content={description} />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <meta name="robots" content="index, follow" />
+      <link rel="canonical" href={`https://www.dentalpricing.co.uk${usePathname()}`} />
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={description} />
+      <meta property="og:type" content="website" />
+      <meta property="og:url" content={`https://www.dentalpricing.co.uk${usePathname()}`} />
+      <meta property="og:image" content="https://www.dentalpricing.co.uk/og-image.jpg" />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={title} />
+      <meta name="twitter:description" content={description} />
+      <meta name="twitter:image" content="https://www.dentalpricing.co.uk/twitter-image.jpg" />
+    </Head>
+  );
+}
+
+function generateSEOData(pathname, searchParams) {
+  const baseTitle = "Dental Pricing | ";
+  const baseDescription = "Compare dental treatment prices across different clinics in the UK. ";
+
+  switch (pathname) {
+    case '/':
+      return {
+        title: baseTitle + "Compare Dental Treatment Prices",
+        description: baseDescription + "Find affordable dental care options in your area with our easy-to-use search tool."
+      };
+    case '/price':
+      const category = searchParams.get('category');
+      const treatment = searchParams.get('treatment');
+      const postcode = searchParams.get('postcode');
+      if (category) {
+        return {
+          title: baseTitle + `${category} Prices`,
+          description: `Compare ${category} prices for dental treatments near ${postcode || 'you'}. Find the best deals on dental care.`
+        };
+      } else if (treatment) {
+        return {
+          title: baseTitle + `${treatment} Prices`,
+          description: `Compare prices for ${treatment} near ${postcode || 'you'}. Find affordable options for this dental treatment.`
+        };
+      }
+      return {
+        title: baseTitle + "Search Dental Treatment Prices",
+        description: baseDescription + "Use our search tool to find and compare dental treatment costs in your area."
+      };
+    case '/about':
+      return {
+        title: baseTitle + "About Us",
+        description: "Learn about Dental Pricing's mission to make dental care costs transparent and accessible to everyone in the UK."
+      };
+    // Add more cases for other pages as needed
+    default:
+      return {
+        title: baseTitle + "UK Dental Price Comparison",
+        description: baseDescription
+      };
+  }
+}
 
 export default function Home() {
-  // const { user, isLoading } = useKindeBrowserClient();
-  // const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const [seoData, setSeoData] = useState({
+    title: "Dental Pricing | Compare Dental Treatment Prices",
+    description: "Compare dental treatment prices across different clinics in the UK. Find affordable dental care options in your area with our easy-to-use search tool."
+  });
 
-  // useEffect(() => {
-  //   // if (!isLoading && user) {
-  //   if(true){
-  //     router.push('/price');
-  //   }
-  // // }, [isLoading, user, router]);
-  // },[]);
+  useEffect(() => {
+    setSeoData(generateSEOData(pathname, searchParams));
+  }, [pathname, searchParams]);
 
-  // if (isLoading) {
-  //   return <div>Loading...</div>;
-  // }
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Dental Pricing",
+    "url": "https://www.dentalpricing.co.uk",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://www.dentalpricing.co.uk/price?category={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    },
+    "description": seoData.description
+  };
 
   return (
-    <Dashboard/>
-//     <div className={styles.container}>
-//       <header className={styles.header}>
-//         <div className={styles.headerContent}>
-//           <h1 className={styles.title}>Dental Pricing</h1>
-//           <p className={styles.subtitle}>Compare Private Dental Treatment Prices Across the UK</p>
-//           <div className={styles.authButtons}>
-//             <LoginLink className={styles.authButton}>Sign in</LoginLink>
-//             <RegisterLink className={styles.authButton}>Sign up</RegisterLink>
-//           </div>
-//         </div>
-//       </header>
-
-//       <main className={styles.main}>
-
-//         <section className={styles.section}>
-//           <h2 className={styles.sectionTitle}>Welcome to DentalPricing.co.uk</h2>
-//           <p className={styles.paragraph}>We've collected pricing data from 95% of private dental clinics in the UK, allowing both dentists and patients to compare treatment prices across the country as of 2024.</p>
-//           <ul className={styles.list}>
-//             <li>Comprehensive pricing data from 95% of UK private dental clinics</li>
-//             <li>Prices for over 100 categories of treatments, including composite posterior fillings, implant placements, and more</li>
-//             <li>Over 5,000 patients have already used our service</li>
-//             <li>200 dentists are paid subscribers, benefiting from nationwide price comparisons</li>
-//             <li>Compare prices for a wide range of private dental treatments</li>
-//             <li>Make informed decisions about dental care and pricing</li>
-//           </ul>
-//         </section>
-
-//         <section className={styles.section}>
-//           <h2 className={styles.sectionTitle}>For Patients</h2>
-//           <p className={styles.paragraph}>Access comprehensive pricing information from 95% of private dental clinics across the UK. Compare prices for over 100 treatment categories, including:</p>
-//           <ul className={styles.list}>
-//             <li>Composite posterior fillings</li>
-//             <li>Implant placements</li>
-//             <li>Root canal treatments</li>
-//             <li>Crowns and bridges</li>
-//             <li>And many more...</li>
-//           </ul>
-//           <p className={styles.paragraph}>Find the best value and make informed decisions about your oral health care.</p>
-//           <RegisterLink className={styles.ctaButton}>Compare Prices Now</RegisterLink>
-//         </section>
-
-//         <section className={styles.section}>
-//           <h2 className={styles.sectionTitle}>For Dentists</h2>
-//           <p className={styles.paragraph}>Join our network of 200 dentists who have already subscribed to our premium services. Gain a competitive edge with our nationwide pricing data:</p>
-//           <ul className={styles.list}>
-//             <li>Compare your prices with those from across the country</li>
-//             <li>Access pricing data for over 100 treatment categories</li>
-//             <li>Understand market trends and pricing strategies in different regions</li>
-//             <li>Set competitive rates based on national pricing insights</li>
-//             <li>Attract new patients with informed, market-competitive pricing</li>
-//           </ul>
-//           <p className={styles.paragraph}>Stay ahead in the dental market with comprehensive, nationwide pricing intelligence.</p>
-//           <RegisterLink className={styles.ctaButton}>Subscribe Now</RegisterLink>
-//         </section>
-//         </main>
-
-// <footer className={styles.footer}>
-//   <p>&copy; 2024 DentalPricing.co.uk. All rights reserved.</p>
-// </footer>
-// </div>
-);
+    <>
+      <SEO title={seoData.title} description={seoData.description} />
+      <Script
+        id="structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <Suspense fallback={<Loading />}>
+        <Dashboard />
+      </Suspense>
+    </>
+  );
 }

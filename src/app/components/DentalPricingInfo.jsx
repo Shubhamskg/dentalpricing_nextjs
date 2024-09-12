@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './DentalPricingInfo.module.scss';
-import { FaSearch, FaCommentDollar, FaClipboardList, FaUserMd, FaPoundSign, FaStar, FaBolt, FaCheckCircle } from 'react-icons/fa';
+import { FaSearch, FaCommentDollar, FaClipboardList, FaUserMd, FaPoundSign, FaStar, FaBolt, FaCheckCircle,FaTooth } from 'react-icons/fa';
 import { MdExpandMore, MdExpandLess } from 'react-icons/md';
 import { RiMentalHealthFill } from 'react-icons/ri';
 
@@ -24,7 +24,7 @@ const DentalPricingInfo = () => {
       <section className={styles.hero}>
         <div className={styles.logoContainer}>
           <RiMentalHealthFill className={styles.logo} />
-          <h1>DentalPricing.co.uk</h1>
+          <h1>Dental Pricing</h1>
         </div>
         <h2>Find the Best and Most Affordable Dental Treatments Near You</h2>
         <p>We help you compare prices and services from the top dental practices in your area. Save time and money by discovering the best deals on dental treatments today!</p>
@@ -88,7 +88,7 @@ const DentalPricingInfo = () => {
       </section>
 
       <section className={styles.whyChooseUs}>
-        <h3><FaPoundSign /> Why Choose DentalPricing.co.uk?</h3>
+        <h3><FaTooth /> Why Choose Dental Pricing?</h3>
         <div className={styles.reasonsGrid}>
           <div className={styles.reason}>
             <FaPoundSign />
@@ -109,7 +109,7 @@ const DentalPricingInfo = () => {
         <h3>Frequently Asked Questions (FAQs)</h3>
         <FAQItem 
           question="How do I know if a dentist is trustworthy?"
-          answer="All dentists listed on DentalPricing.co.uk are verified and reviewed by real patients, so you can feel confident in choosing a provider."
+          answer="All dentists listed on Dental Pricing are verified and reviewed by real patients, so you can feel confident in choosing a provider."
         />
         <FAQItem 
           question="Can I see pricing for specific treatments?"
@@ -117,7 +117,7 @@ const DentalPricingInfo = () => {
         />
         <FAQItem 
           question="Do prices vary a lot between dental practices?"
-          answer="Yes, prices can vary significantly depending on location, clinic reputation, and the type of treatment. DentalPricing.co.uk helps you find the most competitive pricing options without sacrificing quality."
+          answer="Yes, prices can vary significantly depending on location, clinic reputation, and the type of treatment. Dental Pricing helps you find the most competitive pricing options without sacrificing quality."
         />
         <FAQItem 
           question="How can I book an appointment?"
