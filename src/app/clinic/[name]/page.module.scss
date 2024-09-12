@@ -373,7 +373,8 @@
 @media (max-width: 480px) {
   .clinicProfile{
     margin: 0;
-    padding: 0.5rem;
+    padding: 0;
+    overflow: hidden;
   }
   .heroSection{
     margin: 0;
