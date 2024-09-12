@@ -8,18 +8,18 @@ import Dashboard from './price/page';
 import Loading from './components/Loading';
 
 // SEO component
-function SEO({ title, description }) {
+function SEO({ title, description, pathname }) {
   return (
     <Head>
       <title>{title}</title>
       <meta name="description" content={description} />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <meta name="robots" content="index, follow" />
-      <link rel="canonical" href={`https://www.dentalpricing.co.uk${usePathname()}`} />
+      <link rel="canonical" href={`https://www.dentalpricing.co.uk${pathname}`} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:type" content="website" />
-      <meta property="og:url" content={`https://www.dentalpricing.co.uk${usePathname()}`} />
+      <meta property="og:url" content={`https://www.dentalpricing.co.uk${pathname}`} />
       <meta property="og:image" content="https://www.dentalpricing.co.uk/og-image.jpg" />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={title} />
@@ -71,8 +71,7 @@ function generateSEOData(pathname, searchParams) {
       };
   }
 }
-
-export default function Home() {
+function HomeContent() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [seoData, setSeoData] = useState({
@@ -102,15 +101,21 @@ export default function Home() {
 
   return (
     <>
-      <SEO title={seoData.title} description={seoData.description} />
+      <SEO title={seoData.title} description={seoData.description} pathname={pathname} />
       <Script
         id="structured-data"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Suspense fallback={<Loading />}>
-        <Dashboard />
-      </Suspense>
+      <Dashboard />
     </>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <HomeContent />
+    </Suspense>
   );
 }

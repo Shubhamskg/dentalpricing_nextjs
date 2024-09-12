@@ -15,7 +15,7 @@ import DentalPricingInfo from '../components/DentalPricingInfo';
 import Loading from '../components/Loading';
 
 
-function DashboardContent() {
+function Dashboard() {
   const router = useRouter();
   const searchParams = useSearchParams();
   
@@ -352,14 +352,6 @@ function DashboardContent() {
     </div>
   );
 }
-function Dashboard() {
-  return (
-    <Suspense fallback={<Loading />}>
-      <DashboardContent />
-    </Suspense>
-  );
-}
-
 export default function PricePage() {
   return (
     <Suspense fallback={<Loading/>}>
