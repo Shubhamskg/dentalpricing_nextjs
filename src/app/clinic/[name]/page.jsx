@@ -235,6 +235,7 @@ export default function ClinicProfile() {
             onRatingFetched={handleRatingFetched}
           />
         </div>
+        <br/><br/>
         <div className={styles.treatmentsSection}>
           <div className={styles.searchContainer}>
             <FaSearch className={styles.searchIcon} />

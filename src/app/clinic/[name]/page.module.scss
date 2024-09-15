@@ -141,7 +141,7 @@
   .ratingNumber {
     font-size: $font-size-base * 1.5;
     font-weight: bold;
-    color: $primary-blue;
+    color: black;
     margin-right: $spacing-unit * 2;
   }
 
@@ -151,7 +151,7 @@
   }
 
   .starFilled, .starEmpty {
-    color: $warning-yellow;
+    color: #FFC107;
     font-size: $font-size-base * 1.2;
   }
 
