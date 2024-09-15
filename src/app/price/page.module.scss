@@ -176,7 +176,7 @@
 }
 
 .searchInput {
-  width: calc(100% - #{$spacing-unit * 8});
+  width: 100%;
   padding: $spacing-unit * 4;
   font-size: $font-size-base;
   border: 2px solid $secondary-blue;

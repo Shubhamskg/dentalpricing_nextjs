@@ -195,6 +195,7 @@
       gap: $spacing-unit * 8;
       flex-direction: row;
       flex-wrap: wrap;
+      display: none;
 
       li {
         margin-left: 0;
