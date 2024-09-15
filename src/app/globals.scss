@@ -205,13 +205,8 @@ body {
 }
 
 body {
-  color: rgb(var(--foreground));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end))
-    )
-    rgb(var(--background-start));
+  color: white;
+  background: white;
 }
 
 a {
@@ -219,9 +214,9 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   html {
-    color-scheme: dark;
+    color-scheme: light;
   }
 }
 
