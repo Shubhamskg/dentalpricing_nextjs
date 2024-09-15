@@ -1,11 +1,11 @@
 // Colors
-$primary-blue: #0073cf;
-$secondary-blue: #005ea8;
-$accent-orange: #e67e22;
-$success-green: #27ae60;
-$warning-yellow: #f39c12;
-$danger-red: #e74c3c;
-$info-teal: #16a085;
+$primary-blue: #0056b3;
+$secondary-blue: #003d7a;
+$accent-orange: #4a90e2;  // Changed to a blue shade
+$success-green: #28a5b4;  // Changed to a teal-blue
+$warning-yellow: #5bc0de;  // Changed to a light blue
+$danger-red: #2c3e50;  // Changed to a dark blue
+$info-teal: #17a2b8;  // Kept as a blue-teal shade
 $gray-100: #f8f9fa;
 $gray-200: #e9ecef;
 $gray-300: #dee2e6;
@@ -18,17 +18,17 @@ $gray-900: #212529;
 $text-dark: $gray-900;
 $text-light: $gray-100;
 
-// Background colors (updated to be lighter)
+// Background colors
 $background-light: #ffffff;
-$background-dark: #004275;  // Lightened from #00335c
-$background-primary: lighten($primary-blue, 10%);  // Lightened primary blue
-$background-secondary: $gray-100;
-$background-accent: lighten(#fdf2e9, 2%);  // Slightly lightened accent
+$background-dark: #003366;
+$background-primary: lighten($primary-blue, 5%);
+$background-secondary: #e6f2ff;  // Light blue background
+$background-accent: lighten($accent-orange, 25%);  // Lightened blue accent
 
-// Page-specific background colors (updated to be lighter)
-$background-home: lighten($primary-blue, 15%);  // Lightened home background
+// Page-specific background colors
+$background-home: lighten($primary-blue, 10%);
 $background-about: $gray-100;
-$background-contact: lighten($background-accent, 3%);  // Lightened contact background
+$background-contact: lighten($background-accent, 2%);
 $background-pricing: $gray-100;
 $background-services: $gray-100;
 
