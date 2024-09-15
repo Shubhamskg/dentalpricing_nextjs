@@ -1,13 +1,5 @@
 @import '../variables';
 
-// Variables (updated to use the new color scheme)
-$primary-color: $primary-blue;
-$secondary-color: $secondary-blue;
-$background-color: $background-secondary;
-$text-color: $text-dark;
-$white: $background-light;
-$border-color: $gray-300;
-
 // Mixins
 @mixin flex-center {
   display: flex;
@@ -16,7 +8,7 @@ $border-color: $gray-300;
 }
 
 @mixin card-style {
-  background-color: $white;
+  background-color: $background-light;
   border-radius: $border-radius;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: $transition-base;
@@ -31,7 +23,7 @@ $border-color: $gray-300;
   max-width: 1200px;
   margin: 0 auto;
   padding: 3rem 2rem;
-  background-color: $background-primary;
+  background-color: $background-secondary;
   font-family: $font-family-sans-serif;
 
   section {
@@ -63,13 +55,13 @@ $border-color: $gray-300;
 
   p {
     font-size: 1.1rem;
-    color: $text-color;
-    line-height: 1.8;
+    color: $text-dark;
+    line-height: $line-height-base;
   }
 
   .hero {
     text-align: center;
-    background-color: $background-home;
+    background-color: white;
     padding: 4rem 2rem;
     border-radius: $border-radius;
     margin-bottom: 4rem;
@@ -80,13 +72,13 @@ $border-color: $gray-300;
 
       .logo {
         font-size: 3.5rem;
-        color: $primary-blue;
+        color: $background-primary;
         margin-right: 0.75rem;
       }
 
       h1 {
         font-size: 2.5rem;
-        color: $secondary-blue;
+        color: $background-primary;
         font-weight: 700;
       }
     }
@@ -95,6 +87,7 @@ $border-color: $gray-300;
       max-width: 800px;
       margin: 0 auto;
       font-size: 1.2rem;
+      color: $text-dark;
     }
   }
 
@@ -149,7 +142,7 @@ $border-color: $gray-300;
 
         &:hover {
           background-color: $primary-blue;
-          color: $white;
+          color: $background-light;
         }
       }
     }
@@ -169,14 +162,14 @@ $border-color: $gray-300;
         align-items: center;
         margin-bottom: 1.5rem;
         padding: 1rem;
-        background-color: $white;
+        background-color: $background-light;
         border-radius: $border-radius;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 
         &::before {
           content: counter(step-counter);
           background-color: $success-green;
-          color: $white;
+          color: $background-light;
           font-weight: bold;
           padding: 0.5rem 1.1rem;
           border-radius: 50%;
@@ -206,7 +199,7 @@ $border-color: $gray-300;
         display: flex;
         align-items: center;
         gap: 0.75rem;
-        background-color: $white;
+        background-color: $background-light;
         padding: 1rem 1.5rem;
         border-radius: 25px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -234,7 +227,7 @@ $border-color: $gray-300;
     background-color: $background-accent;
     
     .faqItem {
-      border-bottom: 1px solid $border-color;
+      border-bottom: 1px solid $gray-300;
       padding-bottom: 1.5rem;
       margin-bottom: 1.5rem;
 
@@ -281,7 +274,7 @@ $border-color: $gray-300;
   }
 }
 
-@media (max-width: 992px) {
+@media (max-width: $breakpoint-lg) {
   .dentalPricingInfo {
     padding: 2rem 1.5rem;
 
@@ -309,7 +302,7 @@ $border-color: $gray-300;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: $breakpoint-md) {
   .dentalPricingInfo {
     padding: 1.5rem 1rem;
 

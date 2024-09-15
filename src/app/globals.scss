@@ -36,7 +36,7 @@ body {
   font-size: $font-size-base;
   line-height: $line-height-base;
   color: var(--text-dark);
-  background-color: var(--background-secondary);
+  background-color: var(--background-light);
 }
 
 // Page-specific background classes
@@ -145,62 +145,20 @@ a {
   }
 }
 
-.navbar {
-  background-color: var(--background-light);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: $spacing-unit * 3 0;
-  position: sticky;
-  top: 0;
-  z-index: $z-index-sticky;
-
-  .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--primary);
-    transition: $transition-base;
-
-    &:hover {
-      color: var(--secondary);
-    }
-  }
-
-  .nav-links {
-    display: flex;
-    gap: $spacing-unit * 4;
-
-    a {
-      color: var(--text-dark);
-      font-weight: 500;
-      transition: $transition-base;
-
-      &:hover {
-        color: var(--primary);
-      }
-    }
-  }
-}
-
 .hero {
   background-color: var(--background-primary);
   padding: $spacing-unit * 16 0;
   text-align: center;
+  color: var(--text-light);
 
   h1 {
     font-size: 2.5rem;
     margin-bottom: $spacing-unit * 4;
-    color: var(--text-dark);
   }
 
   p {
     font-size: 1.25rem;
     margin-bottom: $spacing-unit * 8;
-    color: $gray-700;
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
@@ -261,47 +219,6 @@ a {
   }
 }
 
-.footer {
-  background-color: var(--background-dark);
-  color: var(--text-light);
-  padding: $spacing-unit * 12 0;
-
-  .footer-content {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: $spacing-unit * 8;
-  }
-
-  .footer-section {
-    flex: 1;
-    min-width: 200px;
-
-    h4 {
-      font-size: 1.25rem;
-      margin-bottom: $spacing-unit * 4;
-      color: var(--accent);
-    }
-
-    ul {
-      list-style: none;
-
-      li {
-        margin-bottom: $spacing-unit * 2;
-
-        a {
-          color: $gray-400;
-          transition: $transition-base;
-
-          &:hover {
-            color: var(--text-light);
-          }
-        }
-      }
-    }
-  }
-}
-
 @media (max-width: $breakpoint-md) {
   .hero {
     padding: $spacing-unit * 8 0;
@@ -318,11 +235,8 @@ a {
   .features .feature-grid {
     grid-template-columns: 1fr;
   }
-
-  .footer .footer-content {
-    flex-direction: column;
-  }
 }
-.main{
-  background-color: red;
+
+.main {
+  background-color: var(--background-light);
 }
