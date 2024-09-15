@@ -591,6 +591,7 @@
 // Footer
 .footer {
   background-color: darken($background-primary, 5%);
+  // background: $background-primary; // Use the variable to apply the gradient
   color: $text-dark;
   text-align: center;
   padding: $spacing-unit * 8 $spacing-unit * 4;

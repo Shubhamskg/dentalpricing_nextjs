@@ -166,8 +166,9 @@ export default function ClinicProfile() {
   return (
     <div className={styles.clinicProfilePage}>
       
-
+    
       <div className={styles.clinicProfile}>
+        
         <div className={styles.heroSection}>
           <div className={styles.clinicLogo}>
             {extractedLogo ? (
@@ -201,7 +202,11 @@ export default function ClinicProfile() {
             
           </div>
         </div>
-
+        {clinicImages.length > 0 && (
+          <div className={styles.gallerySection}>
+            <ClinicImageGallery images={clinicImages} />
+          </div>
+        )}
         {highlightedTreatment && (
           <div className={styles.highlightedTreatment}>
             <div className={styles.highlightedContent}>
@@ -220,12 +225,16 @@ export default function ClinicProfile() {
           </div>
         )}
 
-        {clinicImages.length > 0 && (
-          <div className={styles.gallerySection}>
-            <ClinicImageGallery images={clinicImages} />
-          </div>
-        )}
-
+       
+        <div className={styles.reviewsSection}>
+          <GoogleReviews 
+            name={clinicData.Name}
+            address={clinicData.Address}
+            postcode={clinicData.Postcode.split(" ").join("")}
+            placeId={clinicData.placeId}
+            onRatingFetched={handleRatingFetched}
+          />
+        </div>
         <div className={styles.treatmentsSection}>
           <div className={styles.searchContainer}>
             <FaSearch className={styles.searchIcon} />
@@ -237,9 +246,9 @@ export default function ClinicProfile() {
               className={styles.searchInput}
             />
           </div>
-
+          
           <div className={styles.allTreatments}>
-            <h2>All Treatments</h2>
+            <h2>Other Treatments</h2>
             <div className={styles.treatmentGrid}>
               {filteredTreatments.map((treatment, index) => (
                 <div key={index} className={styles.treatmentCard}>
@@ -264,15 +273,7 @@ export default function ClinicProfile() {
           </div>
         </div>
 
-        <div className={styles.reviewsSection}>
-          <GoogleReviews 
-            name={clinicData.Name}
-            address={clinicData.Address}
-            postcode={clinicData.Postcode.split(" ").join("")}
-            placeId={clinicData.placeId}
-            onRatingFetched={handleRatingFetched}
-          />
-        </div>
+        
       </div>
     </div>
   );
