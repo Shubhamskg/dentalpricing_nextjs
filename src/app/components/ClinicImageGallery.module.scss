@@ -1,56 +1,53 @@
-// Import variables
-@import "../variables";
-
 .scrollContainer {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  padding: $spacing-unit * 4 0; // Padding: 10px 0 (since spacing-unit is 0.25rem)
-}
-
-.imageWrapper {
-  display: flex;
-  transition: $transition-base; // Using transition base from variables
-}
-
-.imageItem {
-  flex: 0 0 calc(20% - 16px); // For 5 images per view. Use calc(25% - 16px) for 4 images
-  margin: 0 $spacing-unit * 8; // Margin: 0 8px
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.scrollButton {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: rgba($gray-100, 0.8); // Background with opacity
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  z-index: $z-index-sticky; // Z-index variable for stacking
-  transition: $transition-base;
-
-  &:hover {
-    background-color: rgba($gray-100, 1); // Full opacity on hover
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    padding: 10px 0;
   }
-
-  svg {
-    font-size: 20px;
-    color: $gray-900; // Dark gray for icons
+  
+  .imageWrapper {
+    display: flex;
+    transition: transform 0.3s ease;
   }
-}
-
-.leftButton {
-  left: $spacing-unit * 4; // Left: 10px
-}
-
-.rightButton {
-  right: $spacing-unit * 4; // Right: 10px
-}
+  
+  .imageItem {
+    flex: 0 0 calc(20% - 16px); // For 5 images per view. Use calc(25% - 16px) for 4 images
+    margin: 0 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .scrollButton {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.8);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: background-color 0.3s ease;
+  
+    &:hover {
+      background-color: rgba(255, 255, 255, 1);
+    }
+  
+    svg {
+      font-size: 20px;
+      color: #333;
+    }
+  }
+  
+  .leftButton {
+    left: 10px;
+  }
+  
+  .rightButton {
+    right: 10px;
+  }

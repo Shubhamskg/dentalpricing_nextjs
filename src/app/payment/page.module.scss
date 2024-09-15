@@ -1,45 +1,42 @@
-@import '../variables';
-
-// Updated CSS using variables
 .container {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 2rem;
-}
-
-.title {
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-  text-align: center;
-}
-
-.paymentForm {
-  margin-top: 2rem;
-}
-
-.error {
-  color: $danger-red;
-  margin-top: 1rem;
-}
-
-.payButton {
-  background-color: $primary-blue;
-  color: $text-light;
-  padding: 0.75rem;
-  border: none;
-  border-radius: $border-radius;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: $transition-base;
-  margin-top: 1rem;
-  width: 100%;
-
-  &:hover {
-    background-color: $secondary-blue;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
   }
-
-  &:disabled {
-    background-color: $gray-500;
-    cursor: not-allowed;
+  
+  .title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
   }
-}
+  
+  .paymentForm {
+    margin-top: 2rem;
+  }
+  
+  .error {
+    color: #ff0000;
+    margin-top: 1rem;
+  }
+  
+  .payButton {
+    background-color: #3b82f6;
+    color: white;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 1rem;
+    width: 100%;
+  
+    &:hover {
+      background-color: #2563eb;
+    }
+  
+    &:disabled {
+      background-color: #9ca3af;
+      cursor: not-allowed;
+    }
+  }

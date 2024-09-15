@@ -1,54 +1,48 @@
-@import "../variables";
 .container {
   max-width: 600px;
   margin: 0 auto;
-  padding: $spacing-unit * 8;
+  padding: 2rem;
   text-align: center;
-  font-family: $font-family-sans-serif;
-  background-color: $background-light;
 }
 
 .title {
-  font-size: $font-size-base * 2;
-  margin-bottom: $spacing-unit * 6;
-  color: $primary-blue;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #3b82f6;
 }
 
 .details {
-  background-color: $background-secondary;
-  border-radius: $border-radius;
-  padding: $spacing-unit * 6;
-  margin-bottom: $spacing-unit * 6;
+  background-color: #f3f4f6;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
   text-align: left;
 
   p {
-    margin: $spacing-unit * 2 0;
-    font-size: $font-size-base;
-    color: $text-dark;
-    line-height: $line-height-base;
+    margin: 0.5rem 0;
   }
 }
 
 .datetime {
-  font-size: $font-size-base * 1.25;
+  font-size: 1.25rem;
   font-weight: bold;
-  color: $primary-blue;
+  color: #3b82f6;
 }
 
 .warning {
-  color: $danger-red;
+  color: #ef4444;
   font-weight: bold;
-  margin-top: $spacing-unit * 2;
+  margin-top: 0.5rem;
 }
 
 .reminder {
   font-style: italic;
-  color: $gray-600;
+  color: #6b7280;
 }
 
 .error {
-  color: $danger-red;
+  color: #ef4444;
   font-weight: bold;
   text-align: center;
-  margin-top: $spacing-unit * 8;
+  margin-top: 2rem;
 }

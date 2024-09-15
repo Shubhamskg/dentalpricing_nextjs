@@ -1,5 +1,14 @@
 @use 'sass:math';
-@import "../variables";
+
+// Variables
+$primary-color: #3b82f6;
+$secondary-color: #93c5fd;
+$background-color: #f3f4f6;
+$text-color: #374151;
+$border-color: #e5e7eb;
+$accent-color: #10b981;
+$error-color: #ef4444;
+
 // Mixins
 @mixin flex-center {
   display: flex;
@@ -8,50 +17,50 @@
 }
 
 @mixin button-style {
-  padding: $spacing-unit * 3 $spacing-unit * 6;
+  padding: 0.75rem 1.5rem;
   border: none;
-  border-radius: $border-radius;
+  border-radius: 0.5rem;
   font-weight: 600;
   cursor: pointer;
-  transition: $transition-base;
+  transition: all 0.3s ease;
 }
 
 // Container
 .container {
-  font-family: $font-family-sans-serif;
-  background-color: $background-primary;
+  font-family: 'Inter', Arial, sans-serif;
+  background-color: $background-color;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  color: $text-dark;
+  color: $text-color;
 }
 
 // Header
 .header {
-  background-color: $primary-blue;
-  color: $text-light;
-  padding: $spacing-unit * 6 0;
-  box-shadow: 0 4px 6px rgba($gray-900, 0.1);
+  background-color: $primary-color;
+  color: white;
+  padding: 1.5rem 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .headerContent {
-  max-width: $breakpoint-xl;
+  max-width: 1200px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 $spacing-unit * 4;
+  padding: 0 1rem;
 }
 
 .title {
   text-decoration: none;
-  color: $text-light;
-  font-size: $font-size-base * 1.75;
+  color: white;
+  font-size: 1.75rem;
   font-weight: bold;
-  transition: color $transition-base;
+  transition: color 0.3s ease;
 
   &:hover {
-    color: $secondary-blue;
+    color: $secondary-color;
   }
 }
 
@@ -62,11 +71,11 @@
 
 .accountButton {
   @include button-style;
-  background-color: rgba($text-light, 0.2);
-  color: $text-light;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
 
   &:hover {
-    background-color: rgba($text-light, 0.3);
+    background-color: rgba(255, 255, 255, 0.3);
   }
 }
 
@@ -74,11 +83,11 @@
   position: absolute;
   top: 120%;
   right: 0;
-  background-color: $background-light;
-  border-radius: $border-radius;
-  box-shadow: 0 4px 12px rgba($gray-900, 0.15);
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   min-width: 220px;
-  z-index: $z-index-dropdown;
+  z-index: 10;
 
   ul {
     list-style-type: none;
@@ -88,25 +97,25 @@
 
   li {
     &:not(:last-child) {
-      border-bottom: 1px solid $gray-300;
+      border-bottom: 1px solid $border-color;
     }
 
     a {
       display: flex;
       align-items: center;
-      padding: $spacing-unit * 4;
-      color: $text-dark;
+      padding: 1rem;
+      color: $text-color;
       text-decoration: none;
-      transition: background-color $transition-base;
+      transition: background-color 0.3s ease;
 
       &:hover {
-        background-color: $background-primary;
+        background-color: $background-color;
       }
 
       svg {
-        margin-right: $spacing-unit * 3;
-        font-size: $font-size-base * 1.25;
-        color: $primary-blue;
+        margin-right: 0.75rem;
+        font-size: 1.25rem;
+        color: $primary-color;
       }
     }
   }
@@ -115,38 +124,38 @@
 // Main Content
 .main {
   flex-grow: 1;
-  max-width: $breakpoint-xl;
-  margin: $spacing-unit * 12 auto;
-  padding: 0 $spacing-unit * 4;
+  max-width: 1200px;
+  margin: 3rem auto;
+  padding: 0 1rem;
 }
 
 // Search Section
 .searchSection {
-  background-color: $background-light;
-  border-radius: $border-radius;
-  box-shadow: 0 4px 6px rgba($gray-900, 0.1);
-  padding: $spacing-unit * 10;
-  margin-bottom: $spacing-unit * 12;
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2.5rem;
+  margin-bottom: 3rem;
 }
 
 .searchTitle {
-  font-size: $font-size-base * 2;
+  font-size: 2rem;
   font-weight: 700;
   text-align: center;
-  margin-bottom: $spacing-unit * 8;
-  color: $text-dark;
+  margin-bottom: 2rem;
+  color: $primary-color;
 }
 
 .searchMethodToggle {
   @include flex-center;
-  margin-bottom: $spacing-unit * 8;
+  margin-bottom: 2rem;
 }
 
 .methodButton {
   @include button-style;
-  background-color: $background-light;
-  color: $primary-blue;
-  border: 2px solid $primary-blue;
+  background-color: white;
+  color: $primary-color;
+  border: 2px solid $primary-color;
 
   &:first-child {
     border-top-right-radius: 0;
@@ -159,16 +168,16 @@
   }
 
   &.active {
-    background-color: $primary-blue;
-    color: $text-light;
+    background-color: $primary-color;
+    color: white;
   }
 }
 
 .searchInputs {
   display: flex;
   flex-direction: column;
-  gap: $spacing-unit * 6;
-  margin-bottom: $spacing-unit * 8;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .categoryInputWrapper {
@@ -176,17 +185,17 @@
 }
 
 .searchInput {
-  width: 100%;
-  padding: $spacing-unit * 4;
-  font-size: $font-size-base;
-  border: 2px solid $secondary-blue;
-  border-radius: $border-radius;
+  width: calc(100% - 2rem);
+  padding: 1rem;
+  font-size: 1rem;
+  border: 2px solid $secondary-color;
+  border-radius: 0.5rem;
   outline: none;
-  transition: border-color $transition-base, box-shadow $transition-base;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 
   &:focus {
-    border-color: $primary-blue;
-    box-shadow: 0 0 0 3px rgba($primary-blue, 0.2);
+    border-color: $primary-color;
+    box-shadow: 0 0 0 3px rgba($primary-color, 0.2);
   }
 
   &[type="number"] {
@@ -204,29 +213,29 @@
   top: 100%;
   left: 0;
   right: 0;
-  background-color: $background-light;
-  border: 1px solid $gray-300;
+  background-color: white;
+  border: 1px solid $border-color;
   border-top: none;
-  border-radius: 0 0 $border-radius $border-radius;
+  border-radius: 0 0 0.5rem 0.5rem;
   max-height: 200px;
   overflow-y: auto;
-  z-index: $z-index-dropdown;
-  box-shadow: 0 4px 6px rgba($gray-900, 0.1);
+  z-index: 10;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
   li {
-    padding: $spacing-unit * 3 $spacing-unit * 4;
+    padding: 0.75rem 1rem;
     cursor: pointer;
-    transition: background-color $transition-base;
+    transition: background-color 0.2s ease;
 
     &:hover {
-      background-color: $background-primary;
+      background-color: $background-color;
     }
   }
 }
 
 .warningMessage {
-  color: $danger-red;
-  margin-bottom: $spacing-unit * 4;
+  color: $error-color;
+  margin-bottom: 1rem;
   text-align: center;
   font-weight: 600;
 }
@@ -234,32 +243,32 @@
 .searchButton {
   @include button-style;
   width: 100%;
-  background-color: $primary-blue;
-  color: $text-light;
-  font-size: $font-size-base * 1.1;
+  background-color: $primary-color;
+  color: white;
+  font-size: 1.1rem;
 
   &:hover {
-    background-color: darken($primary-blue, 10%);
+    background-color: darken($primary-color, 10%);
   }
 
   &:disabled {
-    background-color: $secondary-blue;
+    background-color: $secondary-color;
     cursor: not-allowed;
   }
 }
 
 // Results Section
 .resultsSection {
-  background-color: $background-light;
-  border-radius: $border-radius;
-  box-shadow: 0 4px 6px rgba($gray-900, 0.1);
-  padding: $spacing-unit * 10;
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2.5rem;
 }
 
 .loadingSpinner {
   @include flex-center;
-  font-size: $font-size-base * 2;
-  color: $primary-blue;
+  font-size: 2rem;
+  color: $primary-color;
   height: 150px;
 }
 
@@ -267,33 +276,33 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: $spacing-unit * 8;
+  margin-bottom: 2rem;
   flex-wrap: wrap;
-  gap: $spacing-unit * 4;
+  gap: 1rem;
 }
 
 .resultsTitle {
-  font-size: $font-size-base * 1.5;
+  font-size: 1.5rem;
   font-weight: 700;
-  color: $primary-blue;
+  color: $primary-color;
 }
 
 .sortControls {
   display: flex;
   align-items: center;
-  gap: $spacing-unit * 4;
+  gap: 1rem;
   flex-wrap: wrap;
 
   button {
     @include button-style;
     background: none;
-    color: $text-dark;
-    padding: $spacing-unit * 2;
-    font-size: $font-size-base * 0.9;
+    color: $text-color;
+    padding: 0.5rem;
+    font-size: 0.9rem;
 
     &:hover, &.active {
-      color: $primary-blue;
-      background-color: rgba($primary-blue, 0.1);
+      color: $primary-color;
+      background-color: rgba($primary-color, 0.1);
     }
   }
 }
@@ -304,55 +313,55 @@
 }
 
 .resultItem {
-  border-bottom: 1px solid $gray-300;
-  padding: $spacing-unit * 6 0;
+  border-bottom: 1px solid $border-color;
+  padding: 1.5rem 0;
 
   .clinicHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: $spacing-unit * 4;
+    margin-bottom: 1rem;
 
     .headerButton {
       margin: 0;
       padding: 0;
       border-style: none;
       background-color: transparent;
-      color: $primary-blue;
+      color: $primary-color;
       cursor: pointer;
       font-weight: 600;
-      transition: color $transition-base;
+      transition: color 0.3s ease;
 
       &:hover {
-        color: darken($primary-blue, 15%);
+        color: darken($primary-color, 15%);
         text-decoration: underline;
       }
     }
     
     h4 {
       margin: 0;
-      font-size: $font-size-base * 1.25;
-      color: $text-dark;
+      font-size: 1.25rem;
+      color: $text-color;
     }
   }
 
   .reviewSection {
-    background-color: $gray-100;
-    border-radius: $border-radius;
-    padding: $spacing-unit * 6;
-    margin-bottom: $spacing-unit * 6;
+    background-color: #f8f9fa;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
 
     h3 {
-      font-size: $font-size-base * 1.75;
-      margin-bottom: $spacing-unit * 6;
-      color: $primary-blue;
+      font-size: 1.75rem;
+      margin-bottom: 1.5rem;
+      color: $primary-color;
     }
 
     .googleReviewSummary {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: $spacing-unit * 6;
+      margin-bottom: 1.5rem;
 
       .googleLogo {
         display: flex;
@@ -361,12 +370,12 @@
         img {
           width: 28px;
           height: 28px;
-          margin-right: $spacing-unit * 3;
+          margin-right: 0.75rem;
         }
 
         span {
           font-weight: bold;
-          font-size: $font-size-base * 1.1;
+          font-size: 1.1rem;
         }
       }
 
@@ -375,30 +384,30 @@
         align-items: center;
 
         .ratingNumber {
-          font-size: $font-size-base * 1.75;
+          font-size: 1.75rem;
           font-weight: bold;
-          margin-right: $spacing-unit * 3;
-          color: $success-green;
+          margin-right: 0.75rem;
+          color: $accent-color;
         }
 
         .stars {
           display: flex;
-          margin-right: $spacing-unit * 3;
+          margin-right: 0.75rem;
         }
 
         .reviewCount {
-          color: $gray-600;
-          font-size: $font-size-base * 0.9;
+          color: #666;
+          font-size: 0.9rem;
         }
       }
 
       .reviewButton {
         @include button-style;
-        background-color: $info-teal;
-        color: $text-light;
+        background-color: #1a73e8;
+        color: white;
 
         &:hover {
-          background-color: darken($info-teal, 10%);
+          background-color: darken(#1a73e8, 10%);
         }
       }
     }
@@ -407,48 +416,48 @@
   .reviewList {
     display: flex;
     overflow-x: auto;
-    gap: $spacing-unit * 6;
-    padding-bottom: $spacing-unit * 6;
+    gap: 1.5rem;
+    padding-bottom: 1.5rem;
     scrollbar-width: thin;
-    scrollbar-color: $secondary-blue $background-primary;
+    scrollbar-color: $secondary-color $background-color;
 
     &::-webkit-scrollbar {
       height: 8px;
     }
 
     &::-webkit-scrollbar-track {
-      background: $background-primary;
+      background: $background-color;
     }
 
     &::-webkit-scrollbar-thumb {
-      background-color: $secondary-blue;
+      background-color: $secondary-color;
       border-radius: 20px;
     }
   }
 
   .review {
-    background-color: $background-light;
-    border-radius: $border-radius;
-    padding: $spacing-unit * 6;
+    background-color: white;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
     min-width: 280px;
-    box-shadow: 0 4px 6px rgba($gray-900, 0.1);
-    transition: transform $transition-base, box-shadow $transition-base;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 
     &:hover {
       transform: translateY(-5px);
-      box-shadow: 0 6px 12px rgba($gray-900, 0.15);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     }
 
     .reviewHeader {
       display: flex;
       align-items: center;
-      margin-bottom: $spacing-unit * 4;
+      margin-bottom: 1rem;
 
       .reviewerImage {
         width: 48px;
         height: 48px;
         border-radius: 50%;
-        margin-right: $spacing-unit * 4;
+        margin-right: 1rem;
         object-fit: cover;
       }
 
@@ -458,13 +467,13 @@
         .reviewAuthor {
           display: block;
           font-weight: bold;
-          font-size: $font-size-base * 1.1;
-          margin-bottom: $spacing-unit;
+          font-size: 1.1rem;
+          margin-bottom: 0.25rem;
         }
 
         .reviewTime {
-          font-size: $font-size-base * 0.85;
-          color: $gray-600;
+          font-size: 0.85rem;
+          color: #666;
         }
       }
 
@@ -478,48 +487,48 @@
 
     .reviewStars {
       display: flex;
-      margin-bottom: $spacing-unit * 4;
+      margin-bottom: 1rem;
     }
 
     .reviewText {
-      margin-bottom: $spacing-unit * 4;
-      font-size: $font-size-base * 0.95;
-      line-height: $line-height-base;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+      line-height: 1.5;
     }
 
     .readMoreButton {
       background: none;
       border: none;
-      color: $primary-blue;
+      color: $primary-color;
       cursor: pointer;
       padding: 0;
-      font-size: $font-size-base * 0.9;
+      font-size: 0.9rem;
       font-weight: 600;
-      transition: color $transition-base;
+      transition: color 0.3s ease;
 
       &:hover {
-        color: darken($primary-blue, 15%);
+        color: darken($primary-color, 15%);
         text-decoration: underline;
       }
     }
   }
 
   .starFilled {
-    color: $warning-yellow;
+    color: #ffc107;
   }
 
   .starEmpty {
-    color: $gray-300;
+    color: #e4e5e9;
   }
 
   .bookButton {
     @include button-style;
-    background-color: $accent-orange;
-    color: $text-light;
-    margin-top: $spacing-unit * 6;
+    background-color: $accent-color;
+    color: white;
+    margin-top: 1.5rem;
 
     &:hover {
-      background-color: darken($accent-orange, 10%);
+      background-color: darken($accent-color, 10%);
     }
   }
 
@@ -528,24 +537,24 @@
   }
 
   h4 {
-    font-size: $font-size-base * 1.25;
-    margin-bottom: $spacing-unit * 3;
-    color: $text-dark;
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+    color: $text-color;
   }
 
   p {
-    margin: $spacing-unit * 2 0;
-    line-height: $line-height-base;
+    margin: 0.5rem 0;
+    line-height: 1.6;
   }
 
   a {
-    color: $primary-blue;
+    color: $primary-color;
     text-decoration: none;
     font-weight: 600;
-    transition: color $transition-base;
+    transition: color 0.3s ease;
 
     &:hover {
-      color: darken($primary-blue, 15%);
+      color: darken($primary-color, 15%);
       text-decoration: underline;
     }
   }
@@ -553,73 +562,71 @@
 
 .noResults, .resultsPlaceholder {
   text-align: center;
-  color: $gray-600;
+  color: #6b7280;
   font-style: italic;
-  font-size: $font-size-base * 1.1;
-  margin: $spacing-unit * 8 0;
+  font-size: 1.1rem;
+  margin: 2rem 0;
 }
 
 // Pagination
 .pagination {
   @include flex-center;
-  margin-top: $spacing-unit * 12;
-  gap: $spacing-unit * 4;
+  margin-top: 3rem;
+  gap: 1rem;
 
   button {
     @include button-style;
-    background-color: $primary-blue;
-    color: $text-light;
-    font-size: $font-size-base;
+    background-color: $primary-color;
+    color: white;
+    font-size: 1rem;
 
     &:hover {
-      background-color: darken($primary-blue, 10%);
+      background-color: darken($primary-color, 10%);
     }
 
     &:disabled {
-      background-color: $secondary-blue;
+      background-color: $secondary-color;
       cursor: not-allowed;
     }
   }
   
   .pageNumber {
-    font-size: $font-size-base;
+    font-size: 1rem;
     font-weight: 600;
-    color: $text-dark;
+    color: $text-color;
   }
 }
-
 // Footer
 .footer {
-  background-color: darken($background-primary, 5%);
-  // background: $background-primary; // Use the variable to apply the gradient
-  color: $text-dark;
+  background-color: darken($background-color, 5%);
+  color: $text-color;
   text-align: center;
-  padding: $spacing-unit * 8 $spacing-unit * 4;
+  padding: 2rem 1rem;
   margin-top: auto;
 
   p {
     margin: 0;
-    font-size: $font-size-base * 0.9;
+    font-size: 0.9rem;
   }
 
   a {
-    color: $primary-blue;
+    color: $primary-color;
     text-decoration: none;
     font-weight: 600;
-    transition: color $transition-base;
+    transition: color 0.3s ease;
 
     &:hover {
-      color: darken($primary-blue, 15%);
+      color: darken($primary-color, 15%);
       text-decoration: underline;
     }
   }
 }
 
 // Responsive design
-@media (max-width: $breakpoint-md) {
+@media (max-width: 768px) {
   .headerContent {
     flex-direction: column;
-    gap: $spacing-unit * 4;
+    gap: 1rem;
   }
 
   .searchMethodToggle {
@@ -628,11 +635,11 @@
   }
 
   .methodButton {
-    border-radius: $border-radius;
-    margin-bottom: $spacing-unit * 2;
+    border-radius: 0.25rem;
+    margin-bottom: 0.5rem;
 
     &:first-child, &:last-child {
-      border-radius: $border-radius;
+      border-radius: 0.25rem;
     }
   }
 
@@ -643,7 +650,7 @@
   .googleReviewSummary {
     flex-direction: column;
     align-items: flex-start;
-    gap: $spacing-unit * 4;
+    gap: 1rem;
   }
 
   .reviewButton {
@@ -651,34 +658,25 @@
   }
 }
 
-@media (max-width: $breakpoint-sm) {
-  .container{
-    background-color: $background-primary; // Use the variable to apply the gradient
-  }
-  .searchSection{
-    background-color: $background-primary; // Use the variable to apply the gradient
-    .searchTitle{
-      color: $text-light; // Use the variable to apply the gradient
-    }
-  }
-  .main {
+@media (max-width: 480px) {
+  .main{
     padding: 0;
-    margin: $spacing-unit * 4 $spacing-unit * 2;
+    margin: 1rem 0.5rem;
   }
-  .resultsSection {
+  .resultsSection{
     margin: 0;
-    padding: $spacing-unit * 4;
+    padding: 1rem;
   }
-  .clinicHeader {
+  .clinicHeader{
     display: flex;
     flex-direction: column;
   }
   .searchTitle {
-    font-size: $font-size-base * 1.5;
+    font-size: 1.5rem;
   }
 
   .resultsTitle {
-    font-size: $font-size-base * 1.25;
+    font-size: 1.25rem;
   }
 
   .review {

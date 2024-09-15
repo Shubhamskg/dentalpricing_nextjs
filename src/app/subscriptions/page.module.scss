@@ -1,65 +1,64 @@
-// Import variables
-@import "../variables";
+// subscription.module.scss
 
 .subscriptionContainer {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: $spacing-unit * 8; // Padding: 2rem
-}
-
-.plansList {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: $spacing-unit * 8; // Gap: 2rem
-  margin-top: $spacing-unit * 8; // Margin-top: 2rem
-}
-
-.planCard {
-  flex: 1;
-  min-width: 250px;
-  background-color: $gray-100; // Light gray for the card background
-  border-radius: $border-radius; // Consistent border-radius
-  padding: $spacing-unit * 6; // Padding: 1.5rem
-  box-shadow: 0 2px 4px rgba($gray-900, 0.1); // Soft shadow for depth
-  text-align: center;
-
-  h2 {
-    margin-bottom: $spacing-unit * 4; // Margin-bottom: 1rem
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
   }
-
-  .price {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: $spacing-unit * 4; // Margin-bottom: 1rem
+  
+  .plansList {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-top: 2rem;
   }
-
-  ul {
-    list-style-type: none;
-    padding: 0;
-    margin-bottom: $spacing-unit * 6; // Margin-bottom: 1.5rem
-
-    li {
-      margin-bottom: $spacing-unit * 2; // Margin-bottom: 0.5rem
+  
+  .planCard {
+    flex: 1;
+    min-width: 250px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  
+    h2 {
+      margin-bottom: 1rem;
+    }
+  
+    .price {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+  
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin-bottom: 1.5rem;
+  
+      li {
+        margin-bottom: 0.5rem;
+      }
+    }
+  
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+  
+      &:hover {
+        background-color: #0056b3;
+      }
+  
+      &:disabled {
+        background-color: #6c757d;
+        cursor: not-allowed;
+      }
     }
   }
-
-  button {
-    background-color: $primary-blue; // Primary blue for the button
-    color: $background-light; // White text
-    border: none;
-    padding: $spacing-unit * 2 $spacing-unit * 4; // Padding: 0.5rem 1rem
-    border-radius: $border-radius; // Consistent border-radius
-    cursor: pointer;
-    transition: background-color $transition-base; // Smooth transition on hover
-
-    &:hover {
-      background-color: $secondary-blue; // Darker blue on hover
-    }
-
-    &:disabled {
-      background-color: $gray-600; // Disabled gray color
-      cursor: not-allowed;
-    }
-  }
-}

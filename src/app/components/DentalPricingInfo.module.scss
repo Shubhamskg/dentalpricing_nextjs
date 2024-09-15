@@ -1,4 +1,9 @@
-@import '../variables';
+$primary-color: #3b82f6;
+$secondary-color: #4b5563;
+$background-color: #f3f4f6;
+$text-color: #6b7280;
+$white: #ffffff;
+$border-color: #e5e7eb;
 
 // Mixins
 @mixin flex-center {
@@ -8,10 +13,10 @@
 }
 
 @mixin card-style {
-  background-color: $background-light;
-  border-radius: $border-radius;
+  background-color: $white;
+  border-radius: 12px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: $transition-base;
+  transition: all 0.3s ease;
 
   &:hover {
     transform: translateY(-5px);
@@ -23,8 +28,8 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 3rem 2rem;
-  background-color: $background-secondary;
-  font-family: $font-family-sans-serif;
+  background-color: $background-color;
+  font-family: 'Inter', sans-serif;
 
   section {
     margin-bottom: 4rem;
@@ -34,7 +39,7 @@
 
   h2 {
     font-size: 2.75rem;
-    color: $primary-blue;
+    color: $primary-color;
     margin-bottom: 1.5rem;
     text-align: center;
     font-weight: 700;
@@ -42,28 +47,28 @@
 
   h3 {
     font-size: 2rem;
-    color: $secondary-blue;
+    color: $secondary-color;
     margin-bottom: 1.5rem;
     display: flex;
     align-items: center;
     gap: 0.75rem;
 
     svg {
-      color: $accent-orange;
+      color: $primary-color;
     }
   }
 
   p {
     font-size: 1.1rem;
-    color: $text-dark;
-    line-height: $line-height-base;
+    color: $text-color;
+    line-height: 1.8;
   }
 
   .hero {
     text-align: center;
-    background-color: $background-light;
+    background-color: $white;
     padding: 4rem 2rem;
-    border-radius: $border-radius;
+    border-radius: 12px;
     margin-bottom: 4rem;
 
     .logoContainer {
@@ -72,13 +77,13 @@
 
       .logo {
         font-size: 3.5rem;
-        color: $background-primary;
+        color: $primary-color;
         margin-right: 0.75rem;
       }
 
       h1 {
         font-size: 2.5rem;
-        color: $background-primary;
+        color: $secondary-color;
         font-weight: 700;
       }
     }
@@ -87,7 +92,6 @@
       max-width: 800px;
       margin: 0 auto;
       font-size: 1.2rem;
-      color: $text-dark;
     }
   }
 
@@ -103,17 +107,16 @@
       text-align: center;
       padding: 1.5rem;
       @include card-style;
-      background-color: $background-about;
 
       svg {
         font-size: 3rem;
-        color: $accent-orange;
+        color: $primary-color;
         margin-bottom: 1.25rem;
       }
 
       h4 {
         font-size: 1.3rem;
-        color: $info-teal;
+        color: $secondary-color;
         margin-bottom: 1rem;
       }
 
@@ -131,26 +134,24 @@
       gap: 1rem;
 
       span {
-        background-color: $background-contact;
+        background-color: $white;
         padding: 0.75rem 1.25rem;
         border-radius: 25px;
         font-weight: 600;
-        color: $secondary-blue;
+        color: $secondary-color;
         white-space: nowrap;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        transition: $transition-base;
+        transition: all 0.3s ease;
 
         &:hover {
-          background-color: $primary-blue;
-          color: $background-light;
+          background-color: $primary-color;
+          color: $white;
         }
       }
     }
   }
 
   .howItWorks {
-    background-color: $background-services;
-    
     ol {
       list-style-type: none;
       padding: 0;
@@ -162,16 +163,16 @@
         align-items: center;
         margin-bottom: 1.5rem;
         padding: 1rem;
-        background-color: $background-light;
-        border-radius: $border-radius;
+        background-color: $white;
+        border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 
         &::before {
           content: counter(step-counter);
-          background-color: $success-green;
-          color: $background-light;
+          background-color: $primary-color;
+          color: $white;
           font-weight: bold;
-          padding: 0.5rem 1.1rem;
+          padding: 0.75rem 1.25rem;
           border-radius: 50%;
           margin-right: 1.5rem;
           font-size: 1.2rem;
@@ -181,9 +182,9 @@
   }
 
   .topDentists {
-    background-color: $background-pricing;
+    background-color: $white;
     padding: 2.5rem;
-    border-radius: $border-radius;
+    border-radius: 12px;
 
     p {
       margin-bottom: 2rem;
@@ -199,11 +200,11 @@
         display: flex;
         align-items: center;
         gap: 0.75rem;
-        background-color: $background-light;
+        background-color: $background-color;
         padding: 1rem 1.5rem;
         border-radius: 25px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        transition: $transition-base;
+        transition: all 0.3s ease;
 
         &:hover {
           transform: translateY(-3px);
@@ -211,23 +212,21 @@
         }
 
         svg {
-          color: $warning-yellow;
+          color: $primary-color;
           font-size: 1.5rem;
         }
 
         span {
           font-weight: 600;
-          color: $info-teal;
+          color: $secondary-color;
         }
       }
     }
   }
 
   .faq {
-    background-color: $background-accent;
-    
     .faqItem {
-      border-bottom: 1px solid $gray-300;
+      border-bottom: 1px solid $border-color;
       padding-bottom: 1.5rem;
       margin-bottom: 1.5rem;
 
@@ -240,21 +239,21 @@
         justify-content: space-between;
         align-items: center;
         cursor: pointer;
-        transition: $transition-base;
+        transition: all 0.3s ease;
 
         &:hover {
-          color: $accent-orange;
+          color: $primary-color;
         }
 
         h4 {
           font-size: 1.3rem;
-          color: $secondary-blue;
+          color: $secondary-color;
           margin: 0;
         }
 
         svg {
           font-size: 1.75rem;
-          color: $primary-blue;
+          color: $primary-color;
           transition: transform 0.3s ease;
 
           &.open {
@@ -266,7 +265,7 @@
       .faqAnswer {
         margin-top: 1.25rem;
         padding-left: 1.5rem;
-        border-left: 3px solid $accent-orange;
+        border-left: 3px solid $primary-color;
         font-size: 1.05rem;
         line-height: 1.7;
       }
@@ -274,7 +273,7 @@
   }
 }
 
-@media (max-width: $breakpoint-lg) {
+@media (max-width: 992px) {
   .dentalPricingInfo {
     padding: 2rem 1.5rem;
 
@@ -302,7 +301,7 @@
   }
 }
 
-@media (max-width: $breakpoint-md) {
+@media (max-width: 768px) {
   .dentalPricingInfo {
     padding: 1.5rem 1rem;
 
@@ -362,13 +361,14 @@
 }
 
 @media (max-width: 480px) {
-  .list {
+  
+  .list{
     display: flex;
     flex-direction: column;
   }
   .dentalPricingInfo {
     margin: 0;
-    padding: 0;
+    padding: 0 ;
     h2 {
       font-size: 2rem;
     }

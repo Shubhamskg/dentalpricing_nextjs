@@ -1,40 +1,28 @@
-@import '../variables';
-
 .navbar {
-  background-color: var(--background-light);
+  background-color: #ffffff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: $spacing-unit * 3 0;
-  position: sticky;
-  top: 0;
-  z-index: $z-index-sticky;
+  padding: 1rem 0;
 
   .navContainer {
-    max-width: $breakpoint-xl;
+    max-width: 1200px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 $spacing-unit * 4;
+    padding: 0 1rem;
   }
 
   .logoLink {
     display: flex;
     align-items: center;
     text-decoration: none;
-    color: var(--primary);
-    // color: white;
+    color: #3b82f6;
     font-weight: bold;
     font-size: 1.5rem;
-    transition: $transition-base;
-
-    &:hover {
-      color: var(--secondary);
-    }
 
     .logo {
       font-size: 2rem;
-      margin-right: $spacing-unit * 2;
-      color: var(--primary);
+      margin-right: 0.5rem;
     }
   }
 
@@ -45,18 +33,18 @@
     padding: 0;
 
     li {
-      margin-left: $spacing-unit * 6;
+      margin-left: 1.5rem;
     }
   }
 
   .navLink {
     text-decoration: none;
-    color: var(--text-dark);
+    color: #4b5563;
     font-weight: 500;
-    transition: $transition-base;
+    transition: color 0.3s ease;
 
     &:hover {
-      color: var(--primary);
+      color: #3b82f6;
     }
   }
 
@@ -71,29 +59,27 @@
 
     .loginButton, .signupButton {
       text-decoration: none;
-      padding: $spacing-unit * 2 $spacing-unit * 4;
-      border-radius: $border-radius;
+      padding: 0.5rem 1rem;
+      border-radius: 0.25rem;
       font-weight: 500;
-      transition: $transition-base;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     .loginButton {
-      color: var(--primary);
-      margin-right: $spacing-unit * 4;
-      border: 1px solid var(--primary);
+      color: #3b82f6;
+      margin-right: 1rem;
 
       &:hover {
-        background-color: var(--background-accent);
-        color: var(--secondary);
+        background-color: #ebf5ff;
       }
     }
 
     .signupButton {
-      background-color: var(--primary);
-      color: var(--text-light);
+      background-color: #3b82f6;
+      color: #ffffff;
 
       &:hover {
-        background-color: var(--secondary);
+        background-color: #2563eb;
       }
     }
   }
@@ -108,29 +94,29 @@
     background: none;
     border: none;
     cursor: pointer;
-    padding: $spacing-unit * 2;
-    border-radius: $border-radius;
-    transition: $transition-base;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.3s ease;
 
     &:hover {
-      background-color: var(--background-secondary);
+      background-color: #f3f4f6;
     }
 
     .profilePicture {
       width: 32px;
       height: 32px;
       border-radius: 50%;
-      margin-right: $spacing-unit * 2;
+      margin-right: 0.5rem;
     }
 
     .defaultProfileIcon {
       font-size: 32px;
-      color: var(--secondary);
-      margin-right: $spacing-unit * 2;
+      color: #3b82f6;
+      margin-right: 0.5rem;
     }
 
     span {
-      color: var(--text-dark);
+      color: #4b5563;
       font-weight: 500;
     }
   }
@@ -139,29 +125,28 @@
     position: absolute;
     top: 100%;
     right: 0;
-    background-color: var(--background-light);
-    border: 1px solid $gray-300;
-    border-radius: $border-radius;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: $spacing-unit * 2 0;
-    z-index: $z-index-dropdown;
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 0.5rem 0;
+    z-index: 10;
 
     a {
       display: block;
-      padding: $spacing-unit * 2 $spacing-unit * 4;
-      color: var(--text-dark);
+      padding: 0.5rem 1rem;
+      color: #4b5563;
       text-decoration: none;
-      transition: $transition-base;
+      transition: background-color 0.3s ease;
 
       &:hover {
-        background-color: var(--background-secondary);
-        color: var(--primary);
+        background-color: #f3f4f6;
       }
     }
   }
 }
 
-@media (max-width: $breakpoint-md) {
+@media (max-width: 768px) {
   .navbar {
     .navContainer {
       flex-direction: column;
@@ -169,21 +154,20 @@
     }
 
     .navLinks {
-      margin-top: $spacing-unit * 4;
+      margin-top: 1rem;
       flex-direction: column;
 
       li {
         margin-left: 0;
-        margin-bottom: $spacing-unit * 2;
+        margin-bottom: 0.5rem;
       }
     }
 
     .authSection {
-      margin-top: $spacing-unit * 4;
+      margin-top: 1rem;
     }
   }
 }
-
 @media (max-width: 468px) {
   .navbar {
     .navContainer {
@@ -192,20 +176,18 @@
     }
 
     .navLinks {
-      margin-top: $spacing-unit * 4;
-      gap: $spacing-unit * 8;
+      margin-top: 1rem;
+      gap:20px;
       flex-direction: row;
-      flex-wrap: wrap;
-      display: none;
 
       li {
         margin-left: 0;
-        margin-bottom: $spacing-unit * 2;
+        margin-bottom: 0.5rem;
       }
     }
 
     .authSection {
-      margin-top: $spacing-unit * 4;
+      margin-top: 1rem;
     }
   }
 }

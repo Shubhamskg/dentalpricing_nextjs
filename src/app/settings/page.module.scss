@@ -1,43 +1,42 @@
-// Import variables
-@import "../variables";
+// settings.module.scss
 
 .settingsContainer {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: $spacing-unit * 8; // Padding: 2rem
-}
-
-.settingItem {
-  margin-bottom: $spacing-unit * 6; // Margin-bottom: 1.5rem
-
-  label {
-    display: flex;
-    align-items: center;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  
+  .settingItem {
+    margin-bottom: 1.5rem;
+  
+    label {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+  
+    input[type="checkbox"] {
+      margin-right: 0.5rem;
+    }
+  
+    select {
+      margin-left: 0.5rem;
+      padding: 0.25rem;
+      border-radius: 4px;
+      border: 1px solid #ced4da;
+    }
+  }
+  
+  .saveButton {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+  
+    &:hover {
+      background-color: #0056b3;
+    }
   }
-
-  input[type="checkbox"] {
-    margin-right: $spacing-unit * 2; // Margin-right: 0.5rem
-  }
-
-  select {
-    margin-left: $spacing-unit * 2; // Margin-left: 0.5rem
-    padding: $spacing-unit; // Padding: 0.25rem
-    border-radius: $border-radius; // Consistent border-radius
-    border: 1px solid $gray-400; // Gray border
-  }
-}
-
-.saveButton {
-  background-color: $primary-blue; // Primary blue for the save button
-  color: $background-light; // White text
-  border: none;
-  padding: $spacing-unit * 2 $spacing-unit * 4; // Padding: 0.5rem 1rem
-  border-radius: $border-radius; // Consistent border-radius
-  cursor: pointer;
-  transition: background-color $transition-base; // Smooth transition for hover
-
-  &:hover {
-    background-color: $secondary-blue; // Darker blue on hover
-  }
-}
