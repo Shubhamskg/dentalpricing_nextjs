@@ -1,7 +1,7 @@
 @import '../variables';
 
 .navbar {
-  background-color: var(--background-primary);
+  background-color: var(--background-light);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: $spacing-unit * 3 0;
   position: sticky;
@@ -21,19 +21,20 @@
     display: flex;
     align-items: center;
     text-decoration: none;
-    color: var(--text-light);
+    color: var(--primary);
+    // color: white;
     font-weight: bold;
     font-size: 1.5rem;
     transition: $transition-base;
 
     &:hover {
-      color: var(--accent);
+      color: var(--secondary);
     }
 
     .logo {
       font-size: 2rem;
       margin-right: $spacing-unit * 2;
-      color: var(--text-light);
+      color: var(--accent);
     }
   }
 
@@ -50,12 +51,12 @@
 
   .navLink {
     text-decoration: none;
-    color: var(--text-light);
+    color: var(--text-dark);
     font-weight: 500;
     transition: $transition-base;
 
     &:hover {
-      color: var(--accent);
+      color: var(--primary);
     }
   }
 
@@ -77,21 +78,22 @@
     }
 
     .loginButton {
-      color: var(--text-light);
+      color: var(--primary);
       margin-right: $spacing-unit * 4;
-      border: 1px solid var(--text-light);
+      border: 1px solid var(--primary);
 
       &:hover {
-        background-color: rgba(255, 255, 255, 0.1);
+        background-color: var(--background-accent);
+        color: var(--secondary);
       }
     }
 
     .signupButton {
-      background-color: var(--accent);
-      color: var(--text-dark);
+      background-color: var(--primary);
+      color: var(--text-light);
 
       &:hover {
-        background-color: darken($accent-orange, 10%);
+        background-color: var(--secondary);
       }
     }
   }
@@ -111,7 +113,7 @@
     transition: $transition-base;
 
     &:hover {
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: var(--background-secondary);
     }
 
     .profilePicture {
@@ -123,12 +125,12 @@
 
     .defaultProfileIcon {
       font-size: 32px;
-      color: var(--text-light);
+      color: var(--secondary);
       margin-right: $spacing-unit * 2;
     }
 
     span {
-      color: var(--text-light);
+      color: var(--text-dark);
       font-weight: 500;
     }
   }

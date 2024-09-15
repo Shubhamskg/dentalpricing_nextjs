@@ -18,19 +18,19 @@ $gray-900: #212529;
 $text-dark: $gray-900;
 $text-light: $gray-100;
 
-// Background colors
+// Background colors (updated to be lighter)
 $background-light: #ffffff;
-$background-dark: #00335c;
-$background-primary: #0073cf;
-$background-secondary: #f4f6f7;
-$background-accent: #fdf2e9;
+$background-dark: #004275;  // Lightened from #00335c
+$background-primary: lighten($primary-blue, 10%);  // Lightened primary blue
+$background-secondary: $gray-100;
+$background-accent: lighten(#fdf2e9, 2%);  // Slightly lightened accent
 
-// Page-specific background colors
-$background-home: #0073cf;
-$background-about: #eaf2f8;
-$background-contact: #fef5e7;
-$background-pricing: #e9f7ef;
-$background-services: #e8f6f3;
+// Page-specific background colors (updated to be lighter)
+$background-home: lighten($primary-blue, 15%);  // Lightened home background
+$background-about: $gray-100;
+$background-contact: lighten($background-accent, 3%);  // Lightened contact background
+$background-pricing: $gray-100;
+$background-services: $gray-100;
 
 // Typography
 $font-family-sans-serif: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;

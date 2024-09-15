@@ -134,7 +134,7 @@
   font-weight: 700;
   text-align: center;
   margin-bottom: $spacing-unit * 8;
-  color: $primary-blue;
+  color: $text-dark;
 }
 
 .searchMethodToggle {
@@ -652,6 +652,15 @@
 }
 
 @media (max-width: $breakpoint-sm) {
+  .container{
+    background-color: $background-primary; // Use the variable to apply the gradient
+  }
+  .searchSection{
+    background-color: $background-primary; // Use the variable to apply the gradient
+    .searchTitle{
+      color: $text-light; // Use the variable to apply the gradient
+    }
+  }
   .main {
     padding: 0;
     margin: $spacing-unit * 4 $spacing-unit * 2;
