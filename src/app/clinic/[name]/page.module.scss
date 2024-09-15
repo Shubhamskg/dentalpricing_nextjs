@@ -1,12 +1,13 @@
+@import "../../variables";
 .clinicProfilePage {
-  font-family: Arial, sans-serif;
-  color: #333;
+  font-family: $font-family-sans-serif;
+  color: $text-dark;
 }
 
 .header {
-  background-color: #ffffff;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  padding: 1rem 0;
+  background-color: $background-light;
+  box-shadow: 0 2px 4px rgba($gray-900, 0.1);
+  padding: $spacing-unit * 4 0;
 }
 
 .headerContent {
@@ -15,50 +16,50 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 2rem;
+  padding: 0 $spacing-unit * 8;
 }
 
 .logo {
-  font-size: 1.5rem;
+  font-size: $font-size-base * 1.5;
   font-weight: bold;
-  color: #0070f3;
+  color: $primary-blue;
   text-decoration: none;
 }
 
 .nav {
   display: flex;
-  gap: 1rem;
+  gap: $spacing-unit * 4;
 
   a {
-    color: #333;
+    color: $text-dark;
     text-decoration: none;
-    transition: color 0.3s ease;
+    transition: $transition-base;
 
     &:hover {
-      color: #0070f3;
+      color: $primary-blue;
     }
   }
 }
 
 .clinicProfile {
   max-width: 1200px;
-  margin: 2rem auto;
-  padding: 0 2rem;
+  margin: $spacing-unit * 8 auto;
+  padding: 0 $spacing-unit * 8;
 }
 
 .heroSection {
   display: flex;
-  background-color: #f8f9fa;
-  border-radius: 10px;
-  padding: 2rem;
-  margin-bottom: 2rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: $background-secondary;
+  border-radius: $border-radius;
+  padding: $spacing-unit * 8;
+  margin-bottom: $spacing-unit * 8;
+  box-shadow: 0 4px 6px rgba($gray-900, 0.1);
 }
 
 .clinicLogo {
   width: 100px;
   height: 100px;
-  margin-right: 2rem;
+  margin-right: $spacing-unit * 8;
 
   img {
     width: 100%;
@@ -69,12 +70,12 @@
   .letterLogo {
     width: 100%;
     height: 100%;
-    background-color: #0070f3;
-    color: white;
+    background-color: $primary-blue;
+    color: $text-light;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 3rem;
+    font-size: $font-size-base * 3;
     font-weight: bold;
     border-radius: 50%;
   }
@@ -84,42 +85,42 @@
   flex: 1;
 
   h1 {
-    font-size: 2.5rem;
-    color: #333;
-    margin-bottom: 0.5rem;
+    font-size: $font-size-base * 2.5;
+    color: $text-dark;
+    margin-bottom: $spacing-unit * 2;
   }
 
   h3 {
-    font-size: 1.2rem;
-    color: #666;
-    margin-bottom: 1rem;
+    font-size: $font-size-base * 1.2;
+    color: $gray-600;
+    margin-bottom: $spacing-unit * 4;
   }
 
   .clinicDescription {
-    margin-bottom: 1rem;
-    color: #555;
+    margin-bottom: $spacing-unit * 4;
+    color: $gray-700;
   }
 }
 
 .clinicInfo {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  gap: $spacing-unit * 4;
+  margin-bottom: $spacing-unit * 4;
 
   p {
     display: flex;
     align-items: center;
     margin: 0;
-    color: #555;
+    color: $gray-700;
 
     svg {
-      margin-right: 0.5rem;
-      color: #0070f3;
+      margin-right: $spacing-unit * 2;
+      color: $primary-blue;
     }
 
     a {
-      color: #0070f3;
+      color: $primary-blue;
       text-decoration: none;
 
       &:hover {
@@ -132,23 +133,23 @@
 .googleRating {
   display: flex;
   align-items: center;
-  margin-top: 1rem;
+  margin-top: $spacing-unit * 4;
 
   .ratingNumber {
-    font-size: 1.5rem;
+    font-size: $font-size-base * 1.5;
     font-weight: bold;
-    color: #0070f3;
-    margin-right: 0.5rem;
+    color: $primary-blue;
+    margin-right: $spacing-unit * 2;
   }
 
   .stars {
     display: flex;
-    margin-right: 0.5rem;
+    margin-right: $spacing-unit * 2;
   }
 
   .starFilled, .starEmpty {
-    color: #FFD700;
-    font-size: 1.2rem;
+    color: $warning-yellow;
+    font-size: $font-size-base * 1.2;
   }
 
   .starEmpty {
@@ -156,17 +157,17 @@
   }
 
   .reviewCount {
-    color: #666;
-    font-size: 0.9rem;
+    color: $gray-600;
+    font-size: $font-size-base * 0.9;
   }
 }
 
 .highlightedTreatment {
-  background-color: #e6f3ff;
-  border-radius: 10px;
-  padding: 2rem;
-  margin: 2rem 0;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: rgba($primary-blue, 0.1);
+  border-radius: $border-radius;
+  padding: $spacing-unit * 8;
+  margin: $spacing-unit * 8 0;
+  box-shadow: 0 4px 6px rgba($gray-900, 0.1);
 }
 
 .highlightedContent {
@@ -176,130 +177,130 @@
 }
 
 .treatmentIcon {
-  font-size: 3rem;
-  color: #0070f3;
-  margin-right: 1rem;
+  font-size: $font-size-base * 3;
+  color: $primary-blue;
+  margin-right: $spacing-unit * 4;
 }
 
 .treatmentInfo {
   flex-grow: 1;
 
   h2 {
-    font-size: 1.5rem;
-    color: #333;
-    margin-bottom: 0.5rem;
+    font-size: $font-size-base * 1.5;
+    color: $text-dark;
+    margin-bottom: $spacing-unit * 2;
   }
 
   .price {
-    font-size: 1.8rem;
-    color: #0070f3;
+    font-size: $font-size-base * 1.8;
+    color: $primary-blue;
     font-weight: bold;
   }
 }
 
 .bookButton {
-  background-color: #0070f3;
-  color: white;
+  background-color: $primary-blue;
+  color: $text-light;
   border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 5px;
+  padding: $spacing-unit * 3 $spacing-unit * 6;
+  border-radius: $border-radius;
   cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
+  font-size: $font-size-base;
+  transition: $transition-base;
 
   &:hover {
-    background-color: #0051a2;
+    background-color: $secondary-blue;
   }
 }
 
 .gallerySection {
-  margin-bottom: 2rem;
+  margin-bottom: $spacing-unit * 8;
 }
 
 .treatmentsSection {
-  margin-bottom: 2rem;
+  margin-bottom: $spacing-unit * 8;
 }
 
 .searchContainer {
   position: relative;
-  margin-bottom: 2rem;
+  margin-bottom: $spacing-unit * 8;
 }
 
 .searchIcon {
   position: absolute;
-  left: 1rem;
+  left: $spacing-unit * 4;
   top: 50%;
   transform: translateY(-50%);
-  color: #777;
+  color: $gray-500;
 }
 
 .searchInput {
   width: 100%;
-  padding: 0.75rem 1rem 0.75rem 3rem;
-  font-size: 1rem;
-  border: 1px solid #e0e0e0;
-  border-radius: 5px;
+  padding: $spacing-unit * 3 $spacing-unit * 4 $spacing-unit * 3 $spacing-unit * 12;
+  font-size: $font-size-base;
+  border: 1px solid $gray-300;
+  border-radius: $border-radius;
   outline: none;
-  transition: border-color 0.3s ease;
+  transition: $transition-base;
 
   &:focus {
-    border-color: #0070f3;
+    border-color: $primary-blue;
   }
 }
 
 .allTreatments {
   h2 {
-    font-size: 1.8rem;
-    color: #333;
-    margin-bottom: 1rem;
-    border-bottom: 2px solid #0070f3;
-    padding-bottom: 0.5rem;
+    font-size: $font-size-base * 1.8;
+    color: $text-dark;
+    margin-bottom: $spacing-unit * 4;
+    border-bottom: 2px solid $primary-blue;
+    padding-bottom: $spacing-unit * 2;
   }
 }
 
 .treatmentGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
+  gap: $spacing-unit * 6;
 }
 
 .treatmentCard {
-  background-color: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 1.5rem;
-  transition: box-shadow 0.3s ease;
+  background-color: $background-light;
+  border: 1px solid $gray-300;
+  border-radius: $border-radius;
+  padding: $spacing-unit * 6;
+  transition: $transition-base;
   position: relative;
 
   &:hover {
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 12px rgba($gray-900, 0.1);
   }
 
   h3 {
-    font-size: 1.2rem;
-    color: #333;
-    margin-bottom: 0.5rem;
+    font-size: $font-size-base * 1.2;
+    color: $text-dark;
+    margin-bottom: $spacing-unit * 2;
   }
 
   .price {
-    font-size: 1.5rem;
-    color: #0070f3;
+    font-size: $font-size-base * 1.5;
+    color: $primary-blue;
     font-weight: bold;
-    margin-bottom: 0.5rem;
+    margin-bottom: $spacing-unit * 2;
   }
 
   .category {
-    font-size: 0.9rem;
-    color: #777;
-    margin-bottom: 1rem;
+    font-size: $font-size-base * 0.9;
+    color: $gray-500;
+    margin-bottom: $spacing-unit * 4;
   }
 
   .bookButtons {
     position: absolute;
-    bottom: 1rem;
-    right: 1rem;
-    background-color: #0070f3;
-    color: white;
+    bottom: $spacing-unit * 4;
+    right: $spacing-unit * 4;
+    background-color: $primary-blue;
+    color: $text-light;
     border: none;
     width: 40px;
     height: 40px;
@@ -308,48 +309,48 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: $transition-base;
 
     &:hover {
-      background-color: #0051a2;
+      background-color: $secondary-blue;
     }
   }
 }
 
 .loadMoreButton {
-  background-color: #f0f0f0;
-  color: #333;
+  background-color: $gray-200;
+  color: $text-dark;
   border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 5px;
+  padding: $spacing-unit * 3 $spacing-unit * 6;
+  border-radius: $border-radius;
   cursor: pointer;
   display: block;
-  margin: 2rem auto 0;
-  transition: background-color 0.3s ease;
+  margin: $spacing-unit * 8 auto 0;
+  transition: $transition-base;
 
   &:hover {
-    background-color: #e0e0e0;
+    background-color: $gray-300;
   }
 }
 
 .reviewsSection {
-  margin-top: 3rem;
+  margin-top: $spacing-unit * 12;
 }
 
 .error, .loading {
   text-align: center;
-  margin-top: 2rem;
-  font-size: 1.2rem;
-  color: #333;
+  margin-top: $spacing-unit * 8;
+  font-size: $font-size-base * 1.2;
+  color: $text-dark;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: $breakpoint-lg) {
   .treatmentGrid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: $breakpoint-md) {
   .heroSection {
     flex-direction: column;
     align-items: center;
@@ -358,7 +359,7 @@
 
   .clinicLogo {
     margin-right: 0;
-    margin-bottom: 1rem;
+    margin-bottom: $spacing-unit * 4;
   }
 
   .clinicInfo {
@@ -370,13 +371,13 @@
   }
 }
 
-@media (max-width: 480px) {
-  .clinicProfile{
+@media (max-width: $breakpoint-sm) {
+  .clinicProfile {
     margin: 0;
     padding: 0;
     overflow: hidden;
   }
-  .heroSection{
+  .heroSection {
     margin: 0;
   }
   .treatmentGrid {
@@ -391,10 +392,10 @@
 
   .treatmentIcon {
     margin-right: 0;
-    margin-bottom: 1rem;
+    margin-bottom: $spacing-unit * 4;
   }
 
   .treatmentInfo {
-    margin-bottom: 1rem;
+    margin-bottom: $spacing-unit * 4;
   }
 }

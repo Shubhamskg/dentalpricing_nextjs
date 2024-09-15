@@ -1,80 +1,83 @@
+@import "../variables";
 .aboutPage {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
-  
-    h1 {
-      font-size: 2.5rem;
-      color: #3b82f6;
-      margin-bottom: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: $background-accent;
+  font-family: $font-family-sans-serif;
+
+  h1 {
+    font-size: 2.5rem;
+    color: $primary-blue;
+    margin-bottom: $spacing-unit * 4;
+  }
+
+  .intro {
+    font-size: $font-size-base * 1.2;
+    color: $gray-700;
+    margin-bottom: $spacing-unit * 8;
+  }
+
+  section {
+    margin-bottom: $spacing-unit * 12;
+
+    h2 {
+      font-size: $font-size-base * 2;
+      color: $gray-800;
+      margin-bottom: $spacing-unit * 4;
     }
-  
-    .intro {
-      font-size: 1.2rem;
-      color: #4b5563;
-      margin-bottom: 2rem;
+
+    h3 {
+      font-size: $font-size-base * 1.5;
+      color: $gray-800;
+      margin-bottom: $spacing-unit * 2;
     }
-  
-    section {
-      margin-bottom: 3rem;
-  
-      h2 {
-        font-size: 2rem;
-        color: #4b5563;
-        margin-bottom: 1rem;
+
+    p {
+      font-size: $font-size-base * 1.1;
+      color: $gray-600;
+      line-height: $line-height-base;
+    }
+
+    ul {
+      list-style-type: disc;
+      padding-left: $spacing-unit * 6;
+      margin-bottom: $spacing-unit * 4;
+
+      li {
+        font-size: $font-size-base * 1.1;
+        color: $gray-600;
+        margin-bottom: $spacing-unit * 2;
       }
-  
-      h3 {
-        font-size: 1.5rem;
-        color: #4b5563;
-        margin-bottom: 0.5rem;
-      }
-  
-      p {
-        font-size: 1.1rem;
-        color: #6b7280;
-        line-height: 1.6;
-      }
-  
-      ul {
-        list-style-type: disc;
-        padding-left: 1.5rem;
-        margin-bottom: 1rem;
-  
-        li {
-          font-size: 1.1rem;
-          color: #6b7280;
-          margin-bottom: 0.5rem;
+    }
+  }
+
+  .statsSection {
+    .statsGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: $spacing-unit * 8;
+
+      .statItem {
+        text-align: center;
+
+        svg {
+          font-size: $font-size-base * 3;
+          color: $primary-blue;
+          margin-bottom: $spacing-unit * 4;
         }
-      }
-    }
-  
-    .statsSection {
-      .statsGrid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 2rem;
-  
-        .statItem {
-          text-align: center;
-  
-          svg {
-            font-size: 3rem;
-            color: #3b82f6;
-            margin-bottom: 1rem;
-          }
-  
-          h3 {
-            font-size: 2.5rem;
-            color: #3b82f6;
-            margin-bottom: 0.5rem;
-          }
-  
-          p {
-            font-size: 1rem;
-            color: #6b7280;
-          }
+
+        h3 {
+          font-size: $font-size-base * 2.5;
+          color: $primary-blue;
+          margin-bottom: $spacing-unit * 2;
+        }
+
+        p {
+          font-size: $font-size-base;
+          color: $gray-600;
         }
       }
     }
   }
+}

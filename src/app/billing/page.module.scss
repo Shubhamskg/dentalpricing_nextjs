@@ -1,57 +1,67 @@
-// billing.module.scss
+@import "../variables";
 
 .billingContainer {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: $spacing-unit * 8;
+  font-family: $font-family-sans-serif;
+}
+
+.nextPayment {
+  background-color: $background-secondary;
+  border-radius: $border-radius;
+  padding: $spacing-unit * 6;
+  margin-bottom: $spacing-unit * 8;
+  box-shadow: 0 2px 4px rgba($gray-900, 0.1);
+
+  h2 {
+    margin-bottom: $spacing-unit * 4;
+    color: $text-dark;
+    font-size: $font-size-base * 1.5;
   }
-  
-  .nextPayment {
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  
-    h2 {
-      margin-bottom: 1rem;
+}
+
+.paymentHistory {
+  h2 {
+    margin-bottom: $spacing-unit * 4;
+    color: $text-dark;
+    font-size: $font-size-base * 1.5;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th, td {
+      text-align: left;
+      padding: $spacing-unit * 3;
+      border-bottom: 1px solid $gray-300;
+    }
+
+    th {
+      background-color: $background-secondary;
+      font-weight: 600;
+      color: $text-dark;
+    }
+
+    td {
+      color: $gray-700;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
     }
   }
-  
+}
+
+@media (max-width: $breakpoint-sm) {
   .paymentHistory {
-    h2 {
-      margin-bottom: 1rem;
-    }
-  
     table {
-      width: 100%;
-      border-collapse: collapse;
-  
+      font-size: $font-size-base * 0.875;
+
       th, td {
-        text-align: left;
-        padding: 0.75rem;
-        border-bottom: 1px solid #dee2e6;
-      }
-  
-      th {
-        background-color: #f8f9fa;
-        font-weight: 600;
-      }
-  
-      tr:last-child td {
-        border-bottom: none;
+        padding: $spacing-unit * 2;
       }
     }
   }
-  
-  @media (max-width: 600px) {
-    .paymentHistory {
-      table {
-        font-size: 0.875rem;
-  
-        th, td {
-          padding: 0.5rem;
-        }
-      }
-    }
-  }
+}

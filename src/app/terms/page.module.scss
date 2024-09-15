@@ -1,39 +1,42 @@
+// Import variables
+@import "../variables";
+
 .termsPage {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 2rem;
-  
-    h1 {
-      font-size: 2.5rem;
-      color: #3b82f6;
-      margin-bottom: 1rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: $spacing-unit * 8; // Padding: 2rem
+
+  h1 {
+    font-size: 2.5rem;
+    color: $primary-blue; // Primary blue for heading
+    margin-bottom: $spacing-unit * 4; // Margin-bottom: 1rem
+  }
+
+  > p {
+    font-size: $font-size-base; // Base font size: 1rem
+    color: $gray-600; // Text color
+    margin-bottom: $spacing-unit * 8; // Margin-bottom: 2rem
+  }
+
+  section {
+    margin-bottom: $spacing-unit * 8; // Margin-bottom: 2rem
+
+    h2 {
+      font-size: 1.8rem;
+      color: $gray-700; // Darker gray for section headings
+      margin-bottom: $spacing-unit * 4; // Margin-bottom: 1rem
     }
-  
-    > p {
-      font-size: 1rem;
-      color: #6b7280;
-      margin-bottom: 2rem;
-    }
-  
-    section {
-      margin-bottom: 2rem;
-  
-      h2 {
-        font-size: 1.8rem;
-        color: #4b5563;
-        margin-bottom: 1rem;
-      }
-  
-      p {
-        font-size: 1.1rem;
-        color: #6b7280;
-        line-height: 1.6;
-      }
-    }
-  
-    > p:last-child {
+
+    p {
       font-size: 1.1rem;
-      color: #4b5563;
-      margin-top: 2rem;
+      color: $gray-600; // Text color
+      line-height: $line-height-base; // Consistent line-height
     }
   }
+
+  > p:last-child {
+    font-size: 1.1rem;
+    color: $gray-700; // Darker text for emphasis
+    margin-top: $spacing-unit * 8; // Margin-top: 2rem
+  }
+}

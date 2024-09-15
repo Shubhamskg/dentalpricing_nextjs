@@ -1,14 +1,5 @@
 @use 'sass:math';
-
-// Variables
-$primary-color: #3b82f6;
-$secondary-color: #93c5fd;
-$background-color: #f3f4f6;
-$text-color: #374151;
-$border-color: #e5e7eb;
-$accent-color: #10b981;
-$error-color: #ef4444;
-
+@import "../variables";
 // Mixins
 @mixin flex-center {
   display: flex;
@@ -17,50 +8,50 @@ $error-color: #ef4444;
 }
 
 @mixin button-style {
-  padding: 0.75rem 1.5rem;
+  padding: $spacing-unit * 3 $spacing-unit * 6;
   border: none;
-  border-radius: 0.5rem;
+  border-radius: $border-radius;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: $transition-base;
 }
 
 // Container
 .container {
-  font-family: 'Inter', Arial, sans-serif;
-  background-color: $background-color;
+  font-family: $font-family-sans-serif;
+  background-color: $background-primary;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  color: $text-color;
+  color: $text-dark;
 }
 
 // Header
 .header {
-  background-color: $primary-color;
-  color: white;
-  padding: 1.5rem 0;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: $primary-blue;
+  color: $text-light;
+  padding: $spacing-unit * 6 0;
+  box-shadow: 0 4px 6px rgba($gray-900, 0.1);
 }
 
 .headerContent {
-  max-width: 1200px;
+  max-width: $breakpoint-xl;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 1rem;
+  padding: 0 $spacing-unit * 4;
 }
 
 .title {
   text-decoration: none;
-  color: white;
-  font-size: 1.75rem;
+  color: $text-light;
+  font-size: $font-size-base * 1.75;
   font-weight: bold;
-  transition: color 0.3s ease;
+  transition: color $transition-base;
 
   &:hover {
-    color: $secondary-color;
+    color: $secondary-blue;
   }
 }
 
@@ -71,11 +62,11 @@ $error-color: #ef4444;
 
 .accountButton {
   @include button-style;
-  background-color: rgba(255, 255, 255, 0.2);
-  color: white;
+  background-color: rgba($text-light, 0.2);
+  color: $text-light;
 
   &:hover {
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: rgba($text-light, 0.3);
   }
 }
 
@@ -83,11 +74,11 @@ $error-color: #ef4444;
   position: absolute;
   top: 120%;
   right: 0;
-  background-color: white;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background-color: $background-light;
+  border-radius: $border-radius;
+  box-shadow: 0 4px 12px rgba($gray-900, 0.15);
   min-width: 220px;
-  z-index: 10;
+  z-index: $z-index-dropdown;
 
   ul {
     list-style-type: none;
@@ -97,25 +88,25 @@ $error-color: #ef4444;
 
   li {
     &:not(:last-child) {
-      border-bottom: 1px solid $border-color;
+      border-bottom: 1px solid $gray-300;
     }
 
     a {
       display: flex;
       align-items: center;
-      padding: 1rem;
-      color: $text-color;
+      padding: $spacing-unit * 4;
+      color: $text-dark;
       text-decoration: none;
-      transition: background-color 0.3s ease;
+      transition: background-color $transition-base;
 
       &:hover {
-        background-color: $background-color;
+        background-color: $background-primary;
       }
 
       svg {
-        margin-right: 0.75rem;
-        font-size: 1.25rem;
-        color: $primary-color;
+        margin-right: $spacing-unit * 3;
+        font-size: $font-size-base * 1.25;
+        color: $primary-blue;
       }
     }
   }
@@ -124,38 +115,38 @@ $error-color: #ef4444;
 // Main Content
 .main {
   flex-grow: 1;
-  max-width: 1200px;
-  margin: 3rem auto;
-  padding: 0 1rem;
+  max-width: $breakpoint-xl;
+  margin: $spacing-unit * 12 auto;
+  padding: 0 $spacing-unit * 4;
 }
 
 // Search Section
 .searchSection {
-  background-color: white;
-  border-radius: 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 2.5rem;
-  margin-bottom: 3rem;
+  background-color: $background-light;
+  border-radius: $border-radius;
+  box-shadow: 0 4px 6px rgba($gray-900, 0.1);
+  padding: $spacing-unit * 10;
+  margin-bottom: $spacing-unit * 12;
 }
 
 .searchTitle {
-  font-size: 2rem;
+  font-size: $font-size-base * 2;
   font-weight: 700;
   text-align: center;
-  margin-bottom: 2rem;
-  color: $primary-color;
+  margin-bottom: $spacing-unit * 8;
+  color: $primary-blue;
 }
 
 .searchMethodToggle {
   @include flex-center;
-  margin-bottom: 2rem;
+  margin-bottom: $spacing-unit * 8;
 }
 
 .methodButton {
   @include button-style;
-  background-color: white;
-  color: $primary-color;
-  border: 2px solid $primary-color;
+  background-color: $background-light;
+  color: $primary-blue;
+  border: 2px solid $primary-blue;
 
   &:first-child {
     border-top-right-radius: 0;
@@ -168,16 +159,16 @@ $error-color: #ef4444;
   }
 
   &.active {
-    background-color: $primary-color;
-    color: white;
+    background-color: $primary-blue;
+    color: $text-light;
   }
 }
 
 .searchInputs {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+  gap: $spacing-unit * 6;
+  margin-bottom: $spacing-unit * 8;
 }
 
 .categoryInputWrapper {
@@ -185,17 +176,17 @@ $error-color: #ef4444;
 }
 
 .searchInput {
-  width: calc(100% - 2rem);
-  padding: 1rem;
-  font-size: 1rem;
-  border: 2px solid $secondary-color;
-  border-radius: 0.5rem;
+  width: calc(100% - #{$spacing-unit * 8});
+  padding: $spacing-unit * 4;
+  font-size: $font-size-base;
+  border: 2px solid $secondary-blue;
+  border-radius: $border-radius;
   outline: none;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transition: border-color $transition-base, box-shadow $transition-base;
 
   &:focus {
-    border-color: $primary-color;
-    box-shadow: 0 0 0 3px rgba($primary-color, 0.2);
+    border-color: $primary-blue;
+    box-shadow: 0 0 0 3px rgba($primary-blue, 0.2);
   }
 
   &[type="number"] {
@@ -213,29 +204,29 @@ $error-color: #ef4444;
   top: 100%;
   left: 0;
   right: 0;
-  background-color: white;
-  border: 1px solid $border-color;
+  background-color: $background-light;
+  border: 1px solid $gray-300;
   border-top: none;
-  border-radius: 0 0 0.5rem 0.5rem;
+  border-radius: 0 0 $border-radius $border-radius;
   max-height: 200px;
   overflow-y: auto;
-  z-index: 10;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: $z-index-dropdown;
+  box-shadow: 0 4px 6px rgba($gray-900, 0.1);
 
   li {
-    padding: 0.75rem 1rem;
+    padding: $spacing-unit * 3 $spacing-unit * 4;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: background-color $transition-base;
 
     &:hover {
-      background-color: $background-color;
+      background-color: $background-primary;
     }
   }
 }
 
 .warningMessage {
-  color: $error-color;
-  margin-bottom: 1rem;
+  color: $danger-red;
+  margin-bottom: $spacing-unit * 4;
   text-align: center;
   font-weight: 600;
 }
@@ -243,32 +234,32 @@ $error-color: #ef4444;
 .searchButton {
   @include button-style;
   width: 100%;
-  background-color: $primary-color;
-  color: white;
-  font-size: 1.1rem;
+  background-color: $primary-blue;
+  color: $text-light;
+  font-size: $font-size-base * 1.1;
 
   &:hover {
-    background-color: darken($primary-color, 10%);
+    background-color: darken($primary-blue, 10%);
   }
 
   &:disabled {
-    background-color: $secondary-color;
+    background-color: $secondary-blue;
     cursor: not-allowed;
   }
 }
 
 // Results Section
 .resultsSection {
-  background-color: white;
-  border-radius: 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 2.5rem;
+  background-color: $background-light;
+  border-radius: $border-radius;
+  box-shadow: 0 4px 6px rgba($gray-900, 0.1);
+  padding: $spacing-unit * 10;
 }
 
 .loadingSpinner {
   @include flex-center;
-  font-size: 2rem;
-  color: $primary-color;
+  font-size: $font-size-base * 2;
+  color: $primary-blue;
   height: 150px;
 }
 
@@ -276,33 +267,33 @@ $error-color: #ef4444;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: $spacing-unit * 8;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: $spacing-unit * 4;
 }
 
 .resultsTitle {
-  font-size: 1.5rem;
+  font-size: $font-size-base * 1.5;
   font-weight: 700;
-  color: $primary-color;
+  color: $primary-blue;
 }
 
 .sortControls {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: $spacing-unit * 4;
   flex-wrap: wrap;
 
   button {
     @include button-style;
     background: none;
-    color: $text-color;
-    padding: 0.5rem;
-    font-size: 0.9rem;
+    color: $text-dark;
+    padding: $spacing-unit * 2;
+    font-size: $font-size-base * 0.9;
 
     &:hover, &.active {
-      color: $primary-color;
-      background-color: rgba($primary-color, 0.1);
+      color: $primary-blue;
+      background-color: rgba($primary-blue, 0.1);
     }
   }
 }
@@ -313,55 +304,55 @@ $error-color: #ef4444;
 }
 
 .resultItem {
-  border-bottom: 1px solid $border-color;
-  padding: 1.5rem 0;
+  border-bottom: 1px solid $gray-300;
+  padding: $spacing-unit * 6 0;
 
   .clinicHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: $spacing-unit * 4;
 
     .headerButton {
       margin: 0;
       padding: 0;
       border-style: none;
       background-color: transparent;
-      color: $primary-color;
+      color: $primary-blue;
       cursor: pointer;
       font-weight: 600;
-      transition: color 0.3s ease;
+      transition: color $transition-base;
 
       &:hover {
-        color: darken($primary-color, 15%);
+        color: darken($primary-blue, 15%);
         text-decoration: underline;
       }
     }
     
     h4 {
       margin: 0;
-      font-size: 1.25rem;
-      color: $text-color;
+      font-size: $font-size-base * 1.25;
+      color: $text-dark;
     }
   }
 
   .reviewSection {
-    background-color: #f8f9fa;
-    border-radius: 0.75rem;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
+    background-color: $gray-100;
+    border-radius: $border-radius;
+    padding: $spacing-unit * 6;
+    margin-bottom: $spacing-unit * 6;
 
     h3 {
-      font-size: 1.75rem;
-      margin-bottom: 1.5rem;
-      color: $primary-color;
+      font-size: $font-size-base * 1.75;
+      margin-bottom: $spacing-unit * 6;
+      color: $primary-blue;
     }
 
     .googleReviewSummary {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 1.5rem;
+      margin-bottom: $spacing-unit * 6;
 
       .googleLogo {
         display: flex;
@@ -370,12 +361,12 @@ $error-color: #ef4444;
         img {
           width: 28px;
           height: 28px;
-          margin-right: 0.75rem;
+          margin-right: $spacing-unit * 3;
         }
 
         span {
           font-weight: bold;
-          font-size: 1.1rem;
+          font-size: $font-size-base * 1.1;
         }
       }
 
@@ -384,30 +375,30 @@ $error-color: #ef4444;
         align-items: center;
 
         .ratingNumber {
-          font-size: 1.75rem;
+          font-size: $font-size-base * 1.75;
           font-weight: bold;
-          margin-right: 0.75rem;
-          color: $accent-color;
+          margin-right: $spacing-unit * 3;
+          color: $success-green;
         }
 
         .stars {
           display: flex;
-          margin-right: 0.75rem;
+          margin-right: $spacing-unit * 3;
         }
 
         .reviewCount {
-          color: #666;
-          font-size: 0.9rem;
+          color: $gray-600;
+          font-size: $font-size-base * 0.9;
         }
       }
 
       .reviewButton {
         @include button-style;
-        background-color: #1a73e8;
-        color: white;
+        background-color: $info-teal;
+        color: $text-light;
 
         &:hover {
-          background-color: darken(#1a73e8, 10%);
+          background-color: darken($info-teal, 10%);
         }
       }
     }
@@ -416,48 +407,48 @@ $error-color: #ef4444;
   .reviewList {
     display: flex;
     overflow-x: auto;
-    gap: 1.5rem;
-    padding-bottom: 1.5rem;
+    gap: $spacing-unit * 6;
+    padding-bottom: $spacing-unit * 6;
     scrollbar-width: thin;
-    scrollbar-color: $secondary-color $background-color;
+    scrollbar-color: $secondary-blue $background-primary;
 
     &::-webkit-scrollbar {
       height: 8px;
     }
 
     &::-webkit-scrollbar-track {
-      background: $background-color;
+      background: $background-primary;
     }
 
     &::-webkit-scrollbar-thumb {
-      background-color: $secondary-color;
+      background-color: $secondary-blue;
       border-radius: 20px;
     }
   }
 
   .review {
-    background-color: white;
-    border-radius: 0.75rem;
-    padding: 1.5rem;
+    background-color: $background-light;
+    border-radius: $border-radius;
+    padding: $spacing-unit * 6;
     min-width: 280px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 6px rgba($gray-900, 0.1);
+    transition: transform $transition-base, box-shadow $transition-base;
 
     &:hover {
       transform: translateY(-5px);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 6px 12px rgba($gray-900, 0.15);
     }
 
     .reviewHeader {
       display: flex;
       align-items: center;
-      margin-bottom: 1rem;
+      margin-bottom: $spacing-unit * 4;
 
       .reviewerImage {
         width: 48px;
         height: 48px;
         border-radius: 50%;
-        margin-right: 1rem;
+        margin-right: $spacing-unit * 4;
         object-fit: cover;
       }
 
@@ -467,13 +458,13 @@ $error-color: #ef4444;
         .reviewAuthor {
           display: block;
           font-weight: bold;
-          font-size: 1.1rem;
-          margin-bottom: 0.25rem;
+          font-size: $font-size-base * 1.1;
+          margin-bottom: $spacing-unit;
         }
 
         .reviewTime {
-          font-size: 0.85rem;
-          color: #666;
+          font-size: $font-size-base * 0.85;
+          color: $gray-600;
         }
       }
 
@@ -487,48 +478,48 @@ $error-color: #ef4444;
 
     .reviewStars {
       display: flex;
-      margin-bottom: 1rem;
+      margin-bottom: $spacing-unit * 4;
     }
 
     .reviewText {
-      margin-bottom: 1rem;
-      font-size: 0.95rem;
-      line-height: 1.5;
+      margin-bottom: $spacing-unit * 4;
+      font-size: $font-size-base * 0.95;
+      line-height: $line-height-base;
     }
 
     .readMoreButton {
       background: none;
       border: none;
-      color: $primary-color;
+      color: $primary-blue;
       cursor: pointer;
       padding: 0;
-      font-size: 0.9rem;
+      font-size: $font-size-base * 0.9;
       font-weight: 600;
-      transition: color 0.3s ease;
+      transition: color $transition-base;
 
       &:hover {
-        color: darken($primary-color, 15%);
+        color: darken($primary-blue, 15%);
         text-decoration: underline;
       }
     }
   }
 
   .starFilled {
-    color: #ffc107;
+    color: $warning-yellow;
   }
 
   .starEmpty {
-    color: #e4e5e9;
+    color: $gray-300;
   }
 
   .bookButton {
     @include button-style;
-    background-color: $accent-color;
-    color: white;
-    margin-top: 1.5rem;
+    background-color: $accent-orange;
+    color: $text-light;
+    margin-top: $spacing-unit * 6;
 
     &:hover {
-      background-color: darken($accent-color, 10%);
+      background-color: darken($accent-orange, 10%);
     }
   }
 
@@ -537,24 +528,24 @@ $error-color: #ef4444;
   }
 
   h4 {
-    font-size: 1.25rem;
-    margin-bottom: 0.75rem;
-    color: $text-color;
+    font-size: $font-size-base * 1.25;
+    margin-bottom: $spacing-unit * 3;
+    color: $text-dark;
   }
 
   p {
-    margin: 0.5rem 0;
-    line-height: 1.6;
+    margin: $spacing-unit * 2 0;
+    line-height: $line-height-base;
   }
 
   a {
-    color: $primary-color;
+    color: $primary-blue;
     text-decoration: none;
     font-weight: 600;
-    transition: color 0.3s ease;
+    transition: color $transition-base;
 
     &:hover {
-      color: darken($primary-color, 15%);
+      color: darken($primary-blue, 15%);
       text-decoration: underline;
     }
   }
@@ -562,71 +553,72 @@ $error-color: #ef4444;
 
 .noResults, .resultsPlaceholder {
   text-align: center;
-  color: #6b7280;
+  color: $gray-600;
   font-style: italic;
-  font-size: 1.1rem;
-  margin: 2rem 0;
+  font-size: $font-size-base * 1.1;
+  margin: $spacing-unit * 8 0;
 }
 
 // Pagination
 .pagination {
   @include flex-center;
-  margin-top: 3rem;
-  gap: 1rem;
+  margin-top: $spacing-unit * 12;
+  gap: $spacing-unit * 4;
 
   button {
     @include button-style;
-    background-color: $primary-color;
-    color: white;
-    font-size: 1rem;
+    background-color: $primary-blue;
+    color: $text-light;
+    font-size: $font-size-base;
 
     &:hover {
-      background-color: darken($primary-color, 10%);
+      background-color: darken($primary-blue, 10%);
     }
 
     &:disabled {
-      background-color: $secondary-color;
+      background-color: $secondary-blue;
       cursor: not-allowed;
     }
   }
   
   .pageNumber {
-    font-size: 1rem;
+    font-size: $font-size-base;
     font-weight: 600;
-    color: $text-color;
+    color: $text-dark;
   }
 }
+
 // Footer
 .footer {
-  background-color: darken($background-color, 5%);
-  color: $text-color;
+  background-color: darken($background-primary, 5%);
+  color: $text-dark;
   text-align: center;
-  padding: 2rem 1rem;
+  padding: $spacing-unit * 8 $spacing-unit * 4;
   margin-top: auto;
 
   p {
     margin: 0;
-    font-size: 0.9rem;
+    font-size: $font-size-base * 0.9;
   }
 
   a {
-    color: $primary-color;
+    color: $primary-blue;
     text-decoration: none;
     font-weight: 600;
-    transition: color 0.3s ease;
+    transition: color $transition-base;
 
     &:hover {
-      color: darken($primary-color, 15%);
+      color: darken($primary-blue, 15%);
       text-decoration: underline;
     }
   }
 }
 
 // Responsive design
-@media (max-width: 768px) {
+@media (max-width: $breakpoint-md) {
   .headerContent {
     flex-direction: column;
-    gap: 1rem;
+    gap: $spacing-unit * 4;
   }
 
   .searchMethodToggle {
@@ -635,11 +627,11 @@ $error-color: #ef4444;
   }
 
   .methodButton {
-    border-radius: 0.25rem;
-    margin-bottom: 0.5rem;
+    border-radius: $border-radius;
+    margin-bottom: $spacing-unit * 2;
 
     &:first-child, &:last-child {
-      border-radius: 0.25rem;
+      border-radius: $border-radius;
     }
   }
 
@@ -650,7 +642,7 @@ $error-color: #ef4444;
   .googleReviewSummary {
     flex-direction: column;
     align-items: flex-start;
-    gap: 1rem;
+    gap: $spacing-unit * 4;
   }
 
   .reviewButton {
@@ -658,25 +650,25 @@ $error-color: #ef4444;
   }
 }
 
-@media (max-width: 480px) {
-  .main{
+@media (max-width: $breakpoint-sm) {
+  .main {
     padding: 0;
-    margin: 1rem 0.5rem;
+    margin: $spacing-unit * 4 $spacing-unit * 2;
   }
-  .resultsSection{
+  .resultsSection {
     margin: 0;
-    padding: 1rem;
+    padding: $spacing-unit * 4;
   }
-  .clinicHeader{
+  .clinicHeader {
     display: flex;
     flex-direction: column;
   }
   .searchTitle {
-    font-size: 1.5rem;
+    font-size: $font-size-base * 1.5;
   }
 
   .resultsTitle {
-    font-size: 1.25rem;
+    font-size: $font-size-base * 1.25;
   }
 
   .review {

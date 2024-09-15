@@ -1,45 +1,46 @@
-// profile.module.scss
+// Import variables
+@import "../variables";
 
 .profileContainer {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 2rem;
-  }
-  
-  .profileInfo {
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    padding: 2rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .profilePicture {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 1rem;
-  }
-  
-  .profileInitials {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    background-color: #007bff;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 3rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-  }
-  
-  .profileInfo p {
-    margin-bottom: 0.5rem;
-  }
-  
-  .profileInfo strong {
-    font-weight: 600;
-    margin-right: 0.5rem;
-  }
+  max-width: 800px;
+  margin: 0 auto;
+  padding: $spacing-unit * 8; // Padding: 2rem
+}
+
+.profileInfo {
+  background-color: $gray-100; // Light gray for the background
+  border-radius: $border-radius; // Consistent border-radius
+  padding: $spacing-unit * 8; // Padding: 2rem
+  box-shadow: 0 2px 4px rgba($gray-900, 0.1); // Soft box-shadow
+}
+
+.profilePicture {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%; // Circular shape for the profile picture
+  object-fit: cover;
+  margin-bottom: $spacing-unit * 4; // Margin-bottom: 1rem
+}
+
+.profileInitials {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%; // Circular shape for initials
+  background-color: $primary-blue; // Primary blue background
+  color: $background-light; // White text
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: $spacing-unit * 4; // Margin-bottom: 1rem
+}
+
+.profileInfo p {
+  margin-bottom: $spacing-unit * 2; // Margin-bottom: 0.5rem
+}
+
+.profileInfo strong {
+  font-weight: 600;
+  margin-right: $spacing-unit * 2; // Margin-right: 0.5rem
+}

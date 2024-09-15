@@ -1,74 +1,76 @@
+@import "../variables";
 .container {
   max-width: 600px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: $spacing-unit * 8 auto;
+  padding: $spacing-unit * 8;
+  background-color: $background-light;
+  border-radius: $border-radius;
+  box-shadow: 0 4px 6px rgba($gray-900, 0.1);
+  font-family: $font-family-sans-serif;
 }
 
 .title {
-  font-size: 2.5rem;
-  margin-bottom: 1.5rem;
+  font-size: $font-size-base * 2.5;
+  margin-bottom: $spacing-unit * 6;
   text-align: center;
-  color: #333;
+  color: $text-dark;
 }
 
 .bookingDetails {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 2rem;
-  padding: 1rem;
-  background-color: #f8f9fa;
-  border-radius: 8px;
+  margin-bottom: $spacing-unit * 8;
+  padding: $spacing-unit * 4;
+  background-color: $background-secondary;
+  border-radius: $border-radius;
 }
 
 .detailItem {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 1rem;
-  color: #555;
+  gap: $spacing-unit * 2;
+  font-size: $font-size-base;
+  color: $gray-700;
 
   svg {
-    color: #3b82f6;
+    color: $primary-blue;
   }
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: $spacing-unit * 6;
 }
 
 .formGroup {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: $spacing-unit * 2;
 
   label {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: $spacing-unit * 2;
     font-weight: 600;
-    color: #333;
+    color: $text-dark;
 
     svg {
-      color: #3b82f6;
+      color: $primary-blue;
     }
   }
 
   input, textarea, select {
-    padding: 0.75rem;
-    border: 1px solid #e2e8f0;
-    border-radius: 4px;
-    font-size: 1rem;
-    transition: border-color 0.3s ease;
+    padding: $spacing-unit * 3;
+    border: 1px solid $gray-300;
+    border-radius: $border-radius;
+    font-size: $font-size-base;
+    transition: $transition-base;
 
     &:focus {
       outline: none;
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+      border-color: $primary-blue;
+      box-shadow: 0 0 0 2px rgba($primary-blue, 0.1);
     }
   }
 
@@ -87,24 +89,24 @@
 }
 
 .dateTimeSection {
-  margin-top: 1rem;
+  margin-top: $spacing-unit * 4;
 
   h3 {
-    font-size: 1.2rem;
-    margin-bottom: 1rem;
-    color: #333;
+    font-size: $font-size-base * 1.2;
+    margin-bottom: $spacing-unit * 4;
+    color: $text-dark;
   }
 }
 
 .dateTimeOptions {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: $spacing-unit * 4;
 }
 
 .dateTimeOption {
   display: flex;
-  gap: 1rem;
+  gap: $spacing-unit * 4;
 
   .formGroup {
     flex: 1;
@@ -112,18 +114,18 @@
 }
 
 .submitButton {
-  background-color: #3b82f6;
-  color: white;
-  padding: 1rem;
+  background-color: $primary-blue;
+  color: $text-light;
+  padding: $spacing-unit * 4;
   border: none;
-  border-radius: 4px;
-  font-size: 1.1rem;
+  border-radius: $border-radius;
+  font-size: $font-size-base * 1.1;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.1s ease;
+  transition: $transition-base;
 
   &:hover {
-    background-color: #2563eb;
+    background-color: $secondary-blue;
   }
 
   &:active {
@@ -132,27 +134,27 @@
 }
 
 .errorMessage {
-  background-color: #fee2e2;
-  color: #ef4444;
-  padding: 0.75rem;
-  border-radius: 4px;
-  margin-bottom: 1rem;
+  background-color: rgba($danger-red, 0.1);
+  color: $danger-red;
+  padding: $spacing-unit * 3;
+  border-radius: $border-radius;
+  margin-bottom: $spacing-unit * 4;
   text-align: center;
   font-weight: 600;
 }
 
-@media (max-width: 640px) {
+@media (max-width: $breakpoint-sm) {
   .container {
-    padding: 1.5rem;
+    padding: $spacing-unit * 6;
   }
 
   .title {
-    font-size: 2rem;
+    font-size: $font-size-base * 2;
   }
 
   .bookingDetails {
     flex-direction: column;
-    gap: 1rem;
+    gap: $spacing-unit * 4;
   }
 
   .dateTimeOption {
