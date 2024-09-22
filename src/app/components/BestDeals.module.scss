@@ -1,0 +1,150 @@
+.bestDealsSection {
+    margin: 2rem 0;
+    padding: 2rem 4rem;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .bestDealsTitle {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 1.5rem;
+  }
+  
+  .dealsContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 3rem;
+  }
+  
+  .dealCard {
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+  
+  .clinicName {
+    background-color: #007bff;
+    color: #ffffff;
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+  
+  .dealContent {
+    padding: 1rem;
+  }
+  
+  .treatmentName {
+    font-weight: 600;
+    color: #333;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  .treatmentCategory {
+    font-size: 0.875rem;
+    color: #6c757d;
+    margin-bottom: 0.75rem;
+  }
+  
+  .ratingPrice {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+  
+  .rating {
+    display: flex;
+    align-items: center;
+  }
+  
+  .starFilled, .starEmpty {
+    font-size: 0.875rem;
+    margin-right: 1px;
+  }
+  
+  .starFilled {
+    color: #ffc107;
+  }
+  
+  .starEmpty {
+    color: #e4e5e9;
+  }
+  
+  .reviewCount {
+    font-size: 0.75rem;
+    color: #6c757d;
+    margin-left: 0.25rem;
+  }
+  
+  .price {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #28a745;
+  }
+  
+  .bookButton {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    &:hover {
+      background-color: #0056b3;
+    }
+  
+    svg {
+      margin-right: 0.5rem;
+    }
+  }
+  
+  .loading, .error {
+    text-align: center;
+    padding: 1rem;
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  .error {
+    color: #dc3545;
+  }
+  
+  @media (max-width: 992px) {
+    .dealsContainer {
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .bestDealsSection {
+      padding: 1rem;
+    }
+    
+    .bestDealsTitle {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+    }
+  
+    .dealsContainer {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .dealsContainer {
+      grid-template-columns: 1fr;
+    }
+  }

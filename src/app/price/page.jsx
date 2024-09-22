@@ -3,7 +3,7 @@ import { Suspense } from 'react';
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { FaUser, FaBoxOpen, FaFileInvoiceDollar, FaCog, FaSignOutAlt, FaStar, FaSort, FaSortNumericDown, FaSortNumericUp } from 'react-icons/fa';
+import { FaUser, FaBoxOpen, FaFileInvoiceDollar, FaCog, FaSignOutAlt, FaStar, FaSort, FaSortNumericDown, FaSortNumericUp, FaTooth, FaTeethOpen } from 'react-icons/fa';
 import { HiSortAscending, HiSortDescending } from 'react-icons/hi';
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
@@ -13,6 +13,11 @@ import Image from 'next/image';
 import GoogleReviews from '../components/GoogleReviews';
 import DentalPricingInfo from '../components/DentalPricingInfo';
 import Loading from '../components/Loading';
+import { MapPin, Ruler } from 'lucide-react';
+import { RiToothLine } from 'react-icons/ri';
+import BestDeals from '../components/BestDeals';
+// import { Tooth, MapPin, Ruler } from 'lucide-react';
+
 
 
 function Dashboard() {
@@ -165,29 +170,21 @@ function Dashboard() {
   return (
     <div className={styles.container}>
       <main className={styles.main}>
-        <section className={styles.searchSection}>
-          <h2 className={styles.searchTitle}>Search Dental Treatment Prices</h2>
-          
-          <div className={styles.searchMethodToggle}>
-            <button 
-              className={`${styles.methodButton} ${searchMethod === 'category' ? styles.active : ''}`}
-              onClick={() => setSearchMethod('category')}
-            >
-              Search by Category
-            </button>
-          </div>
-          
-          <div className={styles.searchInputs}>
-            {searchMethod === 'category' ? (
-              <div className={styles.categoryInputWrapper}>
-                <input 
-                  type="text"
-                  placeholder="Search for a dental treatment..."
-                  value={category}
-                  onChange={handleCategoryInputChange}
-                  className={styles.searchInput}
-                />
-                {filteredCategories.length > 0 && category && (
+      <section className={styles.searchSection}>
+      <div className={styles.contentWrapper}>
+        <h1 className={styles.mainTitle}>We know what a smile is really worth</h1>
+        <p className={styles.subtitle}>Compare dental clinics, find the best prices and book appointments</p>
+        <div className={styles.searchInputs}>
+          <div className={styles.inputWrapper}>
+            <FaTooth className={styles.inputIcon} />
+            <input
+              type="text"
+              placeholder="Search for Treatment"
+              value={category}
+              onChange={handleCategoryInputChange}
+              className={styles.searchInput}
+            />
+            {filteredCategories.length > 0 && category && (
                   <ul className={styles.categoryDropdown}>
                     {filteredCategories.map((cat) => (
                       <li 
@@ -202,24 +199,20 @@ function Dashboard() {
                     ))}
                   </ul>
                 )}
-              </div>
-            ) : (
-              <input 
-                type="text"
-                placeholder="Enter treatment name..."
-                value={treatment}
-                onChange={(e) => setTreatment(e.target.value)}
-                className={styles.searchInput}
-              />
-            )}
-            <input 
-              type="text"
-              placeholder="Enter full Postcode (eg nx 2xx)"
-              className={styles.searchInput}
-              value={postcode}
-              onChange={(e) => setPostcode(e.target.value)}
+          </div>
+          <div className={styles.inputWrapper}>
+            <MapPin className={styles.inputIcon} />
+            <input
+                 type="text"
+                 placeholder="Enter full Postcode (eg nx 2xx)"
+                 className={styles.searchInput}
+                 value={postcode}
+                 onChange={(e) => setPostcode(e.target.value)}
             />
-            <input 
+          </div>
+          <div className={styles.inputWrapper}>
+            <Ruler className={styles.inputIcon} />
+            <input
               type="number"
               placeholder="Radius (miles)"
               className={styles.searchInput}
@@ -229,17 +222,15 @@ function Dashboard() {
               step="0.1"
             />
           </div>
-          
-          {warningMessage && <p className={styles.warningMessage}>{warningMessage}</p>}
-          
-          <button 
-            className={styles.searchButton} 
+          <button className={styles.searchButton} 
             onClick={() => handleSearch(1)}
-            disabled={isSearchButtonDisabled()}
-          >
-            Search Prices
+            disabled={isSearchButtonDisabled()}>
+            To Find
           </button>
-        </section>
+        </div>
+      </div>
+    </section>
+    {searchResults.length==0 && <BestDeals />}
 
         <section id="search-results" className={styles.resultsSection}>
           {isLoading ? (
@@ -250,41 +241,24 @@ function Dashboard() {
                 <div className={styles.resultsSummary}>
                   <h3 className={styles.resultsTitle}>Search Results (Showing {searchResults.length} of {totalResults})</h3>
                   <div className={styles.sortControls}>
-                    <span>Sort by:</span>
-                    <div className={styles.sortOption}>
-                      <span>Distance</span>
-                      <button 
-                        onClick={() => handleSortChange('distance-asc')} 
-                        className={sortOrder === 'distance-asc' ? styles.active : ''}
-                        aria-label="Sort distance ascending"
-                      >
-                        <HiSortAscending />
-                      </button>
-                      <button 
-                        onClick={() => handleSortChange('distance-desc')} 
-                        className={sortOrder === 'distance-desc' ? styles.active : ''}
-                        aria-label="Sort distance descending"
-                      >
-                        <HiSortDescending />
-                      </button>
-                    </div>
-                    <div className={styles.sortOption}>
-                      <span>Price</span>
-                      <button 
-                        onClick={() => handleSortChange('price-asc')} 
-                        className={sortOrder === 'price-asc' ? styles.active : ''}
-                        aria-label="Sort price ascending"
-                      >
-                        <HiSortAscending />
-                      </button>
-                      <button 
-                        onClick={() => handleSortChange('price-desc')} 
-                        className={sortOrder === 'price-desc' ? styles.active : ''}
-                        aria-label="Sort price descending"
-                      >
-                        <HiSortDescending />
-                      </button>
-                    </div>
+                    <button 
+                      onClick={() => handleSortChange('our-top-picks')}
+                      className={`${styles.sortButton} ${sortOrder === 'our-top-picks' ? styles.active : ''}`}
+                    >
+                      <FaSort /> Our top picks
+                    </button>
+                    <button 
+                      onClick={() => handleSortChange(sortOrder === 'price-asc' ? 'price-desc' : 'price-asc')}
+                      className={`${styles.sortButton} ${sortOrder.startsWith('price') ? styles.active : ''}`}
+                    >
+                      {sortOrder === 'price-asc' ? <HiSortAscending /> : <HiSortDescending />} Price
+                    </button>
+                    <button 
+                      onClick={() => handleSortChange(sortOrder === 'distance-asc' ? 'distance-desc' : 'distance-asc')}
+                      className={`${styles.sortButton} ${sortOrder.startsWith('distance') ? styles.active : ''}`}
+                    >
+                      {sortOrder === 'distance-asc' ? <HiSortAscending /> : <HiSortDescending />} Distance
+                    </button>
                   </div>
                 </div>
               )}

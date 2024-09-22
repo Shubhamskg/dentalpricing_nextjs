@@ -1,17 +1,24 @@
 "use client"
-import React, { useState } from 'react';
+
+import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { FaTooth, FaUserCircle } from 'react-icons/fa';
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { LoginLink, LogoutLink, RegisterLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import styles from './Navbar.module.scss';
 import Loading from './Loading';
 
-const NavLink = ({ href, children }) => (
-  <Link href={href} className={styles.navLink}>
-    {children}
-  </Link>
-);
+const NavLink = ({ href, children }) => {
+  const pathname = usePathname();
+  const isActive = pathname === href;
+
+  return (
+    <Link href={href} className={`${styles.navLink} ${isActive ? styles.active : ''}`}>
+      {children}
+    </Link>
+  );
+};
 
 const Navbar = () => {
   const { user, isLoading } = useKindeBrowserClient();
@@ -21,31 +28,38 @@ const Navbar = () => {
     setIsProfileMenuOpen(!isProfileMenuOpen);
   };
 
+  const memoizedUser = useMemo(() => user, [user]);
+
+  const navLinks = [
+    { href: '/', label: 'Home' },
+    { href: '/about', label: 'About' },
+    { href: '/contact', label: 'Contact' },
+  ];
+
   return (
     <nav className={styles.navbar}>
       <div className={styles.navContainer}>
         <Link href="/" className={styles.logoLink}>
           <FaTooth className={styles.logo} />
-          <span className={styles.logoText}>DentalPricing</span>
+          <span className={styles.logoText}>Dental Pricing</span>
         </Link>
         <ul className={styles.navLinks}>
-          <li><NavLink href="/">Home</NavLink></li>
-          {/* <li><NavLink href="/price">Compare Prices</NavLink></li> */}
-          <li><NavLink href="/about">About</NavLink></li>
-          <li><NavLink href="/contact">Contact</NavLink></li>
+          {navLinks.map(({ href, label }) => (
+            <li key={href}><NavLink href={href}>{label}</NavLink></li>
+          ))}
         </ul>
         <div className={styles.authSection}>
           {isLoading ? (
-            <Loading/>
-          ) : user ? (
+            <Loading />
+          ) : memoizedUser ? (
             <div className={styles.userProfile}>
               <button onClick={toggleProfileMenu} className={styles.profileButton}>
-                {user.picture ? (
-                  <img src={user.picture} alt={user.given_name} className={styles.profilePicture} />
+                {memoizedUser.picture ? (
+                  <img src={memoizedUser.picture} alt={memoizedUser.given_name} className={styles.profilePicture} />
                 ) : (
                   <FaUserCircle className={styles.defaultProfileIcon} />
                 )}
-                <span>{user.given_name}</span>
+                <span>{memoizedUser.given_name}</span>
               </button>
               {isProfileMenuOpen && (
                 <div className={styles.profileMenu}>
@@ -66,4 +80,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default React.memo(Navbar);

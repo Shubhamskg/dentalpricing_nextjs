@@ -2,6 +2,15 @@
 
 module.exports = {
     reactStrictMode: true,
+  images: {
+    domains: ['crescent-dental.co.uk'], // Add other domains as needed
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
+  },
     compiler: {
       styledComponents: true
     },

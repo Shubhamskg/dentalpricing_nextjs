@@ -8,8 +8,8 @@ const Footer = () => {
     <footer className={styles.footer}>
       <div className={styles.footerContent}>
         <div className={styles.footerSection}>
-          <h3>DentalPricing</h3>
-          <p>Compare private dental treatment prices across the UK.</p>
+          <h3>Dental Pricing</h3>
+          <p>Compare private dental<br/> treatment prices across<br/> the UK.</p>
         </div>
         <div className={styles.footerSection}>
           <h3>Quick Links</h3>

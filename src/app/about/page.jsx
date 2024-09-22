@@ -1,59 +1,112 @@
 "use client"
 import React from 'react';
 import styles from './page.module.scss';
-import { FaCheckCircle, FaUsers, FaHospital } from 'react-icons/fa';
+import { FaCheckCircle, FaBalanceScale, FaStar, FaLock, FaChartLine, FaHandshake, FaHeartbeat, FaSearch, FaClipboardList, FaCalendarAlt } from 'react-icons/fa';
 
 const AboutPage = () => {
   return (
     <div className={styles.aboutPage}>
-      <h1>About Dental Pricing</h1>
-      <p className={styles.intro}>Dental Pricing is the UK's leading platform for comparing private dental treatment prices, helping both patients and dentists make informed decisions about dental care and pricing.</p>
-
-      <section className={styles.missionSection}>
-        <h2>Our Mission</h2>
-        <p>We aim to bring transparency to dental pricing across the UK, empowering patients to find affordable care and helping dentists stay competitive in the market.</p>
+      <header className={styles.pageHeader}>
+        <h1>About Dental Pricing</h1>
+        <p className={styles.subtitle}>Your Trusted Guide to Affordable and Quality Dental Care</p>
+      </header>
+      
+      <section className={styles.intro}>
+        <h2>Welcome to Dental Pricing</h2>
+        <p>At <strong>Dental Pricing</strong>, we are dedicated to helping patients find the <strong>best dental treatments</strong> at the most <strong>affordable prices</strong>. Whether you're looking for a routine check-up, cosmetic dentistry like teeth whitening, or more complex treatments such as braces or dental implants, our goal is to make <strong>dental care accessible</strong> and <strong>transparent</strong>.</p>
       </section>
 
-      <section className={styles.statsSection}>
-        <h2>Dental Pricing at a Glance</h2>
-        <div className={styles.statsGrid}>
-          <div className={styles.statItem}>
-            <FaCheckCircle />
-            <h3>95%</h3>
-            <p>of UK private dental clinics covered</p>
+      <section className={styles.mission}>
+        <h2>Our Mission</h2>
+        <p>We understand that finding the right dentist can be a confusing and time-consuming process, especially when it comes to comparing prices and ensuring you're getting the best care. Our mission is simple: to <strong>simplify</strong> the search for <strong>trusted dentists</strong> by providing a platform where you can easily compare <strong>prices, reviews, and services</strong> from verified dental practices in your area.</p>
+        <p>By offering you <strong>transparent pricing</strong> and genuine patient reviews, we empower you to make <strong>informed decisions</strong> about your dental health.</p>
+      </section>
+
+      <section className={styles.trustReasons}>
+        <h2>Why Trust Dental Pricing?</h2>
+        <p>We know that when it comes to your health, <strong>trust</strong> is everything. That's why <strong>Dental Pricing</strong> works only with <strong>verified and experienced dentists</strong> who meet our strict quality standards.</p>
+        <div className={styles.cardGrid}>
+          <div className={styles.card}>
+            <FaCheckCircle className={styles.icon} />
+            <h3>Verified Practices</h3>
+            <p>We work with licensed and qualified professionals only.</p>
           </div>
-          <div className={styles.statItem}>
-            <FaUsers />
-            <h3>5,000+</h3>
-            <p>patients have used our service</p>
+          <div className={styles.card}>
+            <FaBalanceScale className={styles.icon} />
+            <h3>Transparent Pricing</h3>
+            <p>No hidden fees—just upfront pricing you can trust.</p>
           </div>
-          <div className={styles.statItem}>
-            <FaHospital />
-            <h3>200</h3>
-            <p>dentists are paid subscribers</p>
+          <div className={styles.card}>
+            <FaStar className={styles.icon} />
+            <h3>Real Patient Reviews</h3>
+            <p>Read honest reviews from verified patients.</p>
+          </div>
+          <div className={styles.card}>
+            <FaLock className={styles.icon} />
+            <h3>Secure Booking</h3>
+            <p>Book online with confidence and peace of mind.</p>
           </div>
         </div>
       </section>
 
-      <section className={styles.servicesSection}>
-        <h2>Our Services</h2>
-        <h3>For Patients</h3>
-        <ul>
-          <li>Compare prices for over 100 dental treatment categories</li>
-          <li>Access pricing data from 95% of UK private dental clinics</li>
-          <li>Make informed decisions about dental care</li>
-        </ul>
-        <h3>For Dentists</h3>
-        <ul>
-          <li>Access nationwide pricing data for competitive analysis</li>
-          <li>Set informed, market-competitive rates</li>
-          <li>Attract new patients with transparent pricing</li>
-        </ul>
+      <section className={styles.howItWorks}>
+        <h2>How Dental Pricing Works</h2>
+        <p>Using our platform is fast, free, and easy:</p>
+        <div className={styles.cardGrid}>
+          <div className={styles.card}>
+            <FaSearch className={styles.icon} />
+            <h3>1. Search</h3>
+            <p>Enter your dental treatment and location.</p>
+          </div>
+          <div className={styles.card}>
+            <FaClipboardList className={styles.icon} />
+            <h3>2. Compare</h3>
+            <p>View prices, reviews, and services from multiple dental practices near you.</p>
+          </div>
+          <div className={styles.card}>
+            <FaCalendarAlt className={styles.icon} />
+            <h3>3. Book</h3>
+            <p>Choose the best option for you and book your appointment securely online.</p>
+          </div>
+        </div>
+        <p className={styles.note}>We believe in <strong>choice and transparency</strong>. By giving you all the information you need in one place, we save you time and money while ensuring you get top-notch care.</p>
       </section>
 
-      <section className={styles.teamSection}>
-        <h2>Our Team</h2>
-        <p>Dental Pricing was founded by a team of dental professionals and data analysts passionate about improving access to dental care information. Our diverse team brings together expertise in dentistry, data science, and customer service to provide the most comprehensive and user-friendly dental pricing platform in the UK.</p>
+      <section className={styles.values}>
+        <h2>Our Values</h2>
+        <p>At Dental Pricing, our values guide everything we do. We're committed to:</p>
+        <div className={styles.cardGrid}>
+          <div className={styles.card}>
+            <FaChartLine className={styles.icon} />
+            <h3>Transparency</h3>
+            <p>Providing clear, upfront pricing and information about dental services.</p>
+          </div>
+          <div className={styles.card}>
+            <FaHandshake className={styles.icon} />
+            <h3>Affordability</h3>
+            <p>Helping you find cost-effective options without compromising on quality.</p>
+          </div>
+          <div className={styles.card}>
+            <FaHeartbeat className={styles.icon} />
+            <h3>Patient-Centered Care</h3>
+            <p>Prioritizing your health and satisfaction throughout your dental journey.</p>
+          </div>
+        </div>
+      </section>
+
+      <section className={styles.whyCompare}>
+        <h2>Why Compare Dental Prices?</h2>
+        <p>Dental pricing can vary greatly between practices, even within the same city. That's why it's important to <strong>compare prices</strong> to ensure you're getting the best deal. By using <strong>Dental Pricing</strong>, you can instantly see how much different dentists charge for treatments such as teeth whitening, fillings, crowns, and more, giving you the power to make <strong>informed decisions</strong> based on your needs and budget.</p>
+      </section>
+
+      <section className={styles.commitment}>
+        <h2>Our Commitment to You</h2>
+        <p>At <strong>Dental Pricing</strong>, we are committed to making your search for a dentist as easy as possible. Our platform is designed to give you all the tools you need to find the <strong>right dental care at the right price</strong>, without the hassle. Whether you're looking for an affordable <strong>dental check-up</strong>, seeking the best deal on <strong>dental implants</strong>, or comparing options for <strong>cosmetic treatments</strong>, we're here to help.</p>
+      </section>
+
+      <section className={styles.contact}>
+        <h2>Contact Us</h2>
+        <p>Have questions? We're here to help! You can reach our friendly support team by visiting our Contact Page or sending us an email at <strong>support@dentalpricing.co.uk</strong>.</p>
       </section>
     </div>
   );
