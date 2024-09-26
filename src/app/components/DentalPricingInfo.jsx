@@ -4,6 +4,7 @@ import { FaSearch, FaCommentDollar, FaClipboardList, FaUserMd, FaPoundSign, FaSt
 import { MdExpandMore, MdExpandLess } from 'react-icons/md';
 import { RiMentalHealthFill } from 'react-icons/ri';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const FAQItem = ({ question, answer }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -111,11 +112,11 @@ const DentalPricingInfo = () => {
       <section className={styles.popularTreatments}>
         <h3><FaUserMd /> Popular dental treatments you can compare</h3>
         <div className={styles.treatmentsList}>
-          <span>Teeth cleaning & check-ups</span>
-          <span>Teeth whitening</span>
-          <span>Braces & aligners</span>
-          <span>Dental implants</span>
-          <span>Root canal treatment</span>
+          <span><Link href='/price?searchMethod=category&category=Hygiene+Appointments+0-30+Mins&postcode=BB7+9SW&radius=500&page=1&sort=distance-asc'>Teeth cleaning & check-ups</Link></span>
+          <span><Link href='/price?searchMethod=category&category=Home+Whitening&postcode=BB7+9SW&radius=500&page=1&sort=distance-desc'>Teeth whitening</Link></span>
+          <span><Link href='/price?searchMethod=category&category=Braces&postcode=BB7+9SW&radius=500&page=1&sort=distance-desc'>Braces & aligners</Link></span>
+          <span><Link href='/price?searchMethod=category&category=Implant+Consulation&postcode=BB7+9SW&radius=500&page=1&sort=distance-desc'>Dental implants</Link></span>
+          <span><Link href='/price?searchMethod=category&category=Root+Canal+Treatment+%2F+Rct+%28Molar%29&postcode=BB7+9SW&radius=500&page=1&sort=distance-desc'>Root canal treatment</Link></span>
         </div>
       </section>
 

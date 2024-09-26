@@ -5,6 +5,7 @@ import Loading from './Loading';
 
 const MAX_REVIEW_LENGTH = 500;
 const CACHE_DURATION = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
+const ERROR_CACHE_DURATION =30* 24 * 60 * 60 * 1000; // 1 day in milliseconds for error states
 
 const GoogleReviews = ({name, address, postcode, placeId: initialPlaceId, onRatingFetched, searchPage=false }) => {
   const [reviews, setReviews] = useState([]);
@@ -18,13 +19,15 @@ const GoogleReviews = ({name, address, postcode, placeId: initialPlaceId, onRati
   const cacheKey = `googleReviews_${placeId || `${name}_${address}_${postcode}`}`;
 
   const getCachedData = useCallback(() => {
-    if (typeof window === 'undefined') return null; // Check if we're on the client-side
+    if (typeof window === 'undefined') return null;
     try {
       const cachedData = localStorage.getItem(cacheKey);
       if (cachedData) {
-        const { data, timestamp } = JSON.parse(cachedData);
-        if (Date.now() - timestamp < CACHE_DURATION) {
-          return data;
+        const { data, timestamp, isError } = JSON.parse(cachedData);
+        const currentTime = Date.now();
+        const cacheExpiration = isError ? ERROR_CACHE_DURATION : CACHE_DURATION;
+        if (currentTime - timestamp < cacheExpiration) {
+          return { data, isError };
         }
       }
     } catch (error) {
@@ -33,12 +36,13 @@ const GoogleReviews = ({name, address, postcode, placeId: initialPlaceId, onRati
     return null;
   }, [cacheKey]);
 
-  const setCachedData = useCallback((data) => {
-    if (typeof window === 'undefined') return; // Check if we're on the client-side
+  const setCachedData = useCallback((data, isError = false) => {
+    if (typeof window === 'undefined') return;
     try {
       const cacheData = {
         data,
         timestamp: Date.now(),
+        isError,
       };
       localStorage.setItem(cacheKey, JSON.stringify(cacheData));
     } catch (error) {
@@ -51,13 +55,17 @@ const GoogleReviews = ({name, address, postcode, placeId: initialPlaceId, onRati
       setLoading(true);
       setError(null);
 
-      const cachedData = getCachedData();
-      if (cachedData) {
-        setReviews(cachedData.reviews);
-        setRating(cachedData.rating);
-        setTotalReviews(cachedData.totalReviews);
-        setPlaceId(cachedData.placeId);
-        onRatingFetched(cachedData.rating, cachedData.totalReviews);
+      const cachedResult = getCachedData();
+      if (cachedResult) {
+        if (cachedResult.isError) {
+          setError(cachedResult.data);
+        } else {
+          setReviews(cachedResult.data.reviews);
+          setRating(cachedResult.data.rating);
+          setTotalReviews(cachedResult.data.totalReviews);
+          setPlaceId(cachedResult.data.placeId);
+          onRatingFetched(cachedResult.data.rating, cachedResult.data.totalReviews);
+        }
         setLoading(false);
         return;
       }
@@ -85,7 +93,9 @@ const GoogleReviews = ({name, address, postcode, placeId: initialPlaceId, onRati
       
       if (!reviewsResponse.ok) {
         const errorData = await reviewsResponse.json();
-        throw new Error(errorData.error || `HTTP error! status: ${reviewsResponse.status}`);
+        const errorMessage = errorData.error || `HTTP error! status: ${reviewsResponse.status}`;
+        setCachedData(errorMessage, true);
+        throw new Error(errorMessage);
       }
       
       const reviewsData = await reviewsResponse.json();
@@ -103,6 +113,7 @@ const GoogleReviews = ({name, address, postcode, placeId: initialPlaceId, onRati
     } catch (error) {
       console.error('Error fetching data:', error);
       setError(error.message);
+      setCachedData(error.message, true);
     } finally {
       setLoading(false);
     }
