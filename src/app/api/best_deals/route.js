@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { MongoClient } from 'mongodb';
 import NodeCache from 'node-cache';
 
-const cache = new NodeCache({ stdTTL: 600 });
+const cache = new NodeCache({ stdTTL: 3600 });
 
 async function getPlaceId(name, address, postcode) {
   const input = encodeURIComponent(`${name}, ${address}, ${postcode}, UK`);

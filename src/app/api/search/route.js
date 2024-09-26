@@ -2,8 +2,7 @@ import { NextResponse } from 'next/server';
 import { MongoClient } from 'mongodb';
 import NodeCache from 'node-cache';
 
-const cache = new NodeCache({ stdTTL: 600 });
-
+const cache = new NodeCache({ stdTTL: 3600 });
 
 function toRadians(degrees) {
   return degrees * Math.PI / 180;
@@ -68,12 +67,37 @@ export async function GET(request) {
       query.Category = { $regex: new RegExp(category, 'i') };
     } else if (searchMethod === 'treatment' && treatment) {
       query.$or = [
-        { treatment: { $regex: new RegExp(treatment, 'i') } }
+        { treatment: { $regex: new RegExp(treatment, 'i') } },
+        { Category: { $regex: new RegExp(treatment, 'i') } }
       ];
     }
 
+    console.log("Search Method:", searchMethod);
+    console.log("Category:", category);
+    console.log("Query:", JSON.stringify(query));
+
     // Get all results that match the query
-    const allResults = await priceCollection.find(query).toArray();
+    let allResults = await priceCollection.find(query).toArray();
+    console.log("Initial results count:", allResults.length);
+
+    if (allResults.length === 0) {
+      console.log("No results found. Performing a more flexible search...");
+      // If no results, try a more flexible search
+      if (searchMethod === 'category' && category) {
+        const words = category.split(/\s+/);
+        query.Category = { $regex: new RegExp(words.join('.*'), 'i') };
+      } else if (searchMethod === 'treatment' && treatment) {
+        const words = treatment.split(/\s+/);
+        const flexibleRegex = new RegExp(words.join('.*'), 'i');
+        query.$or = [
+          { treatment: { $regex: flexibleRegex } },
+          { Category: { $regex: flexibleRegex } }
+        ];
+      }
+      console.log("Flexible Query:", JSON.stringify(query));
+      allResults = await priceCollection.find(query).toArray();
+      console.log("Flexible search results count:", allResults.length);
+    }
 
     // Filter out results with invalid prices
     const validResults = allResults.filter(result => isValidPrice(result.Price));
