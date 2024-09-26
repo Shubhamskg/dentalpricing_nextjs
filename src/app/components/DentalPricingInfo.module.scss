@@ -24,6 +24,7 @@ $border-color: #e5e7eb;
 }
 
 .dentalPricingInfo {
+  
   max-width: 1200px;
   margin: 0 auto;
   padding: 3rem 2rem;
@@ -64,6 +65,7 @@ $border-color: #e5e7eb;
   }
 
   .hero {
+    
     text-align: center;
     background-color: $white;
     padding: 4rem 2rem;
@@ -95,6 +97,10 @@ $border-color: #e5e7eb;
   }
 
   .whyCompare {
+    background: url(../../../public/6.jpg);
+    background-repeat: no-repeat;
+    background-size:cover;
+    height: 30rem;
     .reasonsGrid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -121,6 +127,9 @@ $border-color: #e5e7eb;
 
 
   .popularTreatments {
+    background: url(../../../public/5.jpeg);
+    background-repeat: no-repeat;
+    background-size:cover;
     .treatmentsList {
       display: flex;
       justify-content: center;
@@ -177,9 +186,9 @@ $border-color: #e5e7eb;
     }
   }
   
-  
 
   .topDentists {
+    
     background-color: $white;
     padding: 2.5rem;
     border-radius: 12px;
@@ -223,6 +232,7 @@ $border-color: #e5e7eb;
   }
 
   .whyChooseUs {
+    
     .reasonsGrid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -247,6 +257,7 @@ $border-color: #e5e7eb;
   }
 
   .faq {
+    
     .faqItem {
       border-bottom: 1px solid $border-color;
       padding-bottom: 1.5rem;

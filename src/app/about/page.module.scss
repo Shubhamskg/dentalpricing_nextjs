@@ -1,3 +1,28 @@
+$primary-color: #3b82f6;
+$secondary-color: #4b5563;
+$background-color: #f3f4f6;
+$text-color: #6b7280;
+$white: #ffffff;
+$border-color: #e5e7eb;
+
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin card-style {
+  background-color: $white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+}
+
 .aboutPage {
   max-width: 1200px;
   margin: 0 auto;
@@ -12,13 +37,13 @@
 
     h1 {
       font-size: 2.5rem;
-      color: #3b82f6;
+      color: $primary-color;
       margin-bottom: 0.5rem;
     }
 
     .subtitle {
       font-size: 1.2rem;
-      color: #4b5563;
+      color: $secondary-color;
       font-style: italic;
     }
   }
@@ -50,33 +75,25 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
-  .trustReasons, .values, .howItWorks {
-    .cardGrid {
+  .trustReasons, .values, .howItWorks, .whyCompare {
+    .cardGrid, .reasonsGrid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.2rem;
     }
 
-    .card {
-      background-color: #ffffff;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      padding: 2rem;
+    .card, .reason {
+      @include card-style;
+      padding: 1rem 1rem;
       text-align: center;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-      &:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-      }
-
+ 
       .icon {
         font-size: 3rem;
-        color: #3b82f6;
+        color: $primary-color;
         margin-bottom: 1rem;
       }
 
-      h3 {
+      h3, h4 {
         font-size: 1.3rem;
         color: #2c3e50;
         margin-bottom: 1rem;
@@ -85,6 +102,32 @@
       p {
         font-size: 1rem;
         color: #34495e;
+      }
+    }
+  }
+
+  .whyCompare {
+    h3 {
+      font-size: 1.8rem;
+      color: $primary-color;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    > p {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .reasonsGrid {
+      margin-top: 2rem;
+
+      .reason {
+        text-align: left;
+
+        h4 {
+          color: $secondary-color;
+        }
       }
     }
   }
@@ -105,7 +148,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
     h2 {
-      color: #3b82f6;
+      color: $primary-color;
     }
 
     p {
@@ -136,8 +179,8 @@
       }
     }
 
-    .trustReasons, .values, .howItWorks {
-      .cardGrid {
+    .trustReasons, .values, .howItWorks, .whyCompare {
+      .cardGrid, .reasonsGrid {
         grid-template-columns: 1fr;
       }
     }
