@@ -98,9 +98,10 @@ $border-color: #e5e7eb;
 
   .whyCompare {
     background: url(../../../public/6.jpg);
+    background-position: 0% 80%;
     background-repeat: no-repeat;
     background-size:cover;
-    height: 30rem;
+    height: 23rem;
     .reasonsGrid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -125,7 +126,7 @@ $border-color: #e5e7eb;
     }
   }
 
-
+  
   .popularTreatments {
     background: url(../../../public/5.jpeg);
     background-repeat: no-repeat;

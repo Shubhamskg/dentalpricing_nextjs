@@ -28,7 +28,7 @@ $error-color: #ef4444;
 // Container
 .container {
   font-family: 'Inter', Arial, sans-serif;
-  background-color: $background-color;
+  background-color: rgba(173, 216, 230, 0.35);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
