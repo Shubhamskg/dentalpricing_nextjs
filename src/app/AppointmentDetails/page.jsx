@@ -1,3 +1,4 @@
+"use client"
 import React, { useState, useEffect } from 'react';
 import { format, parse, isAfter, isValid } from 'date-fns';
 import { enGB } from 'date-fns/locale';
