@@ -786,3 +786,16 @@ $error-color: #ef4444;
     page-break-inside: avoid;
   }
 }
+.starRating {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 8px;
+}
+
+.starFull, .starHalf {
+  color: #FFD700; // Gold color for filled stars
+}
+
+.starEmpty {
+  color: #E0E0E0; // Light grey for empty stars
+}

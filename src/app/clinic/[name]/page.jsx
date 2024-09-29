@@ -189,7 +189,7 @@ export default function ClinicProfile() {
             
             <h3>{extractedTitle}</h3>
             
-            <p className={styles.clinicDescription}>{clinicDescription}</p>
+            {/* <p className={styles.clinicDescription}>{clinicDescription}</p> */}
             
             <div className={styles.clinicInfo}>
               <p><FaMapMarkerAlt /> {clinicData.Address}, {clinicData.Postcode}</p>

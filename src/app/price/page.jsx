@@ -1,24 +1,33 @@
 "use client"
-import { Suspense } from 'react';
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+
+import React, { Suspense, useState, useCallback, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import Link from 'next/link';
-import { FaUser, FaBoxOpen, FaFileInvoiceDollar, FaCog, FaSignOutAlt, FaStar, FaSort, FaSortNumericDown, FaSortNumericUp, FaTooth, FaTeethOpen } from 'react-icons/fa';
+import { FaTooth, FaSort,  FaStar, FaStarHalfAlt } from 'react-icons/fa';
 import { HiSortAscending, HiSortDescending } from 'react-icons/hi';
-import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
-import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
-import { categoryNames } from '../lib/data';
-import styles from './page.module.scss';
-import Image from 'next/image';
-import GoogleReviews from '../components/GoogleReviews';
-import DentalPricingInfo from '../components/DentalPricingInfo';
-import Loading from '../components/Loading';
 import { MapPin, Ruler } from 'lucide-react';
-import { RiToothLine } from 'react-icons/ri';
+import styles from './page.module.scss';
+import Loading from '../components/Loading';
 import BestDeals from '../components/BestDeals';
-// import { Tooth, MapPin, Ruler } from 'lucide-react';
+import DentalPricingInfo from '../components/DentalPricingInfo';
 
+function StarRating({ rating }) {
+  const fullStars = Math.floor(rating);
+  const hasHalfStar = rating % 1 >= 0.5;
 
+  return (
+    <div className={styles.starRating}>
+      {[...Array(5)].map((_, index) => {
+        if (index < fullStars) {
+          return <FaStar key={index} className={styles.starFull} />;
+        } else if (index === fullStars && hasHalfStar) {
+          return <FaStarHalfAlt key={index} className={styles.starHalf} />;
+        } else {
+          return <FaStar key={index} className={styles.starEmpty} />;
+        }
+      })}
+    </div>
+  );
+}
 
 function Dashboard() {
   const router = useRouter();
@@ -40,17 +49,35 @@ function Dashboard() {
   const [totalResults, setTotalResults] = useState(0);
   const [filteredCategories, setFilteredCategories] = useState([]);
 
-  const submenuRef = useRef(null);
-
-  useEffect(() => {
-    const shouldSearch = searchParams.get('searchMethod') && 
-                         (searchParams.get('category') || searchParams.get('treatment')) && 
-                         searchParams.get('postcode') && 
-                         searchParams.get('radius');
-    if (shouldSearch) {
-      handleSearch();
+  const fetchReviews = useCallback(async (name, address, postcode) => {
+    try {
+      const response = await fetch(`/api/reviewsData?name=${encodeURIComponent(name)}&address=${encodeURIComponent(address)}&postcode=${encodeURIComponent(postcode)}`);
+      if (response.ok) {
+        const data = await response.json();
+        return { rating: data.rating, totalReviews: data.totalReviews };
+      } else {
+        try {
+          const response = await fetch(`/api/place-id?name=${encodeURIComponent(name)}&address=${encodeURIComponent(address)}&postcode=${encodeURIComponent(postcode)}`);
+          if (!response.ok) throw new Error('Failed to fetch Place ID');
+          const data = await response.json();
+          const apiResponse = await fetch(`/api/google-reviews?placeId=${data.placeId}`);
+          if (!apiResponse.ok) {
+            throw new Error('Failed to fetch reviews from Google API');
+          }
+          const apiData = await apiResponse.json();
+          return { rating: apiData.rating, totalReviews: apiData.totalReviews}
+        } catch (error) {
+          console.error('Error fetching Place ID:', error);
+          throw error;
+        }
+        
+       
+      }
+    } catch (error) {
+      console.error('Error fetching reviews:', error);
+      return { rating: 3.4, totalReviews: 5 };
     }
-  }, [searchParams]);
+  }, []);
 
   const handleSearch = useCallback(async (page = currentPage, newSortOrder = sortOrder) => {
     if (!validateInputs()) {
@@ -82,7 +109,17 @@ function Dashboard() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      setSearchResults(data.results);
+
+      // Fetch reviews for each result
+      const resultsWithReviews = await Promise.all(data.results.map(async (result) => {
+        const reviewData = await fetchReviews(result.Name, result["Address 1"], result.Postcode);
+        return { ...result, ...reviewData };
+      }));
+
+      // Sort results based on the new sortOrder
+      const sortedResults = sortResults(resultsWithReviews, newSortOrder);
+
+      setSearchResults(sortedResults);
       setCurrentPage(data.pagination.currentPage);
       setTotalPages(data.pagination.totalPages);
       setTotalResults(data.pagination.totalResults);
@@ -96,7 +133,26 @@ function Dashboard() {
     } finally {
       setIsLoading(false);
     }
-  }, [searchMethod, category, treatment, postcode, radius, sortOrder, currentPage, router]);
+  }, [searchMethod, category, treatment, postcode, radius, sortOrder, currentPage, router, fetchReviews]);
+
+  const sortResults = (results, order) => {
+    switch (order) {
+      case 'rating-desc':
+        return results.sort((a, b) => b.rating - a.rating);
+      case 'rating-asc':
+        return results.sort((a, b) => a.rating - b.rating);
+      case 'price-desc':
+        return results.sort((a, b) => b.Price - a.Price);
+      case 'price-asc':
+        return results.sort((a, b) => a.Price - b.Price);
+      case 'distance-asc':
+        return results.sort((a, b) => a.distance - b.distance);
+      case 'distance-desc':
+        return results.sort((a, b) => b.distance - a.distance);
+      default:
+        return results;
+    }
+  };
 
   const handleSortChange = useCallback((newOrder) => {
     setSortOrder(newOrder);
@@ -133,58 +189,46 @@ function Dashboard() {
     );
   }, []);
 
-  const isSearchButtonDisabled = useCallback(() => {
-    if (searchMethod === 'category' && (!category || !postcode || !radius)) return true;
-    if (searchMethod === 'treatment' && (!treatment || !postcode || !radius)) return true;
-    return isLoading;
-  }, [searchMethod, category, treatment, postcode, radius, isLoading]);
-
-  const trackClick = useCallback(async (url) => {
-    try {
-      await fetch('/api/track-click', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ 
-          url,
-          userEmail: 'anonymous' // Replace with actual user email if available
-        }),
-      });
-    } catch (error) {
-      console.error("Error tracking click:", error);
-    }
-  }, []);
-  const handleClinicClick = (clinicName, category, treatment) => {
+  const handleClinicClick = useCallback((clinicName, category, treatment) => {
     const encodedClinicName = encodeURIComponent(clinicName);
     const encodedCategory = encodeURIComponent(category);
     const encodedTreatment = encodeURIComponent(treatment);
     router.push(`/clinic/${encodedClinicName}?category=${encodedCategory}&treatment=${encodedTreatment}`);
-  };
+  }, [router]);
 
-  const handleBookAppointment = (clinic, treatment, price, postcode) => {
+  const handleBookAppointment = useCallback((clinic, treatment, price, postcode) => {
     const bookingUrl = `/book?clinic=${encodeURIComponent(clinic)}&treatment=${encodeURIComponent(treatment)}&price=${encodeURIComponent(price)}&postcode=${encodeURIComponent(postcode)}`;
     window.location.href = bookingUrl;
-  };
+  }, []);
+
+  useEffect(() => {
+    const shouldSearch = searchParams.get('searchMethod') && 
+                         (searchParams.get('category') || searchParams.get('treatment')) && 
+                         searchParams.get('postcode') && 
+                         searchParams.get('radius');
+    if (shouldSearch) {
+      handleSearch();
+    }
+  }, [searchParams, handleSearch]);
 
   return (
     <div className={styles.container}>
       <main className={styles.main}>
-      <section className={styles.searchSection}>
-      <div className={styles.contentWrapper}>
-        <h1 className={styles.mainTitle}>We know what a smile is really worth</h1>
-        <p className={styles.subtitle}>Compare dental clinics, find the best prices and book appointments</p>
-        <div className={styles.searchInputs}>
-          <div className={styles.inputWrapper}>
-            <FaTooth className={styles.inputIcon} />
-            <input
-              type="text"
-              placeholder="Search for Treatment"
-              value={category}
-              onChange={handleCategoryInputChange}
-              className={styles.searchInput}
-            />
-            {filteredCategories.length > 0 && category && (
+        <section className={styles.searchSection}>
+          <div className={styles.contentWrapper}>
+            <h1 className={styles.mainTitle}>We know what a smile is really worth</h1>
+            <p className={styles.subtitle}>Compare dental clinics, find the best prices and book appointments</p>
+            <div className={styles.searchInputs}>
+              <div className={styles.inputWrapper}>
+                <FaTooth className={styles.inputIcon} />
+                <input
+                  type="text"
+                  placeholder="Search for Treatment"
+                  value={category}
+                  onChange={handleCategoryInputChange}
+                  className={styles.searchInput}
+                />
+                {filteredCategories.length > 0 && category && (
                   <ul className={styles.categoryDropdown}>
                     {filteredCategories.map((cat) => (
                       <li 
@@ -199,38 +243,41 @@ function Dashboard() {
                     ))}
                   </ul>
                 )}
+              </div>
+              <div className={styles.inputWrapper}>
+                <MapPin className={styles.inputIcon} />
+                <input
+                  type="text"
+                  placeholder="Enter full Postcode (eg nx 2xx)"
+                  className={styles.searchInput}
+                  value={postcode}
+                  onChange={(e) => setPostcode(e.target.value)}
+                />
+              </div>
+              <div className={styles.inputWrapper}>
+                <Ruler className={styles.inputIcon} />
+                <input
+                  type="number"
+                  placeholder="Radius (miles)"
+                  className={styles.searchInput}
+                  value={radius}
+                  onChange={(e) => setRadius(e.target.value)}
+                  min="0"
+                  step="0.1"
+                />
+              </div>
+              <button 
+                className={styles.searchButton} 
+                onClick={() => handleSearch(1)}
+                disabled={isLoading}
+              >
+                Find
+              </button>
+            </div>
           </div>
-          <div className={styles.inputWrapper}>
-            <MapPin className={styles.inputIcon} />
-            <input
-                 type="text"
-                 placeholder="Enter full Postcode (eg nx 2xx)"
-                 className={styles.searchInput}
-                 value={postcode}
-                 onChange={(e) => setPostcode(e.target.value)}
-            />
-          </div>
-          <div className={styles.inputWrapper}>
-            <Ruler className={styles.inputIcon} />
-            <input
-              type="number"
-              placeholder="Radius (miles)"
-              className={styles.searchInput}
-              value={radius}
-              onChange={(e) => setRadius(e.target.value)}
-              min="0"
-              step="0.1"
-            />
-          </div>
-          <button className={styles.searchButton} 
-            onClick={() => handleSearch(1)}
-            disabled={isSearchButtonDisabled()}>
-            To Find
-          </button>
-        </div>
-      </div>
-    </section>
-    {searchResults.length==0 && <BestDeals />}
+        </section>
+
+        {searchResults.length === 0 && <BestDeals />}
 
         <section id="search-results" className={styles.resultsSection}>
           {isLoading ? (
@@ -259,6 +306,12 @@ function Dashboard() {
                     >
                       {sortOrder === 'distance-asc' ? <HiSortAscending /> : <HiSortDescending />} Distance
                     </button>
+                    <button 
+                      onClick={() => handleSortChange(sortOrder === 'rating-asc' ? 'rating-desc' : 'rating-asc')}
+                      className={`${styles.sortButton} ${sortOrder.startsWith('rating') ? styles.active : ''}`}
+                    >
+                      {sortOrder === 'rating-asc' ? <HiSortAscending /> : <HiSortDescending />} Rating
+                    </button>
                   </div>
                 </div>
               )}
@@ -268,34 +321,25 @@ function Dashboard() {
                     {searchResults.map((result) => (
                       <li key={result._id} className={styles.resultItem}>
                         <div className={styles.clinicHeader}>
-                        <button className={styles.headerButton} onClick={() => handleClinicClick(result.Name, result.Category, result.treatment)}>
-                        <h4>{result.Name}</h4>
-                    </button>
-                    <div className={styles.GoogleReviews}>
-                    <GoogleReviews 
-                          name={result.Name}
-                          address={result["Address 1"]}
-                          postcode={result.Postcode}
-                          placeId={result.placeId}
-                          onRatingFetched={()=>{console.log("fe")}}
-                          searchPage={true}
-                        />
-                        </div>
+                          <button className={styles.headerButton} onClick={() => handleClinicClick(result.Name, result.Category, result.treatment)}>
+                            <h4>{result.Name}</h4>
+                          </button>
+                          <div className={styles.GoogleReviews}>
+  <StarRating rating={result.rating} />
+  <span>{result.rating.toFixed(1)} ({result.totalReviews} reviews)</span>
+</div>
                         </div>
                         <p>Treatment: {result.treatment}</p>
                         <p>Price: £{result.Price}</p>
-                        {/* <p>Category: {result.Category}</p> */}
                         <p>Address: {result["Address 1"]}, {result.Postcode}</p>
                         <p>Distance: {result.distance.toFixed(2)} miles</p>
-                        <p>Website: <a href={result.Website} target="_blank" rel="noopener noreferrer" onClick={() => trackClick(result.Website)}>{result.Website}</a></p>
-                        {/* <p>Fee Page: <a href={result.Feepage} target="_blank" rel="noopener noreferrer" onClick={() => trackClick(result.Feepage)}>Fee Guide</a></p> */}
+                        <p>Website: <a href={result.Website} target="_blank" rel="noopener noreferrer">{result.Website}</a></p>
                         <button 
                           className={styles.bookButton}
                           onClick={() => handleBookAppointment(result.Name, result.treatment, result.Price, result.Postcode)}
                         >
                           Book Appointment
                         </button>
-                        
                       </li>
                     ))}
                   </ul>
@@ -319,7 +363,6 @@ function Dashboard() {
                 <p className={styles.noResults}>No results found for your search criteria. Please try adjusting your search parameters.</p>
               ) : (
                 <DentalPricingInfo />
-
               )}
             </>
           )}
@@ -328,9 +371,10 @@ function Dashboard() {
     </div>
   );
 }
+
 export default function PricePage() {
   return (
-    <Suspense fallback={<Loading/>}>
+    <Suspense fallback={<Loading />}>
       <Dashboard />
     </Suspense>
   );
