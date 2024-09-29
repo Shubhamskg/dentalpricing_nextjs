@@ -44,7 +44,7 @@ const ClinicDescription = ({ website }) => {
         return null;
     }
 
-    if (error || !description ||!description.length<400) {
+    if (error || !description ||description.length<400) {
         return null;
     }
 
