@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { MongoClient, ObjectId } from 'mongodb';
+import { MongoClient } from 'mongodb';
 
 const MONGODB_URI = process.env.MONGODB_URI;
 let client;
@@ -21,7 +21,17 @@ export async function POST(request) {
     const appointmentsCollection = db.collection('appointments');
 
     const newAppointment = {
-      ...appointmentData,
+      name: appointmentData.name,
+      email: appointmentData.email,
+      phone: appointmentData.phone,
+      preferredDate: appointmentData.date1,
+      preferredTimeSlot: appointmentData.timeSlot1,
+      alternativeDate: appointmentData.date2,
+      alternativeTimeSlot: appointmentData.timeSlot2,
+      issue: appointmentData.issue,
+      clinic: appointmentData.clinic,
+      treatment: appointmentData.treatment,
+      price: appointmentData.price,
       createdAt: new Date(),
       paymentStatus: 'pending',
       paymentIntentId: null,

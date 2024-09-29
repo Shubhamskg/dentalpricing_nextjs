@@ -2,8 +2,7 @@
 
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { format, addWeeks, isWeekend, setHours, setMinutes, isAfter, isBefore, parse, addDays, differenceInCalendarDays } from 'date-fns';
-import { enGB } from 'date-fns/locale';
+import { format, addWeeks, isWeekend, isAfter, parse, addDays, differenceInCalendarDays } from 'date-fns';
 import styles from './page.module.scss';
 import Loading from '../components/Loading';
 import { Calendar, Clock, User, Mail, Phone, FileText, MapPin, Stethoscope, PoundSterling } from 'lucide-react';
@@ -35,7 +34,7 @@ function BookingForm({ clinic, treatment, price }) {
       ...prevState,
       [name]: value
     }));
-    setFormError(''); // Clear any previous errors when the user makes changes
+    setFormError('');
   };
 
   const validateDateTimeOrder = () => {
@@ -64,7 +63,7 @@ function BookingForm({ clinic, treatment, price }) {
     e.preventDefault();
     
     if (!validateDateTimeOrder()) {
-      return; // Stop form submission if validation fails
+      return;
     }
 
     try {
@@ -95,10 +94,6 @@ function BookingForm({ clinic, treatment, price }) {
 
   const minDate = addWeeks(new Date(), 2.5);
   const maxDate = addWeeks(new Date(), 8);
-
-  const isDateDisabled = (date) => {
-    return isWeekend(date) || isBefore(date, minDate) || isAfter(date, maxDate);
-  };
 
   return (
     <div className={styles.container}>
@@ -228,7 +223,7 @@ function BookingForm({ clinic, treatment, price }) {
         </div>
         <button type="submit" className={styles.submitButton}>Proceed</button>
       </form>
-    </div>
+      </div>
   );
 }
 

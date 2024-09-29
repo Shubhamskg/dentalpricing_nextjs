@@ -1,5 +1,4 @@
 "use client"
-
 import { useState, useEffect } from 'react';
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import styles from './page.module.scss';
@@ -43,11 +42,6 @@ export default function Profile() {
     <div className={styles.profilePage}>
       <div className={styles.profileContainer}>
         <div className={styles.profileInfo}>
-          {/* {profileData.picture ? (
-            <img src={profileData.picture} alt={profileData.name} className={styles.profilePicture} />
-          ) : (
-            <div className={styles.profileInitials}>{profileData.name.charAt(0)}</div>
-          )} */}
           <h2 className={styles.heading}>{profileData.name}</h2>
           <p><strong>Email:</strong> {profileData.email}</p>
           <p><strong>User ID:</strong> {profileData.id}</p>
@@ -58,11 +52,23 @@ export default function Profile() {
           {appointments.length > 0 ? (
             appointments.map((appointment, index) => (
               <div key={index} className={styles.appointmentItem}>
-                <p><strong>Date:</strong> {appointment.date}</p>
-                <p><strong>Time:</strong> {appointment.time}</p>
-                <p><Link href={`/clinic/${appointment.clinic}`}><strong>Clinic:</strong> {appointment.clinic}</Link></p>
-                <p><strong>Treatment:</strong> {appointment.treatment}</p>
-                <p><strong>Price:</strong> ${appointment.price}</p>
+                <p><strong>_id:</strong> {appointment._id}</p>
+                <p><strong>name:</strong> {appointment.name}</p>
+                <p><strong>email:</strong> {appointment.email}</p>
+                <p><strong>phone:</strong> {appointment.phone}</p>
+                <p><strong>preferredDate:</strong> {appointment.preferredDate}</p>
+                <p><strong>preferredTimeSlot:</strong> {appointment.preferredTimeSlot}</p>
+                <p><strong>alternativeDate:</strong> {appointment.alternativeDate}</p>
+                <p><strong>alternativeTimeSlot:</strong> {appointment.alternativeTimeSlot}</p>
+                <p><strong>issue:</strong> {appointment.issue}</p>
+                <p><strong>clinic:</strong> {appointment.clinic}</p>
+                <p><strong>treatment:</strong> {appointment.treatment}</p>
+                <p><strong>price:</strong> {appointment.price}</p>
+                <p><strong>createdAt:</strong> {appointment.createdAt}</p>
+                <p><strong>paymentStatus:</strong> {appointment.paymentStatus}</p>
+                <p><strong>paymentIntentId:</strong> {appointment.paymentIntentId}</p>
+                <p><strong>depositAmount:</strong> {appointment.depositAmount}</p>
+                <p><strong>updatedAt:</strong> {appointment.updatedAt}</p>
               </div>
             ))
           ) : (
