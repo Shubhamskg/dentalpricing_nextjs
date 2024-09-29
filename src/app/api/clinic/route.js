@@ -27,14 +27,14 @@ export async function GET(request) {
     const db = client.db('dentalpricing');
 
     // Fetch basic clinic info
-    const clinicInfo = await db.collection('pricedata').findOne({ Name: clinicName });
+    const clinicInfo = await db.collection('treatmentPriceData').findOne({ Name: clinicName });
 
     if (!clinicInfo) {
       return NextResponse.json({ error: 'Clinic not found' }, { status: 404 });
     }
 
     // Fetch all treatments for the clinic
-    const allTreatments = await db.collection('pricedata')
+    const allTreatments = await db.collection('treatmentPriceData')
       .find({ Name: clinicName })
       .toArray();
 
