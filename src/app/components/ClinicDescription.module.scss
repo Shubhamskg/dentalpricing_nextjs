@@ -1,0 +1,75 @@
+.card {
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 24px 32px;
+    margin-bottom: 24px;
+  }
+  
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 16px;
+    color: #333;
+  }
+  
+  .content {
+    color: #444;
+    line-height: 1.6;
+  
+    .heading1 {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 16px;
+    }
+  
+    .heading2 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+  
+    .heading3 {
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+  
+    .paragraph {
+      margin-bottom: 16px;
+    }
+  
+    .unorderedList,
+    .orderedList {
+      padding-left: 20px;
+      margin-bottom: 16px;
+    }
+  
+    .listItem {
+      margin-bottom: 4px;
+    }
+  
+    .link {
+      color: #4285F4;
+      text-decoration: none;
+  
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+  
+  .readMoreButton {
+    background-color: #4285F4;
+    color: #ffffff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+  
+    &:hover {
+      background-color: #0056b3;
+    }
+  }

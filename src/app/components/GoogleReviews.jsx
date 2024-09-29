@@ -3,192 +3,142 @@ import { FaStar, FaGoogle } from 'react-icons/fa';
 import styles from './GoogleReviews.module.scss';
 import Loading from './Loading';
 
-const MAX_REVIEW_LENGTH = 500;
-const CACHE_DURATION = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
-const ERROR_CACHE_DURATION =30* 24 * 60 * 60 * 1000; // 1 day in milliseconds for error states
+const MAX_REVIEW_LENGTH = 200;
 
-const GoogleReviews = ({name, address, postcode, placeId: initialPlaceId, onRatingFetched, searchPage=false }) => {
-  const [reviews, setReviews] = useState([]);
+const GoogleReviews = ({ name, address, postcode, placeId, onRatingFetched, searchPage = false }) => {
+  const [reviews, setReviews] = useState({});
   const [rating, setRating] = useState(null);
   const [totalReviews, setTotalReviews] = useState(0);
-  const [placeId, setPlaceId] = useState(initialPlaceId);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [expandedReviews, setExpandedReviews] = useState({});
+  const [reviewType, setReviewType] = useState('most_relevant');
+  const [isFromDatabase, setIsFromDatabase] = useState(false);
+  const [showAllReviews, setShowAllReviews] = useState(false);
 
-  const cacheKey = `googleReviews_${placeId || `${name}_${address}_${postcode}`}`;
-
-  const getCachedData = useCallback(() => {
-    if (typeof window === 'undefined') return null;
-    try {
-      const cachedData = localStorage.getItem(cacheKey);
-      if (cachedData) {
-        const { data, timestamp, isError } = JSON.parse(cachedData);
-        const currentTime = Date.now();
-        const cacheExpiration = isError ? ERROR_CACHE_DURATION : CACHE_DURATION;
-        if (currentTime - timestamp < cacheExpiration) {
-          return { data, isError };
-        }
-      }
-    } catch (error) {
-      console.error('Error reading from cache:', error);
-    }
-    return null;
-  }, [cacheKey]);
-
-  const setCachedData = useCallback((data, isError = false) => {
-    if (typeof window === 'undefined') return;
-    try {
-      const cacheData = {
-        data,
-        timestamp: Date.now(),
-        isError,
-      };
-      localStorage.setItem(cacheKey, JSON.stringify(cacheData));
-    } catch (error) {
-      console.error('Error writing to cache:', error);
-    }
-  }, [cacheKey]);
-
-  const fetchPlaceIdAndReviews = useCallback(async () => {
+  const fetchReviews = useCallback(async (showAll = false) => {
     try {
       setLoading(true);
       setError(null);
 
-      const cachedResult = getCachedData();
-      if (cachedResult) {
-        if (cachedResult.isError) {
-          setError(cachedResult.data);
-        } else {
-          setReviews(cachedResult.data.reviews);
-          setRating(cachedResult.data.rating);
-          setTotalReviews(cachedResult.data.totalReviews);
-          setPlaceId(cachedResult.data.placeId);
-          onRatingFetched(cachedResult.data.rating, cachedResult.data.totalReviews);
+      const dbResponse = await fetch(`/api/reviewsData?name=${encodeURIComponent(name)}&address=${encodeURIComponent(address)}&postcode=${encodeURIComponent(postcode)}&showAll=${showAll}`);
+      
+      if (dbResponse.ok) {
+        const dbData = await dbResponse.json();
+        setReviews(dbData.reviews);
+        setRating(dbData.rating);
+        setTotalReviews(dbData.totalReviews);
+        setIsFromDatabase(true);
+        onRatingFetched(dbData.rating, dbData.totalReviews);
+      } else {
+        if (!placeId) {
+          throw new Error('Place ID is required when fetching from Google API');
         }
-        setLoading(false);
-        return;
-      }
-
-      let currentPlaceId = placeId;
-
-      if (!currentPlaceId) {
-        if (!name || !address || !postcode) {
-          throw new Error('Name, address, and postcode are required when placeId is not provided');
-        }
-
-        const placeIdResponse = await fetch(`/api/place-id?name=${encodeURIComponent(name)}&address=${encodeURIComponent(address)}&postcode=${encodeURIComponent(postcode)}`);
+        const apiResponse = await fetch(`/api/google-reviews?placeId=${placeId}`);
         
-        if (!placeIdResponse.ok) {
-          const errorData = await placeIdResponse.json();
-          throw new Error(errorData.error || `HTTP error! status: ${placeIdResponse.status}`);
+        if (!apiResponse.ok) {
+          throw new Error('Failed to fetch reviews from Google API');
         }
         
-        const placeIdData = await placeIdResponse.json();
-        currentPlaceId = placeIdData.placeId;
-        setPlaceId(currentPlaceId);
+        const apiData = await apiResponse.json();
+        setReviews(apiData.reviews);
+        setRating(apiData.rating);
+        setTotalReviews(apiData.totalReviews);
+        setIsFromDatabase(false);
+        onRatingFetched(apiData.rating, apiData.totalReviews);
       }
-
-      const reviewsResponse = await fetch(`/api/google-reviews?placeId=${currentPlaceId}`);
-      
-      if (!reviewsResponse.ok) {
-        const errorData = await reviewsResponse.json();
-        const errorMessage = errorData.error || `HTTP error! status: ${reviewsResponse.status}`;
-        setCachedData(errorMessage, true);
-        throw new Error(errorMessage);
-      }
-      
-      const reviewsData = await reviewsResponse.json();
-      const newData = {
-        reviews: reviewsData.reviews || [],
-        rating: reviewsData.rating || null,
-        totalReviews: reviewsData.totalReviews || 0,
-        placeId: currentPlaceId,
-      };
-      setReviews(newData.reviews);
-      setRating(newData.rating);
-      setTotalReviews(newData.totalReviews);
-      onRatingFetched(newData.rating, newData.totalReviews);
-      setCachedData(newData);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('Error fetching reviews:', error);
       setError(error.message);
-      setCachedData(error.message, true);
     } finally {
       setLoading(false);
     }
-  }, [name, address, postcode, placeId, getCachedData, setCachedData, onRatingFetched]);
-
+  }, [name, address, postcode, placeId, onRatingFetched]);
 
   useEffect(() => {
-    fetchPlaceIdAndReviews();
-  }, [fetchPlaceIdAndReviews]);
+    fetchReviews();
+  }, [fetchReviews]);
 
   const renderStars = (rating) => {
-    return Array.from({ length: 5 }, (_, index) => (
-      <FaStar key={index} className={index < Math.floor(rating) ? styles.starFilled : styles.starEmpty} />
-    ));
+    return (
+      <div className={styles.stars}>
+        {Array.from({ length: 5 }, (_, index) => (
+          <FaStar key={index} className={index < Math.floor(rating) ? styles.starFilled : styles.starEmpty} />
+        ))}
+      </div>
+    );
   };
+  
 
   const toggleReviewExpansion = (index) => {
     setExpandedReviews(prev => ({ ...prev, [index]: !prev[index] }));
   };
 
-  if (loading) return <Loading/>;
+  const handleReviewTypeChange = (e) => {
+    setReviewType(e.target.value);
+  };
+
+  const handleShowAllReviews = () => {
+    setShowAllReviews(true);
+    fetchReviews(true);
+  };
+
+  if (loading) return <Loading />;
   if (error) return <div className={styles.error}>Error: {error}</div>;
-  if (!placeId || reviews.length === 0) return null;
-  const isValidUrl = urlString=> {
-    var urlPattern = new RegExp('^(https?:\\/\\/)?'+ // validate protocol
-  '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // validate domain name
-  '((\\d{1,3}\\.){3}\\d{1,3}))'+ // validate OR ip (v4) address
-  '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // validate port and path
-  '(\\?[;&a-z\\d%_.~+=-]*)?'+ // validate query string
-  '(\\#[-a-z\\d_]*)?$','i'); // validate fragment locator
-return !!urlPattern.test(urlString);
-}
+  if (!reviews || Object.keys(reviews).length === 0) return null;
+
+  const displayedReviews = reviews[reviewType] || [];
+
   return (
-    <div >
-      {searchPage?
-      <div className={styles.googleReviewSummary}>
-      <div className={styles.googleLogo}>
-        {/* <FaGoogle /> */}
-      </div>
-      <div className={styles.ratingOverview}>
-        <span className={styles.ratingNumber}>{rating?.toFixed(1) || 'N/A'}</span>
-        <div className={styles.stars}>{renderStars(rating)}</div>
-        <span className={styles.reviewCount}>({totalReviews})</span>
-      </div>
-    </div>:
-      <div className={styles.reviewSection}>
-      <div className={styles.googleReviewSummary}>
+    <div className={styles.reviewSection}>
+      <div className={styles.googleReviewHeader}>
         <div className={styles.googleLogo}>
           <FaGoogle />
           <span>Google Reviews</span>
         </div>
         <div className={styles.ratingOverview}>
-          <span className={styles.ratingNumber}>{rating?.toFixed(1) || 'N/A'}</span>
-          <div className={styles.stars}>{renderStars(rating)}</div>
+          <span className={styles.ratingNumber}>
+            {rating ? rating.toFixed(1) : 'N/A'}
+          </span>
+          {renderStars(rating)}
           <span className={styles.reviewCount}>({totalReviews})</span>
         </div>
-        <a href={`https://search.google.com/local/writereview?placeid=${placeId}`} target="_blank" rel="noopener noreferrer" className={styles.writeReviewLink}>
+        <a href={`https://search.google.com/local/writereview?placeid=${placeId}`} 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           className={styles.writeReviewLink}>
           Write a Review
         </a>
       </div>
+
+      {isFromDatabase && (
+        <div className={styles.sortingContainer}>
+          <select 
+            value={reviewType} 
+            onChange={handleReviewTypeChange}
+            className={styles.sortSelect}
+          >
+            <option value="most_relevant">Most Relevant</option>
+            <option value="newest">Newest</option>
+            <option value="highest">Highest Rating</option>
+            <option value="lowest">Lowest Rating</option>
+          </select>
+        </div>
+      )}
+
       <div className={styles.reviewList}>
-        {reviews.map((review, index) => {
-        
-        return(
+        {displayedReviews.map((review, index) => (
           <div key={index} className={styles.review}>
             <div className={styles.reviewHeader}>
-              {isValidUrl(review.profile_photo_url)?              
-              <img src={review.profile_photo_url} alt={review.author_name} className={styles.reviewerImage} />:
-              <div className={styles.letterLogo}>{review.author_name[0].toUpperCase()}</div>}
               <div className={styles.reviewerInfo}>
-                <span className={styles.reviewAuthor}>{review.author_name}</span>
-                <span className={styles.reviewTime}>{review.relative_time_description}</span>
+                <span className={styles.reviewAuthor}>{review.name}</span>
+                <span className={styles.reviewTime}>{review.relative_time}</span>
+              </div>
+              <div className={styles.userRating}>
+              <span className={styles.ratingValue}>{review.rating.toFixed(0)}</span>
+                {renderStars(review.rating)}
               </div>
             </div>
-            <div className={styles.reviewStars}>{renderStars(review.rating)}</div>
             <p className={styles.reviewText}>
               {expandedReviews[index] || review.text.length <= MAX_REVIEW_LENGTH
                 ? review.text
@@ -200,9 +150,14 @@ return !!urlPattern.test(urlString);
               )}
             </p>
           </div>
-        )})}
+        ))}
       </div>
-      </div>}
+
+      {!showAllReviews && displayedReviews.length === 3 && (
+        <button onClick={handleShowAllReviews} className={styles.showAllButton}>
+          Show All Reviews
+        </button>
+      )}
     </div>
   );
 };

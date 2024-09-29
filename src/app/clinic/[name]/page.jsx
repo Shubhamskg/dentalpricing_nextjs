@@ -11,9 +11,10 @@ import { FaMapMarkerAlt, FaGlobe, FaFileInvoiceDollar, FaCalendarAlt, FaSearch, 
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 import { initializeApp } from "firebase/app";
 import Loading from '@/app/components/Loading';
+import ClinicDescription from '../../components/ClinicDescription';
 
 const firebaseConfig = {
-  apiKey: process.env.FIREBASE_API_KEY,
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: "detalpricing.firebaseapp.com",
   projectId: "detalpricing",
   storageBucket: "detalpricing.appspot.com",
@@ -43,7 +44,6 @@ export default function ClinicProfile() {
   const [hasMoreTreatments, setHasMoreTreatments] = useState(false);
   const [googleRating, setGoogleRating] = useState(null);
   const [totalReviews, setTotalReviews] = useState(0);
-  
 
   const fetchWebsiteMetadata = async (url) => {
     try {
@@ -147,8 +147,8 @@ export default function ClinicProfile() {
     ));
   };
 
-  if (isLoading && !clinicData) {
-    return <Loading/>;
+  if (isLoading) {
+    return <Loading />;
   }
 
   if (error) {
@@ -165,10 +165,7 @@ export default function ClinicProfile() {
 
   return (
     <div className={styles.clinicProfilePage}>
-      
-    
       <div className={styles.clinicProfile}>
-        
         <div className={styles.heroSection}>
           <div className={styles.clinicLogo}>
             {extractedLogo ? (
@@ -180,13 +177,15 @@ export default function ClinicProfile() {
             )}
           </div>
           <div className={styles.clinicMainInfo}>
-            <h1>{clinicData.Name} {googleRating !== null && (
-              <div className={styles.googleRating}>
-                <span className={styles.ratingNumber}>{googleRating.toFixed(1)}</span>
-                <div className={styles.stars}>{renderStars(googleRating)}</div>
-                <span className={styles.reviewCount}>({totalReviews} reviews)</span>
-              </div>
-            )}</h1>
+          <h1>{clinicData.Name} {googleRating !== null && (
+  <div className={styles.googleRating}>
+    <span className={styles.ratingNumber}>
+      {typeof googleRating === 'number' ? googleRating.toFixed(1) : googleRating}
+    </span>
+    <div className={styles.stars}>{renderStars(googleRating)}</div>
+    <span className={styles.reviewCount}>({totalReviews} reviews)</span>
+  </div>
+)}</h1>
             
             <h3>{extractedTitle}</h3>
             
@@ -199,14 +198,15 @@ export default function ClinicProfile() {
                 <p><FaFileInvoiceDollar /> <a href={clinicData.Feepage} target="_blank" rel="noopener noreferrer">View Fee Guide</a></p>
               )}
             </div>
-            
           </div>
         </div>
+        
         {clinicImages.length > 0 && (
           <div className={styles.gallerySection}>
             <ClinicImageGallery images={clinicImages} />
           </div>
         )}
+        
         {highlightedTreatment && (
           <div className={styles.highlightedTreatment}>
             <div className={styles.highlightedContent}>
@@ -224,8 +224,11 @@ export default function ClinicProfile() {
             </div>
           </div>
         )}
-
-       
+        
+        <div className={styles.descriptionSection}>
+          <ClinicDescription website={clinicData.Website} />
+        </div>
+        
         <div className={styles.reviewsSection}>
           <GoogleReviews 
             name={clinicData.Name}
@@ -235,7 +238,7 @@ export default function ClinicProfile() {
             onRatingFetched={handleRatingFetched}
           />
         </div>
-        <br/><br/>
+        
         <div className={styles.treatmentsSection}>
           <div className={styles.searchContainer}>
             <FaSearch className={styles.searchIcon} />
@@ -273,8 +276,6 @@ export default function ClinicProfile() {
             )}
           </div>
         </div>
-
-        
       </div>
     </div>
   );
