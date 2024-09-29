@@ -30,7 +30,7 @@ export async function GET(request) {
 
     return NextResponse.json({ title, description, logo: logoUrl });
   } catch (error) {
-    console.error('Error fetching metadata:', error);
+    console.error('Error fetching metadata:');
     return NextResponse.json({ error: 'Failed to fetch metadata' }, { status: 500 });
   }
 }

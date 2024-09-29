@@ -28,7 +28,7 @@ export async function GET(request) {
     try {
         const database = await connectToDatabase();
         const collection = database.collection('googleReviews');
-        const clinic = await collection.findOne({ name, address, postcode });
+        const clinic = await collection.findOne({ name, address });
 
         if (clinic && clinic.reviews) {
             const limit = showAll ? 0 : 3;  // 0 means no limit

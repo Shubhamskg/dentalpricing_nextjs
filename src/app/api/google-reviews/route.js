@@ -51,7 +51,7 @@ export async function GET(request) {
             totalReviews: user_ratings_total || 0,
         });
     } catch (error) {
-        console.error('Error fetching Google reviews:', error);
+        console.error('Error fetching Google reviews:');
         return NextResponse.json({ error: 'Failed to fetch Google reviews', details: error.message }, { status: 500 });
     }
 }

@@ -15,6 +15,7 @@ const GoogleReviews = ({ name, address, postcode, placeId, onRatingFetched, sear
   const [reviewType, setReviewType] = useState('most_relevant');
   const [isFromDatabase, setIsFromDatabase] = useState(false);
   const [showAllReviews, setShowAllReviews] = useState(false);
+  const [newPlaceId,setNewPlaceId]= useState(placeId)
 
   const fetchReviews = useCallback(async (showAll = false) => {
     try {
@@ -22,7 +23,6 @@ const GoogleReviews = ({ name, address, postcode, placeId, onRatingFetched, sear
       setError(null);
 
       const dbResponse = await fetch(`/api/reviewsData?name=${encodeURIComponent(name)}&address=${encodeURIComponent(address)}&postcode=${encodeURIComponent(postcode)}&showAll=${showAll}`);
-      
       if (dbResponse.ok) {
         const dbData = await dbResponse.json();
         setReviews(dbData.reviews);
@@ -32,9 +32,16 @@ const GoogleReviews = ({ name, address, postcode, placeId, onRatingFetched, sear
         onRatingFetched(dbData.rating, dbData.totalReviews);
       } else {
         if (!placeId) {
-          throw new Error('Place ID is required when fetching from Google API');
+          const apiPlaceId = await fetch(`/api/place-id?name=${name}&address=${address}&postcode=${postcode}`);
+          if(apiPlaceId.ok){
+            const placeId = await apiPlaceId.json()
+            console.log('Place ID fetched from Google API:',placeId.placeId)
+            setNewPlaceId(placeId.placeId)
+          }else{
+            throw new Error('Place ID is required when fetching from Google API')
+          }
         }
-        const apiResponse = await fetch(`/api/google-reviews?placeId=${placeId}`);
+        const apiResponse = await fetch(`/api/google-reviews?placeId=${newPlaceId}`);
         
         if (!apiResponse.ok) {
           throw new Error('Failed to fetch reviews from Google API');
