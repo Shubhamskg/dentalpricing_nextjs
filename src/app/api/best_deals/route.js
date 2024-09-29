@@ -59,7 +59,7 @@ export async function GET(request) {
   try {
     client = await MongoClient.connect(process.env.MONGODB_URI);
     const db = client.db('dentalpricing');
-    const priceCollection = db.collection('treatmentPriceData');
+    const priceCollection = db.collection('allPriceData');
 
     const bestDeals = await priceCollection.aggregate([
       { $sample: { size: 100 } },
