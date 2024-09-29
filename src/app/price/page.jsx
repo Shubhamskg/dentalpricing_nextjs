@@ -9,6 +9,7 @@ import styles from './page.module.scss';
 import Loading from '../components/Loading';
 import BestDeals from '../components/BestDeals';
 import DentalPricingInfo from '../components/DentalPricingInfo';
+import { categoryNames } from '../lib/data';
 
 function StarRating({ rating }) {
   const fullStars = Math.floor(rating);
