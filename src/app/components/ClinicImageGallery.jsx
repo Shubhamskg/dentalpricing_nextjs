@@ -42,8 +42,8 @@ export default function ClinicImageGallery({ images }) {
             <Image
               src={image}
               alt={`Clinic image ${index % images.length + 1}`}
-              width={200}
-              height={150}
+              width={225}
+              height={225}
               style={{ objectFit: 'cover' }}
               loading="lazy"
               placeholder="blur"

@@ -13,6 +13,8 @@
   .imageItem {
     flex: 0 0 calc(20% - 16px); // For 5 images per view. Use calc(25% - 16px) for 4 images
     margin: 0 8px;
+    width: 200px;
+    height: 150px;
     display: flex;
     justify-content: center;
     align-items: center;

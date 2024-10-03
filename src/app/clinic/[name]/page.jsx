@@ -12,7 +12,6 @@ import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 import { initializeApp } from "firebase/app";
 import Loading from '@/app/components/Loading';
 import ClinicDescription from '../../components/ClinicDescription';
-import { CalendarHeart } from 'lucide-react';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -71,10 +70,12 @@ export default function ClinicProfile() {
       }
 
       if (imageList.items.length > 0) {
-        const sortedItems = imageList.items.sort((a, b) => b.name.localeCompare(a.name));
-        const highestQualityImage = sortedItems[0];
-        const url = await getDownloadURL(highestQualityImage);
-        return url;
+          const largestImage = imageList.items.reduce((prev, current) => 
+            (prev.size > current.size) ? prev : current
+          );
+          const url = await getDownloadURL(largestImage);
+          return url;
+        
       }
 
       return null;
@@ -83,60 +84,70 @@ export default function ClinicProfile() {
       return null;
     }
   };
-
   useEffect(() => {
     const fetchClinicData = async () => {
-      setIsLoading(true);
+      setIsLoading(true)
       try {
-        const response = await fetch(`/api/clinic?name=${encodeURIComponent(clinicName)}&category=${encodeURIComponent(currentCategory)}&treatment=${encodeURIComponent(currentTreatment)}`);
+        const response = await fetch(`/api/clinic?name=${encodeURIComponent(clinicName)}&category=${encodeURIComponent(currentCategory)}&treatment=${encodeURIComponent(currentTreatment)}`)
         if (!response.ok) {
-          throw new Error(response.status === 404 ? 'Clinic not found' : 'Failed to fetch clinic data');
+          throw new Error(response.status === 404 ? 'Clinic not found' : 'Failed to fetch clinic data')
         }
-        const data = await response.json();
-        setClinicData(data);
+        const data = await response.json()
+        setClinicData(data)
 
         if (currentCategory && currentTreatment) {
-          const highlighted = data.currentCategory?.treatments.find(t => t.name.toLowerCase() === currentTreatment.toLowerCase());
-          setHighlightedTreatment(highlighted || null);
+          const highlighted = data.currentCategory?.treatments.find(t => t.name.toLowerCase() === currentTreatment.toLowerCase())
+          setHighlightedTreatment(highlighted || null)
         }
 
-        const allTreatments = [...(data.currentCategory?.treatments || []), ...data.otherTreatments];
-        setDisplayedTreatments(allTreatments.slice(0, 8));
-        setHasMoreTreatments(allTreatments.length > 8);
+        const allTreatments = [...(data.currentCategory?.treatments || []), ...data.otherTreatments]
+        setDisplayedTreatments(allTreatments.slice(0, 8))
+        setHasMoreTreatments(allTreatments.length > 8)
 
         if (data.Website) {
-          const metadata = await fetchWebsiteMetadata(data.Website);
+          const metadata = await fetchWebsiteMetadata(data.Website)
           if (metadata) {
-            setExtractedTitle(metadata.title || '');
-            setExtractedDescription(metadata.description || '');
+            setExtractedTitle(metadata.title || '')
+            setExtractedDescription(metadata.description || '')
           }
         }
 
-        const logoUrl = await fetchClinicLogo(clinicName);
-        setExtractedLogo(logoUrl);
+        const logoUrl = await fetchClinicLogo(clinicName)
+        setExtractedLogo(logoUrl)
 
         const fetchClinicImages = async () => {
-          const imagesRef = ref(storage, `images/${clinicName}`);
-          const imageList = await listAll(imagesRef);
-          const urls = await Promise.all(
-            imageList.items.map(imageRef => getDownloadURL(imageRef))
-          );
-          setClinicImages(urls);
-        };
+          // Fetch images from clinic-specific folder
+          const clinicImagesRef = ref(storage, `images/${clinicName}`)
+          const clinicImageList = await listAll(clinicImagesRef)
+          const clinicUrls = await Promise.all(
+            clinicImageList.items.map(imageRef => getDownloadURL(imageRef))
+          )
 
-        fetchClinicImages();
+          // Fetch images from all_clinics_img folder
+          const clinicUrl=data.Website.replace(/^https?:\/\//, '').replace(/\/$/, '');
+          const allClinicsImagesRef = ref(storage, `all_clinics_img/${clinicUrl}`)
+          const allClinicsImageList = await listAll(allClinicsImagesRef)
+          const allClinicsUrls = await Promise.all(
+            allClinicsImageList.items.map(imageRef => getDownloadURL(imageRef))
+          )
+
+          // Combine and set all images
+          setClinicImages([...clinicUrls, ...allClinicsUrls])
+        }
+
+        await fetchClinicImages()
 
       } catch (error) {
-        console.error('Error fetching clinic data:', error);
-        setError(error.message);
+        console.error('Error fetching clinic data:', error)
+        setError(error.message)
       } finally {
-        setIsLoading(false);
+        setIsLoading(false)
       }
-    };
+    }
 
-    fetchClinicData();
-  }, [clinicName, currentCategory, currentTreatment]);
-
+    fetchClinicData()
+  }, [clinicName, currentCategory, currentTreatment])
+  
   const loadMoreTreatments = () => {
     const allTreatments = [...(clinicData.currentCategory?.treatments || []), ...clinicData.otherTreatments];
     const nextTreatments = allTreatments.slice(displayedTreatments.length, displayedTreatments.length + 4);
