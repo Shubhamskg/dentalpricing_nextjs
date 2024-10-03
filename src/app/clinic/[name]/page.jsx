@@ -12,6 +12,7 @@ import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 import { initializeApp } from "firebase/app";
 import Loading from '@/app/components/Loading';
 import ClinicDescription from '../../components/ClinicDescription';
+import { CalendarHeart } from 'lucide-react';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -59,6 +60,30 @@ export default function ClinicProfile() {
     }
   };
 
+  const fetchClinicLogo = async (clinicName) => {
+    try {
+      let imagesRef = ref(storage, `all_clinics_img/${clinicName}`);
+      let imageList = await listAll(imagesRef);
+      
+      if (imageList.items.length === 0) {
+        imagesRef = ref(storage, `images/${clinicName}`);
+        imageList = await listAll(imagesRef);
+      }
+
+      if (imageList.items.length > 0) {
+        const sortedItems = imageList.items.sort((a, b) => b.name.localeCompare(a.name));
+        const highestQualityImage = sortedItems[0];
+        const url = await getDownloadURL(highestQualityImage);
+        return url;
+      }
+
+      return null;
+    } catch (error) {
+      console.error('Error fetching clinic logo:', error);
+      return null;
+    }
+  };
+
   useEffect(() => {
     const fetchClinicData = async () => {
       setIsLoading(true);
@@ -70,13 +95,11 @@ export default function ClinicProfile() {
         const data = await response.json();
         setClinicData(data);
 
-        // Set highlighted treatment
         if (currentCategory && currentTreatment) {
           const highlighted = data.currentCategory?.treatments.find(t => t.name.toLowerCase() === currentTreatment.toLowerCase());
           setHighlightedTreatment(highlighted || null);
         }
 
-        // Set displayed treatments
         const allTreatments = [...(data.currentCategory?.treatments || []), ...data.otherTreatments];
         setDisplayedTreatments(allTreatments.slice(0, 8));
         setHasMoreTreatments(allTreatments.length > 8);
@@ -86,9 +109,11 @@ export default function ClinicProfile() {
           if (metadata) {
             setExtractedTitle(metadata.title || '');
             setExtractedDescription(metadata.description || '');
-            setExtractedLogo(metadata.logo || '');
           }
         }
+
+        const logoUrl = await fetchClinicLogo(clinicName);
+        setExtractedLogo(logoUrl);
 
         const fetchClinicImages = async () => {
           const imagesRef = ref(storage, `images/${clinicName}`);
@@ -159,7 +184,7 @@ export default function ClinicProfile() {
     return <div className={styles.error}>No data available</div>;
   }
 
-  const clinicDescription = extractedDescription || clinicData.Description || "Welcome to our dental clinic. We are committed to providing high-quality dental care in a comfortable and friendly environment.";
+  const clinicDescription = extractedDescription || clinicData.Description;
 
   const filteredTreatments = filterTreatments(displayedTreatments);
 
@@ -169,27 +194,25 @@ export default function ClinicProfile() {
         <div className={styles.heroSection}>
           <div className={styles.clinicLogo}>
             {extractedLogo ? (
-              <img src={extractedLogo} alt={`${clinicData.Name} logo`} />
-            ) : clinicData.Logo ? (
-              <img src={clinicData.Logo} alt={`${clinicData.Name} logo`} />
+              <Image src={extractedLogo} alt={`${clinicData.Name} logo`} width={200} height={200} />
             ) : (
               <div className={styles.letterLogo}>{clinicData.Name[0].toUpperCase()}</div>
             )}
           </div>
           <div className={styles.clinicMainInfo}>
-          <h1>{clinicData.Name} {googleRating !== null && (
-  <div className={styles.googleRating}>
-    <span className={styles.ratingNumber}>
-      {typeof googleRating === 'number' ? googleRating.toFixed(1) : googleRating}
-    </span>
-    <div className={styles.stars}>{renderStars(googleRating)}</div>
-    <span className={styles.reviewCount}>({totalReviews} reviews)</span>
-  </div>
-)}</h1>
+            <h1>{clinicData.Name} </h1>
+            {googleRating !== null && (
+              <div className={styles.googleRating}>
+                <span className={styles.ratingNumber}>
+                  {typeof googleRating === 'number' ? googleRating.toFixed(1) : googleRating}
+                </span>
+                <div className={styles.stars}>{renderStars(googleRating)}</div>
+                <span className={styles.reviewCount}>({totalReviews} reviews)</span>
+              </div>
+            )}
             
             <h3>{extractedTitle}</h3>
-            
-            {/* <p className={styles.clinicDescription}>{clinicDescription}</p> */}
+            {clinicDescription && <p>{clinicDescription}</p>}
             
             <div className={styles.clinicInfo}>
               <p><FaMapMarkerAlt /> {clinicData.Address}, {clinicData.Postcode}</p>
@@ -219,7 +242,7 @@ export default function ClinicProfile() {
                 className={styles.bookButton}
                 onClick={() => handleBookAppointment(highlightedTreatment.name, highlightedTreatment.price)}
               >
-                Book Appointment
+               <FaCalendarAlt/> Book Appointment
               </button>
             </div>
           </div>
@@ -264,7 +287,7 @@ export default function ClinicProfile() {
                     onClick={() => handleBookAppointment(treatment.name, treatment.price)}
                     aria-label={`Book appointment for ${treatment.name}`}
                   >
-                    <FaCalendarAlt />
+                    <FaCalendarAlt /> 
                   </button>
                 </div>
               ))}
