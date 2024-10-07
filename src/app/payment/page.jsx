@@ -99,6 +99,7 @@ function PaymentContent() {
       }
 
       try {
+        console.log("Hi Bro! I am the Abhishek");
         const response = await fetch(`/api/booking?id=${bookingId}`);
         if (!response.ok) {
           const errorData = await response.json();
