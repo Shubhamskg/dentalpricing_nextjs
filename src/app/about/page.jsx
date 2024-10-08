@@ -8,13 +8,13 @@ const AboutPage = () => {
   return (
     <div className={styles.aboutPage}>
       <header className={styles.pageHeader}>
-        <h1>About Dental Pricing</h1>
+        <h1>About Dental Booking</h1>
         <p className={styles.subtitle}>Your Trusted Guide to Affordable and Quality Dental Care</p>
       </header>
       
       <section className={styles.intro}>
-        <h2>Welcome to Dental Pricing</h2>
-        <p>At <strong>Dental Pricing</strong>, we are dedicated to helping patients find the <strong>best dental treatments</strong> at the most <strong>affordable prices</strong>. Whether you're looking for a routine check-up, cosmetic dentistry like teeth whitening, or more complex treatments such as braces or dental implants, our goal is to make <strong>dental care accessible</strong> and <strong>transparent</strong>.</p>
+        <h2>Welcome to Dental Booking</h2>
+        <p>At <strong>Dental Booking</strong>, we are dedicated to helping patients find the <strong>best dental treatments</strong> at the most <strong>affordable prices</strong>. Whether you're looking for a routine check-up, cosmetic dentistry like teeth whitening, or more complex treatments such as braces or dental implants, our goal is to make <strong>dental care accessible</strong> and <strong>transparent</strong>.</p>
       </section>
 
       <section className={styles.mission}>
@@ -24,8 +24,8 @@ const AboutPage = () => {
       </section>
 
       <section className={styles.trustReasons}>
-        <h2>Why Trust Dental Pricing?</h2>
-        <p>We know that when it comes to your health, <strong>trust</strong> is everything. That's why <strong>Dental Pricing</strong> works only with <strong>verified and experienced dentists</strong> who meet our strict quality standards.</p>
+        <h2>Why Trust Dental Booking?</h2>
+        <p>We know that when it comes to your health, <strong>trust</strong> is everything. That's why <strong>Dental Booking</strong> works only with <strong>verified and experienced dentists</strong> who meet our strict quality standards.</p>
         <div className={styles.cardGrid}>
           <div className={styles.card}>
             <FaCheckCircle className={styles.icon} />
@@ -51,7 +51,7 @@ const AboutPage = () => {
       </section>
 
       <section className={styles.howItWorks}>
-        <h2>How Dental Pricing Works</h2>
+        <h2>How Dental Booking Works</h2>
         <p>Using our platform is fast, free, and easy:</p>
         <div className={styles.cardGrid}>
           <div className={styles.card}>
@@ -75,7 +75,7 @@ const AboutPage = () => {
 
       <section className={styles.values}>
         <h2>Our Values</h2>
-        <p>At Dental Pricing, our values guide everything we do. We're committed to:</p>
+        <p>At Dental Booking, our values guide everything we do. We're committed to:</p>
         <div className={styles.cardGrid}>
           <div className={styles.card}>
             <FaChartLine className={styles.icon} />
@@ -97,12 +97,12 @@ const AboutPage = () => {
 
       {/* <section className={styles.whyCompare}>
         <h2>Why Compare Dental Prices?</h2>
-        <p>Dental pricing can vary greatly between practices, even within the same city. That's why it's important to <strong>compare prices</strong> to ensure you're getting the best deal. By using <strong>Dental Pricing</strong>, you can instantly see how much different dentists charge for treatments such as teeth whitening, fillings, crowns, and more, giving you the power to make <strong>informed decisions</strong> based on your needs and budget.</p>
+        <p>Dental Booking can vary greatly between practices, even within the same city. That's why it's important to <strong>compare prices</strong> to ensure you're getting the best deal. By using <strong>Dental Booking</strong>, you can instantly see how much different dentists charge for treatments such as teeth whitening, fillings, crowns, and more, giving you the power to make <strong>informed decisions</strong> based on your needs and budget.</p>
       </section> */}
       <section className={styles.whyCompare}>
         <h3><FaCommentDollar /> Why compare dental prices?</h3>
         <p>
-          At <strong>Dental Pricing</strong>, we believe in empowering patients with the <strong>knowledge</strong> they need to make the <strong>best</strong> dental care decisions. Whether you're looking for routine check-ups or advanced treatments, comparing prices is the <strong>smartest way</strong> to ensure you're getting top-quality care at a price that suits your budget. Here's why <strong>comparing dental prices</strong> matters:
+          At <strong>Dental Booking</strong>, we believe in empowering patients with the <strong>knowledge</strong> they need to make the <strong>best</strong> dental care decisions. Whether you're looking for routine check-ups or advanced treatments, comparing prices is the <strong>smartest way</strong> to ensure you're getting top-quality care at a price that suits your budget. Here's why <strong>comparing dental prices</strong> matters:
         </p>
         <div className={styles.reasonsGrid}>
           <div className={styles.reason}>
@@ -115,7 +115,7 @@ const AboutPage = () => {
           </div>
           <div className={styles.reason}>
             <h4>3. Choose a dentist that suits your needs</h4>
-            <p>With <strong>Dental Pricing</strong>, you're not just comparing prices. You're also comparing <strong>dentist reviews</strong>, <strong>locations</strong>, and the specific treatments they offer. This way, you can choose a dentist who fits your needs, whether it's based on price, proximity, or patient ratings.</p>
+            <p>With <strong>Dental Booking</strong>, you're not just comparing prices. You're also comparing <strong>dentist reviews</strong>, <strong>locations</strong>, and the specific treatments they offer. This way, you can choose a dentist who fits your needs, whether it's based on price, proximity, or patient ratings.</p>
           </div>
           <div className={styles.reason}>
             <h4>4. Make informed decisions</h4>
@@ -123,7 +123,7 @@ const AboutPage = () => {
           </div>
           <div className={styles.reason}>
             <h4>5. Avoid overpaying</h4>
-            <p>Don't overpay for treatments like <strong>crowns, fillings, root canals</strong>, and more. With <strong>Dental Pricing</strong>, you can instantly see how much different dentists charge and select the one that offers the most competitive pricing.</p>
+            <p>Don't overpay for treatments like <strong>crowns, fillings, root canals</strong>, and more. With <strong>Dental Booking</strong>, you can instantly see how much different dentists charge and select the one that offers the most competitive pricing.</p>
           </div>
           <div className={styles.reason}>
             <h4>6. Plan your dental care budget</h4>
@@ -134,12 +134,12 @@ const AboutPage = () => {
 
       <section className={styles.commitment}>
         <h2>Our Commitment to You</h2>
-        <p>At <strong>Dental Pricing</strong>, we are committed to making your search for a dentist as easy as possible. Our platform is designed to give you all the tools you need to find the <strong>right dental care at the right price</strong>, without the hassle. Whether you're looking for an affordable <strong>dental check-up</strong>, seeking the best deal on <strong>dental implants</strong>, or comparing options for <strong>cosmetic treatments</strong>, we're here to help.</p>
+        <p>At <strong>Dental Booking</strong>, we are committed to making your search for a dentist as easy as possible. Our platform is designed to give you all the tools you need to find the <strong>right dental care at the right price</strong>, without the hassle. Whether you're looking for an affordable <strong>dental check-up</strong>, seeking the best deal on <strong>dental implants</strong>, or comparing options for <strong>cosmetic treatments</strong>, we're here to help.</p>
       </section>
 
       <section className={styles.contact}>
         <h2>Contact Us</h2>
-        <p>Have questions? We're here to help! You can reach our friendly support team by visiting our Contact Page or sending us an email at <strong>support@dentalpricing.co.uk</strong>.</p>
+        <p>Have questions? We're here to help! You can reach our friendly support team by visiting our Contact Page or sending us an email at <strong>support@dentalbooking.co.uk</strong>.</p>
       </section>
     </div>
   );

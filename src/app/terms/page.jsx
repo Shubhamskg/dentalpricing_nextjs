@@ -9,12 +9,12 @@ const TermsAndConditionsPage = () => {
 
       <section>
         <h2>1. Acceptance of Terms</h2>
-        <p>By accessing or using the Dental Pricing website (dentalpricing.co.uk), you agree to comply with and be bound by these Terms and Conditions. If you do not agree to these terms, please do not use our website.</p>
+        <p>By accessing or using the Dental Booking website (dentalbooking.co.uk), you agree to comply with and be bound by these Terms and Conditions. If you do not agree to these terms, please do not use our website.</p>
       </section>
 
       <section>
         <h2>2. Use of the Service</h2>
-        <p>Dental Pricing provides a platform for comparing dental treatment prices across the UK. The information provided is for general informational purposes only and should not be considered as professional medical advice.</p>
+        <p>Dental Booking provides a platform for comparing dental treatment prices across the UK. The information provided is for general informational purposes only and should not be considered as professional medical advice.</p>
       </section>
 
       <section>
@@ -29,12 +29,12 @@ const TermsAndConditionsPage = () => {
 
       <section>
         <h2>5. Intellectual Property</h2>
-        <p>All content on this website, including text, graphics, logos, and software, is the property of Dental Pricing and is protected by UK and international copyright laws.</p>
+        <p>All content on this website, including text, graphics, logos, and software, is the property of Dental Booking and is protected by UK and international copyright laws.</p>
       </section>
 
       <section>
         <h2>6. Limitation of Liability</h2>
-        <p>Dental Pricing shall not be liable for any direct, indirect, incidental, consequential, or punitive damages arising out of your access to, or use of, the website.</p>
+        <p>Dental Booking shall not be liable for any direct, indirect, incidental, consequential, or punitive damages arising out of your access to, or use of, the website.</p>
       </section>
 
       <section>
@@ -47,7 +47,7 @@ const TermsAndConditionsPage = () => {
         <p>These Terms and Conditions shall be governed by and construed in accordance with the laws of the United Kingdom.</p>
       </section>
 
-      <p>If you have any questions about these Terms and Conditions, please contact us at info@dentalpricing.co.uk.</p>
+      <p>If you have any questions about these Terms and Conditions, please contact us at info@dentalbooking.co.uk.</p>
     </div>
   );
 };

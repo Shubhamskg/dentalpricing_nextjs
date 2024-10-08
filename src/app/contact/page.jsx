@@ -25,14 +25,14 @@ const ContactPage = () => {
   return (
     <div className={styles.contactPage}>
       <h1>Contact Us</h1>
-      <p>We're here to help with any questions about dental pricing in the UK.</p>
+      <p>We're here to help with any questions about Dental Booking in the UK.</p>
 
       <div className={styles.contactContent}>
         <div className={styles.contactInfo}>
           <h2>Get in Touch</h2>
           <ul>
-            <li><FaEnvelope /> Email: info@dentalpricing.co.uk</li>
-            <li><FaPhone /> Phone: +44 20 1234 5678</li>
+            <li><FaEnvelope /> Email: support@dentaladvisor.com</li>
+            <li><FaPhone /> Phone: +44 7590 324762</li>
             <li><FaMapMarkerAlt /> Address: 123 Dental Street, London, UK</li>
           </ul>
           <p>Office Hours: Monday to Friday, 9:00 AM - 5:00 PM</p>

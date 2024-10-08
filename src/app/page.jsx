@@ -15,22 +15,22 @@ function SEO({ title, description, pathname }) {
       <meta name="description" content={description} />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <meta name="robots" content="index, follow" />
-      <link rel="canonical" href={`https://www.dentalpricing.co.uk${pathname}`} />
+      <link rel="canonical" href={`https://www.dentalbooking.co.uk${pathname}`} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:type" content="website" />
-      <meta property="og:url" content={`https://www.dentalpricing.co.uk${pathname}`} />
-      <meta property="og:image" content="https://www.dentalpricing.co.uk/og-image.jpg" />
+      <meta property="og:url" content={`https://www.dentalbooking.co.uk${pathname}`} />
+      <meta property="og:image" content="https://www.dentalbooking.co.uk/og-image.jpg" />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content="https://www.dentalpricing.co.uk/twitter-image.jpg" />
+      <meta name="twitter:image" content="https://www.dentalbooking.co.uk/twitter-image.jpg" />
     </Head>
   );
 }
 
 function generateSEOData(pathname, searchParams) {
-  const baseTitle = "Dental Pricing | ";
+  const baseTitle = "Dental Booking | ";
   const baseDescription = "Compare dental treatment prices across different clinics in the UK. ";
 
   switch (pathname) {
@@ -61,7 +61,7 @@ function generateSEOData(pathname, searchParams) {
     case '/about':
       return {
         title: baseTitle + "About Us",
-        description: "Learn about Dental Pricing's mission to make dental care costs transparent and accessible to everyone in the UK."
+        description: "Learn about Dental Booking's mission to make dental care costs transparent and accessible to everyone in the UK."
       };
     // Add more cases for other pages as needed
     default:
@@ -75,7 +75,7 @@ function HomeContent() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [seoData, setSeoData] = useState({
-    title: "Dental Pricing | Compare Dental Treatment Prices",
+    title: "Dental Booking | Compare Dental Treatment Prices",
     description: "Compare dental treatment prices across different clinics in the UK. Find affordable dental care options in your area with our easy-to-use search tool."
   });
 
@@ -86,13 +86,13 @@ function HomeContent() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "Dental Pricing",
-    "url": "https://www.dentalpricing.co.uk",
+    "name": "Dental Booking",
+    "url": "https://www.dentalbooking.co.uk",
     "potentialAction": {
       "@type": "SearchAction",
       "target": {
         "@type": "EntryPoint",
-        "urlTemplate": "https://www.dentalpricing.co.uk/price?category={search_term_string}"
+        "urlTemplate": "https://www.dentalbooking.co.uk/price?category={search_term_string}"
       },
       "query-input": "required name=search_term_string"
     },

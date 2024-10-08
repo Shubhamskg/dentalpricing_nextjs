@@ -9,7 +9,7 @@ const PrivacyPolicyPage = () => {
 
       <section>
         <h2>1. Introduction</h2>
-        <p>Dental Pricing ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our website (dentalpricing.co.uk).</p>
+        <p>Dental Booking ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our website (dentalbooking.co.uk).</p>
       </section>
 
       <section>
@@ -49,7 +49,7 @@ const PrivacyPolicyPage = () => {
 
       <section>
         <h2>9. Contact Us</h2>
-        <p>If you have any questions about this Privacy Policy, please contact us at privacy@dentalpricing.co.uk.</p>
+        <p>If you have any questions about this Privacy Policy, please contact us at support@dentaladvisor.com</p>
       </section>
     </div>
   );

@@ -93,7 +93,7 @@ const Navbar = () => {
       <div className={styles.navContainer}>
         <Link href="/" className={styles.logoLink}>
           <FaTooth className={styles.logo} />
-          <span className={styles.logoText}>Dental Pricing</span>
+          <span className={styles.logoText}>Dental Booking</span>
         </Link>
         <ul className={styles.navLinks}>
           {navLinks.map(({ href, label }) => (

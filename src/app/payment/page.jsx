@@ -74,7 +74,7 @@ function PaymentForm({ clientSecret, bookingId, depositAmount }) {
       {error && <div className={styles.error}>{error}</div>}
       {paymentStatus === 'initial' && (
         <button type="submit" disabled={!stripe || processing} className={styles.payButton}>
-          {processing ? 'Processing...' : `Pay £${depositAmount ? depositAmount.toFixed(2) : '0.00'} Deposit`}
+          {processing ? 'Processing...' : `Confirm your appointment`}
         </button>
       )}
       {paymentStatus === 'succeeded' && <div className={styles.success}>Payment successful! Redirecting...</div>}

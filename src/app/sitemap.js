@@ -1,7 +1,7 @@
 import { getAllRoutes } from './lib/routes';
 
 export default async function sitemap() {
-  const baseUrl = 'https://www.dentalpricing.co.uk';
+  const baseUrl = 'https://www.dentalbooking.co.uk';
   const routes = await getAllRoutes();
 
   return routes.map((route) => ({

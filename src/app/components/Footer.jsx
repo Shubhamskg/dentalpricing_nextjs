@@ -8,7 +8,7 @@ const Footer = () => {
     <footer className={styles.footer}>
       <div className={styles.footerContent}>
         <div className={styles.footerSection}>
-          <h3>Dental Pricing</h3>
+          <h3>Dental Booking</h3>
           <p>Compare private dental<br/> treatment prices across<br/> the UK.</p>
         </div>
         <div className={styles.footerSection}>
@@ -37,7 +37,7 @@ const Footer = () => {
         </div>
       </div>
       <div className={styles.copyright}>
-        &copy; {new Date().getFullYear()} DentalPricing. All rights reserved.
+        &copy; {new Date().getFullYear()} dentalbooking. All rights reserved.
       </div>
     </footer>
   );
