@@ -6,6 +6,8 @@ import { Calendar, Clock, User, Mail, Phone, FileText, MapPin, Stethoscope, Poun
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
 import styles from './page.module.scss';
+import QRCode from 'qrcode';
+import Loading from '../components/Loading';
 
 const TIME_SLOTS = {
   '9-11': '9:00 AM - 11:00 AM',
@@ -53,108 +55,148 @@ function AppointmentDetails({ bookingId }) {
     const date = parseISO(timestamp);
     return format(date, 'MMMM d, yyyy HH:mm:ss', { locale: enGB });
   };
-  const downloadPDF = () => {
+  const downloadPDF = async () => {
     const doc = new jsPDF();
-    
+  
+    // Load the tooth icon image
+    const toothIconUrl = '/icon.png';
+    const toothIconImage = await loadImage(toothIconUrl);
+  
     // Set up fonts
     doc.setFont("helvetica");
-
+  
     // Add background color
-    doc.setFillColor(245, 245, 245);
+    doc.setFillColor(240, 248, 255); // Light blue background
     doc.rect(0, 0, 210, 297, 'F');
-
+  
     // Add header
-    doc.setFillColor(74, 144, 226);
+    doc.setFillColor(0, 103, 185); // Darker blue for header
     doc.rect(0, 0, 210, 40, 'F');
+  
+    // Add tooth icon to header
+    doc.addImage(toothIconImage, 'JPEG', 54, 11, 24, 24);
+  
     doc.setTextColor(255);
-    doc.setFontSize(24);
+    doc.setFontSize(28);
     doc.setFont("helvetica", "bold");
-    doc.text('Dental Booking', 105, 20, { align: 'center' });
+    doc.text('Dental Booking', 114, 25, { align: 'center' });
     doc.setFontSize(12);
     doc.setFont("helvetica", "normal");
-    doc.text('dentalbooking.co.uk', 105, 28, { align: 'center' });
-    
+    doc.text('https://dentalbooking.co.uk', 114, 32, { align: 'center' });
+  
     // Add appointment details
-    doc.setTextColor(74, 144, 226);
-    doc.setFontSize(18);
+    doc.setTextColor(0, 103, 185);
+    doc.setFontSize(22);
     doc.setFont("helvetica", "bold");
-    doc.text('Appointment Confirmation', 105, 55, { align: 'center' });
-    
+    doc.text('Appointment Confirmation', 105, 60, { align: 'center' });
+  
     doc.setFontSize(12);
-    doc.setTextColor(80);
+    doc.setTextColor(60);
     doc.setFont("helvetica", "normal");
-    
+  
     const tableData = [
       ['Appointment Date/Time', formatDateAndTime(appointmentDetails.preferredDate, appointmentDetails.preferredTimeSlot)],
-      ['Treatment', appointmentDetails.treatment[0].toUpperCase()+appointmentDetails.treatment.slice(1)],
+      ['Treatment', appointmentDetails.treatment[0].toUpperCase() + appointmentDetails.treatment.slice(1)],
       ['Clinic', appointmentDetails.clinic],
       ['Patient Name', appointmentDetails.name],
       ['Phone', appointmentDetails.phone],
       ['Booking ID', appointmentDetails._id],
       ['Booking Date', format(parseISO(appointmentDetails.createdAt), 'MMMM d, yyyy', { locale: enGB })],
       ['Deposit Amount', `£${appointmentDetails.depositAmount}`],
-      ['Payment Status', appointmentDetails.paymentStatus[0].toUpperCase()+appointmentDetails.paymentStatus.slice(1)],
+      ['Payment Status', appointmentDetails.paymentStatus[0].toUpperCase() + appointmentDetails.paymentStatus.slice(1)],
     ];
-
+  
     doc.autoTable({
-      startY: 65,
+      startY: 70,
       head: [['Field', 'Details']],
       body: tableData,
-      theme: 'plain',
-      headStyles: { 
-        fillColor: [74, 144, 226], 
+      theme: 'striped',
+      headStyles: {
+        fillColor: [0, 103, 185],
         textColor: [255],
         fontStyle: 'bold',
         halign: 'left',
         cellPadding: {top: 5, right: 10, bottom: 5, left: 10},
       },
       bodyStyles: {
-        textColor: [80],
+        textColor: [60],
         cellPadding: {top: 4, right: 10, bottom: 4, left: 10},
       },
       alternateRowStyles: {
-        fillColor: [240, 240, 240],
+        fillColor: [230, 240, 255],
       },
-      columnStyles: { 
+      columnStyles: {
         0: { fontStyle: 'bold', cellWidth: 70 },
         1: { cellWidth: 'auto' },
       },
       didDrawPage: function (data) {
         // Footer
-        doc.setFillColor(74, 144, 226);
+        doc.setFillColor(0, 103, 185);
         doc.rect(0, 277, 210, 20, 'F');
         doc.setFont("helvetica");
         doc.setFontSize(10);
         doc.setTextColor(255);
         doc.text('For any queries, please contact us:', 105, 285, { align: 'center' });
         doc.text('Phone: +44 7590 324762 | Email: support@dentaladvisor.ai', 105, 291, { align: 'center' });
-
+  
+        // Add tooth icon to footer
+        doc.addImage(toothIconImage, 'JPEG', 190, 280, 14, 14);
+  
         // Page numbers
         doc.setFontSize(10);
-        doc.text(`Page ${data.pageCount}`, 195, 287, { align: 'right' });
+        doc.text(`Page ${data.pageCount}`, 180, 287, { align: 'right' });
       },
       margin: { top: 60 },
     });
-
+  
     // Add issue/notes
-    const finalY = doc.lastAutoTable.finalY || 65;
-    doc.setFontSize(14);
+    const finalY = doc.lastAutoTable.finalY || 70;
+    doc.setFontSize(16);
     doc.setFont("helvetica", "bold");
-    doc.setTextColor(74, 144, 226);
+    doc.setTextColor(0, 103, 185);
     doc.text('Additional Notes:', 14, finalY + 15);
     doc.setFontSize(12);
     doc.setFont("helvetica", "normal");
-    doc.setTextColor(80);
-    const splitText = doc.splitTextToSize(appointmentDetails.issue || 'No additional notes provided.', 180);
+    doc.setTextColor(60);
+    const splitText = doc.splitTextToSize(appointmentDetails.issue.length>5?appointmentDetails.issue: 'No additional notes provided.', 180);
     doc.text(splitText, 14, finalY + 25);
-
+  
+    // Add arrival instruction
+    doc.setFontSize(14);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(0, 103, 185);
+    doc.text('Important:', 14, finalY + 45);
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "normal");
+    doc.setTextColor(60);
+    doc.text('Please arrive 10 minutes before your appointment time.', 14, finalY + 55);
+  
+    // Generate and add QR code
+    const qrCodeUrl = `https://dentalbooking.co.uk/appointment?bookingId=${appointmentDetails._id}`;
+    const qrCodeDataUrl = await QRCode.toDataURL(qrCodeUrl);
+    doc.addImage(qrCodeDataUrl, 'PNG', 140, finalY + 15, 50, 50);
+    doc.setFontSize(10);
+    doc.setTextColor(0, 103, 185);
+    doc.text('Scan for appointment details', 165, finalY + 70, { align: 'center' });
+  
     doc.save(`dental_appointment_${appointmentDetails._id}.pdf`);
   };
+  
+  // Helper function to load image
+  const loadImage = (url) => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = reject;
+      img.src = url;
+    });
+  };
+  
 
 
 
 
-  if (loading) return <div className={styles.loading}>Loading...</div>;
+  if (loading) return <Loading/>;
   if (error) return <div className={styles.error}>Error: {error}</div>;
   if (!appointmentDetails) return <div className={styles.error}>No appointment details found.</div>;
 
@@ -253,7 +295,7 @@ function AppointmentDetails({ bookingId }) {
             <div className={styles.issueContainer}>
               <span className={styles.issueLabel}>Issue/Notes:</span>
               <p className={styles.issueText}>
-                {appointmentDetails.issue || 'No additional notes provided.'}
+                {appointmentDetails.issue.length>5? appointmentDetails.issue : 'No additional notes provided.'}
               </p>
             </div>
           </div>
