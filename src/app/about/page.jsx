@@ -139,7 +139,7 @@ const AboutPage = () => {
 
       <section className={styles.contact}>
         <h2>Contact Us</h2>
-        <p>Have questions? We're here to help! You can reach our friendly support team by visiting our Contact Page or sending us an email at <strong>support@dentalbooking.co.uk</strong>.</p>
+        <p>Have questions? We're here to help! You can reach our friendly support team by visiting our Contact Page or sending us an email at <strong>support@dentaladvisor.ai</strong>.</p>
       </section>
     </div>
   );

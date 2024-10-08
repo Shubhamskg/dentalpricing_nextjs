@@ -31,7 +31,7 @@ const ContactPage = () => {
         <div className={styles.contactInfo}>
           <h2>Get in Touch</h2>
           <ul>
-            <li><FaEnvelope /> Email: support@dentaladvisor.com</li>
+            <li><FaEnvelope /> Email: support@dentaladvisor.ai</li>
             <li><FaPhone /> Phone: +44 7590 324762</li>
             <li><FaMapMarkerAlt /> Address: 123 Dental Street, London, UK</li>
           </ul>

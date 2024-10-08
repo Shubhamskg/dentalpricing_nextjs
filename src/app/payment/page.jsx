@@ -5,8 +5,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import styles from './page.module.scss';
 import Loading from '../components/Loading';
-
-
+import { CreditCard, Check, AlertCircle } from 'lucide-react';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
@@ -70,15 +69,42 @@ function PaymentForm({ clientSecret, bookingId, depositAmount }) {
 
   return (
     <form onSubmit={handleSubmit} className={styles.paymentForm}>
-      <PaymentElement />
-      {error && <div className={styles.error}>{error}</div>}
+      <div className={styles.paymentElementWrapper}>
+        <PaymentElement />
+      </div>
+      {error && (
+        <div className={styles.message + ' ' + styles.error}>
+          <AlertCircle size={20} />
+          <span>{error}</span>
+        </div>
+      )}
       {paymentStatus === 'initial' && (
         <button type="submit" disabled={!stripe || processing} className={styles.payButton}>
-          {processing ? 'Processing...' : `Confirm your appointment`}
+          {processing ? (
+            <>
+              <span className={styles.spinner}></span>
+              Processing...
+            </>
+          ) : (
+            <>
+              <CreditCard size={20} />
+              Confirm Payment
+            </>
+          )}
         </button>
       )}
-      {paymentStatus === 'succeeded' && <div className={styles.success}>Payment successful! Redirecting...</div>}
-      {paymentStatus === 'failed' && <div className={styles.error}>Payment failed. Please try again.</div>}
+      {paymentStatus === 'succeeded' && (
+        <div className={styles.message + ' ' + styles.success}>
+          <Check size={20} />
+          <span>Payment successful! Redirecting...</span>
+        </div>
+      )}
+      {paymentStatus === 'failed' && (
+        <div className={styles.message + ' ' + styles.error}>
+          <AlertCircle size={20} />
+          <span>Payment failed. Please try again.</span>
+        </div>
+      )}
     </form>
   );
 }
@@ -106,7 +132,7 @@ function PaymentContent() {
         }
         const data = await response.json();
         setBookingDetails(data);
-        console.log("data",data)
+        
         const paymentResponse = await fetch('/api/create-payment-intent', {
           method: 'POST',
           headers: {
@@ -121,13 +147,10 @@ function PaymentContent() {
           const paymentErrorData = await paymentResponse.json();
           throw new Error(paymentErrorData.error || 'Failed to create payment intent');
         }
-        const pay=await paymentResponse.json();
-        console.log("pay",pay)
-        const { clientSecret, depositAmount } = pay
-        console.log("depositAmount",depositAmount)
+        const pay = await paymentResponse.json();
+        const { clientSecret, depositAmount } = pay;
         setClientSecret(clientSecret);
         setDepositAmount(depositAmount);
-        console.log("depositAmount2",depositAmount)
       } catch (err) {
         console.error('Error:', err);
         setError(err.message);
@@ -137,11 +160,18 @@ function PaymentContent() {
   }, [searchParams]);
 
   if (error) {
-    return <div className={styles.error}>Error: {error}</div>;
+    return (
+      <div className={styles.container}>
+        <div className={styles.message + ' ' + styles.error}>
+          <AlertCircle size={20} />
+          <span>Error: {error}</span>
+        </div>
+      </div>
+    );
   }
 
   if (!bookingDetails || !clientSecret || depositAmount === null) {
-    return <Loading/>;
+    return <Loading />;
   }
 
   const options = {
@@ -153,9 +183,14 @@ function PaymentContent() {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Confirm Appointment</h1>
-      <p>In order to confirm your appointment we require a ten percent deposit now. This which will be deducted from your final payment amount</p>
-      <p>Deposit amount: £{depositAmount ? depositAmount.toFixed(2) : '0.00'}</p>
+      <h1 className={styles.title}>Confirm Your Appointment</h1>
+      <p className={styles.text}>
+        To secure your appointment, we require a 10% deposit. This amount will be deducted from your final payment.
+      </p>
+      <div className={styles.amountWrapper}>
+        <span className={styles.amountLabel}>Deposit Amount:</span>
+        <span className={styles.amount}>£{depositAmount ? depositAmount.toFixed(2) : '0.00'}</span>
+      </div>
       <Elements stripe={stripePromise} options={options}>
         <PaymentForm clientSecret={clientSecret} bookingId={searchParams.get('bookingId')} depositAmount={depositAmount} />
       </Elements>
@@ -165,7 +200,7 @@ function PaymentContent() {
 
 export default function PaymentPage() {
   return (
-    <Suspense fallback={<Loading/>}>
+    <Suspense fallback={<Loading />}>
       <PaymentContent />
     </Suspense>
   );

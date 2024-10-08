@@ -47,7 +47,7 @@ const TermsAndConditionsPage = () => {
         <p>These Terms and Conditions shall be governed by and construed in accordance with the laws of the United Kingdom.</p>
       </section>
 
-      <p>If you have any questions about these Terms and Conditions, please contact us at info@dentalbooking.co.uk.</p>
+      <p>If you have any questions about these Terms and Conditions, please contact us at info@dentaladvisor.ai.</p>
     </div>
   );
 };

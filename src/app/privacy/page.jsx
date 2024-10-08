@@ -49,7 +49,7 @@ const PrivacyPolicyPage = () => {
 
       <section>
         <h2>9. Contact Us</h2>
-        <p>If you have any questions about this Privacy Policy, please contact us at support@dentaladvisor.com</p>
+        <p>If you have any questions about this Privacy Policy, please contact us at support@dentaladvisor.ai</p>
       </section>
     </div>
   );
